@@ -3,11 +3,8 @@ import type { EsGender } from './lang'
 /**
  * Spanish templates use {{tokens}}.
  *
- * *línea* / *líneas* and the words that go with them stay feminine in every
- * mode — that is normal speech, not a gender choice.
- *
- * Only the character epithet flips with DEV gender:
- * La Doblada / El Doblado, and doblada / doblado.
+ * *línea* / *líneas* and words that agree with them stay feminine always.
+ * DEV F/M only flips the title: La Doblada / El Doblado.
  */
 const LINE: Record<string, string> = {
   el: 'la',
@@ -20,6 +17,8 @@ const LINE: Record<string, string> = {
   Linea: 'Línea',
   lineas: 'líneas',
   Lineas: 'Líneas',
+  /** Agrees with *línea* — always feminine in story sentences. */
+  doblado: 'doblada',
   rojo: 'roja',
   nuestro: 'nuestra',
   Nuestro: 'Nuestra',
@@ -64,16 +63,14 @@ const LINE: Record<string, string> = {
   lo: 'la',
 }
 
-/** Character epithet only — flips with F/M. */
+/** Book title epithet only — flips with F/M. */
 const EPITHET: Record<EsGender, Record<string, string>> = {
   f: {
     TitleArt: 'La',
-    doblado: 'doblada',
     Doblado: 'Doblada',
   },
   m: {
     TitleArt: 'El',
-    doblado: 'doblado',
     Doblado: 'Doblado',
   },
 }

@@ -41,8 +41,8 @@ export const BOOK = {
     ],
     es: [
       '{{Un}} {{linea}} es lo que es por dónde {{la}} pones.',
-      'Si {{la}} juntas con {{otros}}, puede ser un techo. Si {{la}} dejas {{solo}}, es sólo {{ella}}. Si {{la}} tiras pa\' afuera, ¡parece una explosión! Si {{la}} haces bien {{chiquito}}, se vuelve un punto.',
-      '{{Uno}} de {{ellos}} está {{doblado}}, y es {{rojo}}. Parece que tiene una barriguita.',
+      'Si {{la}} juntas con {{otros}}, puede ser un techo. Si {{la}} dejas {{solo}}, es sólo {{un}} {{linea}}. Si {{la}} tiras pa\' afuera, puede parecer una explosión. Si {{la}} haces bien {{chiquito}}, se vuelve un punto.',
+      'Una de las {{lineas}} está {{doblado}}, y es {{rojo}}. Parece que tiene una barriguita.',
     ],
   } satisfies LocalizedLines,
   credit: {
@@ -70,7 +70,7 @@ export const BOOK = {
  * - Treat difference as character, not a flaw that needs apology
  * - Observe with the reader; do not give orders
  * - The ending may stay unresolved without becoming cruel
- * - Spanish: always *línea* / *líneas*; F/M only flips La Doblada / El Doblado (and doblada / doblado)
+ * - Spanish: say *línea* / *líneas* in plain speech; F/M only flips La Doblada / El Doblado
  */
 export const pages: PageMeta[] = [
   {
@@ -110,7 +110,7 @@ export const pages: PageMeta[] = [
         'Pronto hubo {{otros}} {{lineas}}.',
         '{{Largos}} y {{cortos}}, {{lineas}} que se acostaban {{planos}} y {{lineas}} que se paraban muy {{rectos}}.',
         '{{Todos}} {{rectos}}.',
-        '{{El}} {{nuestro}} era {{el}} que tenía el doblez.',
+        'Nuestra {{linea}} era la que tenía el doblez.',
       ],
     },
     craft: 'Tone: identity, not exclusion.',
@@ -130,7 +130,7 @@ export const pages: PageMeta[] = [
       ],
       es: [
         'Tres {{lineas}} se apoyaron juntas y formaron un triángulo.',
-        '{{El}} {{nuestro}} era {{uno}} de {{los}} tres.',
+        'Nuestra {{linea}} era una de las tres.',
         'Después, a más {{lineas}} les gustó volverse triángulos. {{Algunos}} sí. {{Algunos}} sólo casi.',
         'Era un triángulo peculiar. Un lado tenía un doblez.',
         'Al triángulo no pareció importarle. El doblez le quedaba bien.',
@@ -154,11 +154,11 @@ export const pages: PageMeta[] = [
       ],
       es: [
         'Después de eso, {{los}} {{lineas}} no podían parar.',
-        'Cuadrados. Círculos. Un hexágono que necesitó seis de {{ellos}} y un montón de discusiones.',
+        'Cuadrados. Círculos. Un hexágono que necesitó seis {{lineas}} y un montón de discusiones.',
         'Formas por todas partes, y cada una hecha de {{lineas}},',
-        'y {{uno}} de {{ellos}} {{doblado}}, como siempre.',
+        'y una de las {{lineas}} {{doblado}}, como siempre.',
         'Algunas formas se escapaban por arriba. Nadie sabe por qué.',
-        'Hasta {{el}} {{linea}} {{delgado}} de arriba se fue con {{ellos}}.',
+        'Hasta {{el}} {{linea}} {{delgado}} de arriba se fue con las formas.',
       ],
     },
     craft: 'Art: escapees and missing header rule.',
@@ -180,7 +180,7 @@ export const pages: PageMeta[] = [
         '{{El}} {{linea}} {{delgado}} volvió. Bien.',
         'Entonces empezó a llover.',
         'Un cuadrado y un triángulo hicieron una casa — ¡rápido!',
-        '{{El}} {{nuestro}} era el techo.',
+        'Nuestra {{linea}} era el techo.',
         'La lluvia se resbalaba un poquito chueca, y eso está súper bien.',
       ],
     },
@@ -245,10 +245,10 @@ export const pages: PageMeta[] = [
       ],
       es: [
         'Entonces, una tarde — así de pronto — {{un}} {{linea}} se soltó.',
-        'Sólo {{uno}}. {{El}} {{vecino}} {{recto}} de nuestro techo.',
+        'Sólo una {{linea}}. {{El}} {{vecino}} {{recto}} de nuestro techo.',
         'Se resbaló por atrás y se acostó en la hierba.',
         'Ya no quería ser techo.',
-        '¡{{Nuestro}} {{pequeno}} {{linea}} {{rojo}} {{doblado}} no entendía nada de lo que pasaba!',
+        '¡Nuestra {{pequeno}} {{linea}} {{rojo}} {{doblado}} no entendía nada de lo que pasaba!',
       ],
     },
     craft: 'Close on house; neighbor slips away; bent line shares the confusion.',
@@ -292,7 +292,7 @@ export const pages: PageMeta[] = [
         '¡Y entonces el pueblo hizo BUM!',
         '¡Casas y barcos y ruedas volaron por todos lados!',
         '¡Sobre nuestras cabezas! ¡Bajo nuestros pies! ¡En todas partes! ¡AAAAHHH!',
-        '¡Y mira — {{el}} {{nuestro}} también hizo fiuu!',
+        '¡Y mira — nuestra {{linea}} también hizo fiuu!',
       ],
     },
     craft: 'Culmination; whole town; explosion toward the reader.',
@@ -316,7 +316,7 @@ export const pages: PageMeta[] = [
         'El pueblo ya no estaba.',
         'Ni casas. Ni barcos. Ni ruedas.',
         'Sólo {{lineas}}. Unos pedacitos, flotando.',
-        '{{El}} {{nuestro}} seguía {{doblado}} — pero empezó a menearse.',
+        'Nuestra {{linea}} seguía {{doblado}} — pero empezó a menearse.',
         'Ay no. ¿Otro bum?!',
       ],
     },
@@ -338,7 +338,7 @@ export const pages: PageMeta[] = [
         'Y entonces — espera — ¡no era!',
         '¡El doblez se salió mientras flotaba!',
         '¿Qué… qué qué qué?!',
-        'Ahora era {{un}} {{linea}}, como {{los}} {{demas}}.',
+        'Ahora era {{un}} {{linea}}, como las demás {{lineas}}.',
       ],
     },
     craft: 'Surprise beat; lively open, plain middle, quiet close.',
@@ -363,7 +363,7 @@ export const pages: PageMeta[] = [
         'Más {{chiquitos}}. Y más {{chiquitos}}. Y todavía más.',
         'Hasta que {{un}} {{linea}} era tan {{chiquito}} — que era un punto.',
         'Sólo puntos. Puntos y puntos y puntos y puntos y puntos y puntos y puntos.',
-        '{{Uno}} de {{ellos}} había sido {{nuestro}} {{pequeno}} {{linea}} {{rojo}}. Estábamos casi seguros.',
+        'Uno de los puntos había sido nuestra {{pequeno}} {{linea}} {{rojo}}. Estábamos casi seguros.',
       ],
     },
     craft: 'Readable motion: shrink → snap → smaller → dot.',
@@ -384,7 +384,7 @@ export const pages: PageMeta[] = [
       es: [
         'Y entonces aquellos puntos se alejaron.',
         'Miramos todo lo que pudimos.',
-        'No sabemos cuál era {{el}} {{nuestro}}.',
+        'No sabemos cuál era el nuestro.',
         'Pero el punto rojo sí sabía quién era.',
         'Y eso basta. Saber quién eres basta.',
       ],

@@ -17,7 +17,7 @@
     class:dim={lang !== 'es'}
     role="group"
     aria-label="DEV Spanish epithet gender"
-    title="DEV only: character epithet (story always says línea)"
+    title="DEV only: title gender (story always says línea / doblada)"
   >
     <span class="tag">DEV ES</span>
     {#each options as option}
