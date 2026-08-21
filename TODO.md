@@ -38,7 +38,7 @@ Already matched: page URLs, history, swipe, keyboard, dots, resume, live region,
 - [x] **Spanish translation** — full book voice (editor pass; polish welcome)
 - [x] **SEO pack** — `index.html` meta, OG/Twitter, JSON-LD Book, canonical, manifest, `applyDocumentMeta(lang)`
 - [ ] Confirm production `VITE_SITE_URL` + raster `/og.jpg` (or PNG) once domain is known
-- [ ] Spanish copy polish pass (kid-ear pass)
+- [ ] Spanish copy polish pass (kid-ear pass; try both genders on refresh)
 
 ---
 

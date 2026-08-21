@@ -2,7 +2,7 @@
   import { pages } from './spreads'
   import type { BookLocation } from './paths'
   import { langState, setLanguage } from './language.svelte'
-  import { pick } from './lang'
+  import { resolveString } from './resolve'
   import { pageProgressLabel, ui } from './ui'
   import LanguageToggle from './LanguageToggle.svelte'
 
@@ -18,6 +18,7 @@
   let { location, onPrev, onNext, onFirst, onLast, onGoPage }: Props = $props()
 
   const lang = $derived(langState.current)
+  const gender = $derived(langState.esGender)
   const isCover = $derived(location.kind === 'cover')
   const isBack = $derived(location.kind === 'back')
   const storyNumber = $derived(
@@ -71,7 +72,7 @@
               location.kind === 'back' ||
               (location.kind === 'page' && location.index > i)
             }
-            aria-label="{page.id}: {pick(page.title, lang)}"
+            aria-label="{page.id}: {resolveString(page.title, lang, gender)}"
             aria-current={storyNumber === i + 1 ? 'page' : undefined}
             onclick={() => onGoPage(i)}
           ></button>

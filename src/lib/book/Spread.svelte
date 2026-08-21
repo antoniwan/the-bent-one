@@ -4,7 +4,7 @@
   import ProseText from './ProseText.svelte'
   import type { SpreadMeta } from './spreads'
   import { langState } from './language.svelte'
-  import { pick } from './lang'
+  import { resolveLines } from './resolve'
   import { ui } from './ui'
 
   interface Props {
@@ -27,7 +27,8 @@
   let moreBelow = $state(false)
 
   const lang = $derived(langState.current)
-  const lines = $derived(pick(spread.text, lang))
+  const gender = $derived(langState.esGender)
+  const lines = $derived(resolveLines(spread.text, lang, gender))
 
   function isWiggleLine(line: string) {
     return (

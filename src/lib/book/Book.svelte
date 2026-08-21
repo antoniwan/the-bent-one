@@ -7,6 +7,7 @@
   import ProseText from './ProseText.svelte'
   import LanguageToggle from './LanguageToggle.svelte'
   import { pick } from './lang'
+  import { resolveLines, resolveString } from './resolve'
   import { ui } from './ui'
   import { initLanguage, langState, setLanguage } from './language.svelte'
   import {
@@ -31,11 +32,13 @@
   let resumeStep = $state(0)
 
   const lang = $derived(langState.current)
+  const gender = $derived(langState.esGender)
   const page = $derived(
     location.kind === 'page' ? pages[location.index] : null,
   )
-  const announcement = $derived(liveLabel(location, lang))
+  const announcement = $derived(liveLabel(location, lang, gender))
   const showContinue = $derived(canResume(resumeStep))
+  const bookTitle = $derived(resolveString(BOOK.title, lang, gender))
 
   function go(loc: BookLocation, dir?: 1 | -1, replace = false) {
     const result = navigateTo(loc, { direction: dir, replace })
@@ -190,13 +193,13 @@
             goFirst()
           }}
         >
-          {pick(BOOK.title, lang)}
+          {bookTitle}
         </a>
       </p>
       <p class="meta">
         {#if location.kind === 'page' && page}
           <span class="num">{String(page.id).padStart(2, '0')}</span>
-          <span class="title">{pick(page.title, lang)}</span>
+          <span class="title">{resolveString(page.title, lang, gender)}</span>
         {:else if location.kind === 'front'}
           <span class="quiet">{ui('beforeWeBegin', lang)}</span>
         {:else if location.kind === 'back'}
@@ -231,8 +234,13 @@
             />
           </svg>
           <p class="eyebrow">{pick(BOOK.kind, lang)}</p>
-          <h1>{pick(BOOK.title, lang)}</h1>
-          <p class="deck"><ProseText text={pick(BOOK.deck, lang)} {lang} /></p>
+          <h1>{bookTitle}</h1>
+          <p class="deck">
+            <ProseText
+              text={resolveString(BOOK.deck, lang, gender)}
+              {lang}
+            />
+          </p>
           <p class="byline">{ui('by', lang)} {pick(BOOK.author, lang)}</p>
           <div class="cta-row">
             <button type="button" class="cta" onclick={openBook}
@@ -277,7 +285,7 @@
             </svg>
           </div>
           <div class="rule">
-            {#each pick(BOOK.rule, lang) as para}
+            {#each resolveLines(BOOK.rule, lang, gender) as para}
               <p><ProseText text={para} {lang} /></p>
             {/each}
           </div>
@@ -299,7 +307,7 @@
             <span></span><span></span><span></span>
           </div>
           <div class="coda">
-            {#each pick(BOOK.coda, lang) as para, i}
+            {#each resolveLines(BOOK.coda, lang, gender) as para, i}
               <p class:moral={i > 0}><ProseText text={para} {lang} /></p>
             {/each}
           </div>

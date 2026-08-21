@@ -1,5 +1,6 @@
-import type { Lang } from './lang'
+import type { EsGender, Lang } from './lang'
 import { BOOK } from './spreads'
+import { resolveString } from './resolve'
 
 /** Set at build/deploy time; falls back for local preview. */
 export const SITE_URL =
@@ -10,10 +11,9 @@ export const SITE_IMAGE = `${SITE_URL}/og.svg`
 
 export const SEO = {
   defaultTitle: BOOK.title.en,
-  title: BOOK.title,
   description: {
     en: 'A little book in English and Spanish for one small line with a bend in it — and everything a line might become.',
-    es: 'Un cuentito en inglés y español para una pequeña línea con un doblez — y todo lo que una línea puede llegar a ser.',
+    es: 'Un cuentito en inglés y español para una pequeña línea — o un pequeño trazo — con un doblez, y todo lo que puede llegar a ser.',
   },
   locale: {
     en: 'en_US',
@@ -34,10 +34,13 @@ function setMetaBySelector(
   if (el) el.setAttribute(attribute, value)
 }
 
-export function applyDocumentMeta(language: Lang) {
+export function applyDocumentMeta(language: Lang, gender: EsGender = 'f') {
   if (typeof document === 'undefined') return
 
-  const title = SEO.title[language] || SEO.defaultTitle
+  const title =
+    language === 'es'
+      ? resolveString(BOOK.title, 'es', gender)
+      : SEO.defaultTitle
   const description = SEO.description[language]
   const locale = SEO.locale[language]
   const imageAlt = SEO.imageAlt[language]

@@ -7,7 +7,7 @@ export type ProsePart =
 
 /**
  * Geometric figures, qualities, and book-notions — always italic in prose.
- * Longer phrases first so “the bent one” / “el torcido” win over shorter tokens.
+ * Longer phrases first so “the bent one” / “el doblado” win over shorter tokens.
  */
 const GEOMETRIC_EN: string[] = [
   'the bent one',
@@ -69,7 +69,8 @@ const GEOMETRIC_EN: string[] = [
 ]
 
 const GEOMETRIC_ES: string[] = [
-  'el torcido',
+  'el doblado',
+  'la doblada',
   'hexágono',
   'triángulos',
   'triángulo',
@@ -107,13 +108,15 @@ const GEOMETRIC_ES: string[] = [
   'cerca',
   'líneas',
   'línea',
+  'trazos',
+  'trazo',
   'medio',
   'dobleces',
   'doblez',
-  'torcidas',
-  'torcidos',
-  'torcida',
-  'torcido',
+  'dobladas',
+  'doblados',
+  'doblada',
+  'doblado',
   'puntos',
   'punto',
   'pedacitos',
@@ -122,11 +125,13 @@ const GEOMETRIC_ES: string[] = [
   'delgadas',
   'delgada',
   'delgado',
+  'delgados',
   'fina',
   'fino',
   'cortas',
   'corta',
   'corto',
+  'cortos',
   'explosión',
   'rectas',
   'recta',
@@ -139,6 +144,7 @@ const GEOMETRIC_ES: string[] = [
   'planas',
   'plana',
   'plano',
+  'planos',
 ]
 
 const RED_EN = 'red'

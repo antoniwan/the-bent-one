@@ -13,7 +13,8 @@ export interface PageMeta {
 export const BOOK = {
   title: {
     en: 'The Bent One',
-    es: 'El Torcido',
+    /** {{El}} {{Doblado}} → El Doblado / La Doblada (gender each visit) */
+    es: '{{El}} {{Doblado}}',
   } satisfies LocalizedString,
   author: {
     en: 'Antonio Rodriguez Martinez',
@@ -26,11 +27,11 @@ export const BOOK = {
   } satisfies LocalizedString,
   deck: {
     en: 'For one small line with a bend in it — and everything a line might become.',
-    es: 'Para una pequeña línea con un doblez — y todo lo que una línea puede llegar a ser.',
+    es: 'Para {{un}} {{pequeno}} {{linea}} con un doblez — y todo lo que {{un}} {{linea}} puede llegar a ser.',
   } satisfies LocalizedString,
   /**
    * Front matter. Possibility, not plot. Lap-time voice.
-   * The bent red one gets a place; placement decides what a line is allowed to be.
+   * Spanish uses {{tokens}} → línea (f) or trazo (m) each visit.
    */
   rule: {
     en: [
@@ -39,9 +40,9 @@ export const BOOK = {
       'One of them is bent, and red.',
     ],
     es: [
-      'Una línea es lo que es según dónde se siente.',
-      'Si se apoya con otras, puede ser un techo. Si se queda sola, es sólo ella misma. Si la lanzas hacia afuera, puede parecer una explosión. Si la partes lo bastante chiquita, parece un punto.',
-      'Una de ellas está torcida, y es roja.',
+      '{{Un}} {{linea}} es lo que es según dónde se siente.',
+      'Si se apoya con {{otros}}, puede ser un techo. Si se queda {{solo}}, es sólo {{ella}} {{mismo}}. Si {{la}} lanzas hacia afuera, puede parecer una explosión. Si {{la}} partes lo bastante {{chiquito}}, parece un punto.',
+      '{{Uno}} de {{ellos}} está {{doblado}}, y es {{rojo}}.',
     ],
   } satisfies LocalizedLines,
   credit: {
@@ -50,7 +51,6 @@ export const BOOK = {
   } satisfies LocalizedString,
   /**
    * Back matter — outside the story. Parent leaning in after The End.
-   * Not a slogan; leaves page 14’s moral alone.
    */
   coda: {
     en: [
@@ -58,7 +58,7 @@ export const BOOK = {
       'A bend is just a bend. You’re allowed to have one.',
     ],
     es: [
-      'Entre tú y yo: yo nunca quise que esa rojita se enderezara.',
+      'Entre tú y yo: yo nunca quise que {{ese}} {{rojito}} se enderezara.',
       'Un doblez es sólo un doblez. Tú también puedes tener uno.',
     ],
   } satisfies LocalizedLines,
@@ -70,12 +70,13 @@ export const BOOK = {
  * - Difference is character that suits, not a flaw to apologize for
  * - Notice with the reader; don’t order them around
  * - The ending may be unresolved without being cruel
+ * - Spanish: random m/f each load (trazo / línea) — see esGender.ts
  */
 export const pages: PageMeta[] = [
   {
     id: 1,
     slug: 'one-line',
-    title: { en: 'One line', es: 'Una línea' },
+    title: { en: 'One line', es: '{{Un}} {{linea}}' },
     pages: 'pp 5–6',
     text: {
       en: [
@@ -85,10 +86,10 @@ export const pages: PageMeta[] = [
         'A curious little line.',
       ],
       es: [
-        'Esta es una línea.',
-        'No es muy larga, y tiene un doblez en el medio, más o menos aquí.',
+        '{{Esta}} es {{un}} {{linea}}.',
+        'No es muy {{largo}}, y tiene un doblez en el medio, más o menos aquí.',
         'Nadie sabe cómo llegó ese doblez.',
-        'Una pequeña línea curiosa.',
+        '{{Un}} {{pequeno}} {{linea}} {{curioso}}.',
       ],
     },
     craft: 'Wonder, not a briefing.',
@@ -106,10 +107,10 @@ export const pages: PageMeta[] = [
         'Ours was the one with the bend.',
       ],
       es: [
-        'Pronto hubo otras líneas.',
-        'Largas y cortas, líneas que se acostaban planas y líneas que se paraban muy rectas.',
-        'Todas rectas.',
-        'La nuestra era la que tenía el doblez.',
+        'Pronto hubo {{otros}} {{lineas}}.',
+        '{{Largos}} y {{cortos}}, {{lineas}} que se acostaban {{planos}} y {{lineas}} que se paraban muy {{rectos}}.',
+        '{{Todos}} {{rectos}}.',
+        '{{El}} {{nuestro}} era {{el}} que tenía el doblez.',
       ],
     },
     craft: 'Identity, not exclusion.',
@@ -128,9 +129,9 @@ export const pages: PageMeta[] = [
         'The triangle did not seem to mind. The bend suited it.',
       ],
       es: [
-        'Tres líneas se apoyaron juntas y formaron un triángulo.',
-        'La nuestra era una de las tres.',
-        'Después, a más líneas les gustó volverse triángulos. Algunas sí. Algunas sólo casi.',
+        'Tres {{lineas}} se apoyaron juntas y formaron un triángulo.',
+        '{{El}} {{nuestro}} era {{uno}} de {{los}} tres.',
+        'Después, a más {{lineas}} les gustó volverse triángulos. {{Algunos}} sí. {{Algunos}} sólo casi.',
         'Era un triángulo peculiar. Un lado tenía un doblez.',
         'Al triángulo no pareció importarle. El doblez le quedaba bien.',
       ],
@@ -152,12 +153,12 @@ export const pages: PageMeta[] = [
         'Even the thin line across the top ran off with them.',
       ],
       es: [
-        'Después de eso, las líneas no podían parar.',
-        'Cuadrados. Círculos. Un hexágono que necesitó seis de ellas y un montón de discusiones.',
-        'Formas por todas partes, y cada una hecha de líneas,',
-        'y una de ellas torcida, como siempre.',
+        'Después de eso, {{los}} {{lineas}} no podían parar.',
+        'Cuadrados. Círculos. Un hexágono que necesitó seis de {{ellos}} y un montón de discusiones.',
+        'Formas por todas partes, y cada una hecha de {{lineas}},',
+        'y {{uno}} de {{ellos}} {{doblado}}, como siempre.',
         'Algunas formas se escapaban por arriba. Nadie sabe por qué.',
-        'Hasta la línea delgada de arriba se fue con ellas.',
+        'Hasta {{el}} {{linea}} {{delgado}} de arriba se fue con {{ellos}}.',
       ],
     },
     craft: 'Escapees + missing header rule.',
@@ -176,10 +177,10 @@ export const pages: PageMeta[] = [
         "Rain slid off it a little crooked, and that's super okay.",
       ],
       es: [
-        'La línea delgada volvió. Bien.',
+        '{{El}} {{linea}} {{delgado}} volvió. Bien.',
         'Entonces empezó a llover.',
         'Un cuadrado y un triángulo hicieron una casa — ¡rápido!',
-        'La nuestra era el techo.',
+        '{{El}} {{nuestro}} era el techo.',
         'La lluvia se resbalaba un poquito chueca, y eso está súper bien.',
       ],
     },
@@ -199,7 +200,7 @@ export const pages: PageMeta[] = [
         'Our roof was in there somewhere too.',
       ],
       es: [
-        '¡Pronto, casi todas las líneas estaban apilándose!',
+        '¡Pronto, casi {{todos}} {{los}} {{lineas}} estaban apilándose!',
         'La lluvia paró.',
         'Los círculos se volvieron ruedas. Los triángulos se volvieron velas, y picos, y montañas. Los cuadrados se volvieron ventanas con alguien detrás.',
         'Todo eso. Tantísimo.',
@@ -232,7 +233,7 @@ export const pages: PageMeta[] = [
   {
     id: 8,
     slug: 'one-line-comes-loose',
-    title: { en: 'One line comes loose', es: 'Una línea se suelta' },
+    title: { en: 'One line comes loose', es: '{{Un}} {{linea}} se suelta' },
     pages: 'pp 19–20',
     text: {
       en: [
@@ -243,11 +244,11 @@ export const pages: PageMeta[] = [
         'Our little bent red line didn’t understand what was happening at all!',
       ],
       es: [
-        'Entonces, una tarde — así de pronto — una línea se soltó.',
-        'Sólo una. La vecina recta de nuestro techo.',
+        'Entonces, una tarde — así de pronto — {{un}} {{linea}} se soltó.',
+        'Sólo {{uno}}. {{El}} {{vecino}} {{recto}} de nuestro techo.',
         'Se resbaló por atrás y se acostó en la hierba.',
         'Ya no quería ser techo.',
-        '¡Nuestra pequeña línea roja torcida no entendía nada de lo que pasaba!',
+        '¡{{Nuestro}} {{pequeno}} {{linea}} {{rojo}} {{doblado}} no entendía nada de lo que pasaba!',
       ],
     },
     craft: 'Zoom house; neighbor slips; autonomy; bent one is as confused as the kids.',
@@ -268,7 +269,7 @@ export const pages: PageMeta[] = [
       es: [
         'Después de eso, el pueblo empezó a menearse.',
         '¡Menea, menea — una persiana, una rueda, un barco!',
-        'Algunas líneas se pusieron blanditas y a rayitas. Algunas se agarraron fuerte.',
+        '{{Algunos}} {{lineas}} se pusieron {{blanditos}} y a rayitas. {{Algunos}} se agarraron fuerte.',
         'Nada tiene que quedarse siendo lo mismo para siempre.',
         '¡¿Qué está pasando?!',
       ],
@@ -291,7 +292,7 @@ export const pages: PageMeta[] = [
         '¡Y entonces el pueblo hizo BUM!',
         '¡Casas y barcos y ruedas volaron por todos lados!',
         '¡Sobre nuestras cabezas! ¡Bajo nuestros pies! ¡En todas partes! ¡AAAAHHH!',
-        '¡Y mira — la nuestra también hizo fiuu!',
+        '¡Y mira — {{el}} {{nuestro}} también hizo fiuu!',
       ],
     },
     craft: 'Culmination; whole town; explosion toward reader; Seuss boom.',
@@ -299,7 +300,7 @@ export const pages: PageMeta[] = [
   {
     id: 11,
     slug: 'lines-again',
-    title: { en: 'Lines again', es: 'Otra vez líneas' },
+    title: { en: 'Lines again', es: 'Otra vez {{lineas}}' },
     pages: 'pp 25–26',
     text: {
       en: [
@@ -314,8 +315,8 @@ export const pages: PageMeta[] = [
         'Después del gran bum, todo se quedó quieto.',
         'El pueblo ya no estaba.',
         'Ni casas. Ni barcos. Ni ruedas.',
-        'Sólo líneas. Unos pedacitos, flotando.',
-        'La nuestra seguía torcida — pero empezó a menearse.',
+        'Sólo {{lineas}}. Unos pedacitos, flotando.',
+        '{{El}} {{nuestro}} seguía {{doblado}} — pero empezó a menearse.',
         'Ay no. ¿Otro bum?!',
       ],
     },
@@ -337,7 +338,7 @@ export const pages: PageMeta[] = [
         'Y entonces — espera — ¡no era!',
         '¡El doblez se salió mientras flotaba!',
         '¿Qué… qué qué qué?!',
-        'Ahora era una línea, como las demás.',
+        'Ahora era {{un}} {{linea}}, como {{los}} {{demas}}.',
       ],
     },
     craft: 'Surprise beat; Seuss open, toddler middle, quiet close.',
@@ -357,12 +358,12 @@ export const pages: PageMeta[] = [
         'One of them used to be our little red line. We were almost sure.',
       ],
       es: [
-        'Entonces las líneas empezaron a encogerse.',
-        '¡¡Crack!! — justo donde estaban más delgadas.',
-        'Más chiquitas. Y más chiquitas. Y todavía más.',
-        'Hasta que una línea era tan chiquita — que era un punto.',
+        'Entonces {{los}} {{lineas}} empezaron a encogerse.',
+        '¡¡Crack!! — justo donde estaban más {{delgados}}.',
+        'Más {{chiquitos}}. Y más {{chiquitos}}. Y todavía más.',
+        'Hasta que {{un}} {{linea}} era tan {{chiquito}} — que era un punto.',
         'Sólo puntos. Puntos y puntos y puntos y puntos y puntos y puntos y puntos.',
-        'Uno de ellos había sido nuestra pequeña línea roja. Estábamos casi seguros.',
+        '{{Uno}} de {{ellos}} había sido {{nuestro}} {{pequeno}} {{linea}} {{rojo}}. Estábamos casi seguros.',
       ],
     },
     craft: 'Motion kids can feel: shrink → snap → smaller → dot.',
@@ -383,7 +384,7 @@ export const pages: PageMeta[] = [
       es: [
         'Y entonces aquellos puntos se alejaron.',
         'Miramos todo lo que pudimos.',
-        'No sabemos cuál era el nuestro.',
+        'No sabemos cuál era {{el}} {{nuestro}}.',
         'Pero el punto rojo sí sabía quién era.',
         'Y eso basta. Saber quién eres basta.',
       ],
