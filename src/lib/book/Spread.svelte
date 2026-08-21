@@ -85,6 +85,7 @@
           class="line"
           class:lead={i === 0}
           class:wiggle={spread.id === 9 && line.startsWith('What is even')}
+          class:moral={spread.id === 14 && i === spread.text.length - 1}
           style="--i: {i}"
         >
           <ProseText text={line} />
@@ -310,6 +311,10 @@
 
   .line.lead {
     font-size: clamp(1.05rem, 2.2vw, 1.28rem);
+  }
+
+  .line.moral {
+    font-weight: 700;
   }
 
   .line.wiggle {

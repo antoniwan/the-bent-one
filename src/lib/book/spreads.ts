@@ -184,13 +184,14 @@ export const pages: PageMeta[] = [
     title: 'Lines again',
     pages: 'pp 25–26',
     text: [
-      'When the dust came down, the town was gone.',
+      'After the big boom, it got quiet.',
+      'The town was gone.',
       'No houses. No boats. No wheels.',
       'Only lines. A few scraps of them, drifting.',
       'Ours was still bent — but it started wiggling.',
       'Oh no. Another boom?!',
     ],
-    craft: 'Quiet after BOOM; wiggle tease before the bend comes out.',
+    craft: 'Aftermath in toddler-clear beats; wiggle tease.',
   },
   {
     id: 12,
@@ -211,14 +212,14 @@ export const pages: PageMeta[] = [
     title: 'Down to dots',
     pages: 'pp 29–30',
     text: [
-      'The lines broke into shorter lines.',
-      'Those broke where they were thinnest, into even shorter ones.',
-      'Shorter. And shorter. And shorter still.',
-      'Until a line was so short — it was a dot.',
+      'Then the lines began to shrink.',
+      'Snap! — right where they were thinnest.',
+      'Smaller. And smaller. And smaller still.',
+      'Until a line was so small — it was a dot.',
       'Just dots. Dots and dots and dots and dots and dots and dots and dots.',
       'One of them used to be our little red line. We were almost sure.',
     ],
-    craft: 'One process: break → shorten → dot (front-matter rule made visible).',
+    craft: 'Motion kids can feel: shrink → snap → smaller → dot.',
   },
   {
     id: 14,
@@ -226,12 +227,13 @@ export const pages: PageMeta[] = [
     title: 'Wherever it went',
     pages: 'pp 31–32',
     text: [
-      'The dots drifted apart.',
+      'And then those dots drifted apart.',
       'We watched as long as we could.',
       'We don’t know which one was ours.',
-      'But the dot knew who it was. And that’s enough.',
+      'But the red dot knew who it was.',
+      'And that’s enough. Knowing who you are is enough.',
     ],
-    craft: 'Not-knowing + the dot’s own knowing; The End under prose.',
+    craft: 'Last line bold moral; red on the knowing beat.',
   },
 ]
 
