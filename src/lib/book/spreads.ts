@@ -62,6 +62,22 @@ export const BOOK = {
       'Un doblez es sólo un doblez. Tú también puedes tener uno.',
     ],
   } satisfies LocalizedLines,
+  /**
+   * Tiny dedication — collapsed by default on the back screen.
+   * Add names here anytime.
+   */
+  dedication: {
+    en: [
+      'For my children — Andre, Mia, Catalina, Dario-kun, and Gino.',
+      'Thank you for teaching me so much.',
+      'I love you.',
+    ],
+    es: [
+      'Para mis hijos — Andre, Mia, Catalina, Dario-kun y Gino.',
+      'Gracias por enseñarme tanto.',
+      'Los quiero.',
+    ],
+  } satisfies LocalizedLines,
 } as const
 
 /**

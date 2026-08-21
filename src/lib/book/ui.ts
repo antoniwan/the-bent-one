@@ -25,6 +25,7 @@ const UI = {
   end: { en: 'End', es: 'Final' },
   english: { en: 'EN', es: 'EN' },
   spanish: { en: 'ES', es: 'ES' },
+  dedication: { en: '♥ a little love', es: '♥ un poquito de amor' },
 } as const satisfies Record<string, LocalizedString>
 
 export type UiKey = keyof typeof UI

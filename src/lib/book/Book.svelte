@@ -313,6 +313,14 @@
               <p class:moral={i > 0}><ProseText text={para} {lang} /></p>
             {/each}
           </div>
+          <details class="dedication">
+            <summary>{ui('dedication', lang)}</summary>
+            <div class="dedication-body">
+              {#each resolveLines(BOOK.dedication, lang, gender) as para}
+                <p>{para}</p>
+              {/each}
+            </div>
+          </details>
           <p class="credit">
             {pick(BOOK.credit, lang)} · {pick(BOOK.author, lang)}
           </p>
@@ -674,6 +682,51 @@
     font-size: 1.05rem;
     color: var(--ink);
     line-height: 1.5;
+  }
+
+  .dedication {
+    max-width: 22rem;
+    margin: 0;
+    font-family: var(--font-body);
+  }
+
+  .dedication summary {
+    list-style: none;
+    cursor: pointer;
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    color: color-mix(in srgb, var(--line-bent) 72%, var(--ink));
+    user-select: none;
+  }
+
+  .dedication summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .dedication summary::before {
+    content: none;
+  }
+
+  .dedication summary:hover,
+  .dedication[open] summary {
+    color: var(--ink-soft);
+  }
+
+  .dedication-body {
+    margin-top: 0.55rem;
+    padding-top: 0.45rem;
+    border-top: 1px solid color-mix(in srgb, var(--rule) 70%, transparent);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .dedication-body p {
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--ink-soft);
   }
 
   .credit {
