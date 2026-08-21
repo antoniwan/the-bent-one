@@ -23,7 +23,7 @@ Reference reader: [Mia, the Sun, and the Moon](https://mia-the-sun-and-the-moon-
 | Web app manifest + theme-color | yes | **done** |
 | Analytics (gtag) | yes | optional / later |
 | Portfolio / credit link in bar | yes | optional |
-| Version stamp | yes | skip unless needed |
+| Version stamp (hidden footer → repo) | yes | **done** (`v0.9.0` until ES ratified) |
 | Cover social image (raster) | yes | need export after first deploy URL |
 
 Already matched: page URLs, history, swipe, keyboard, dots, resume, live region, print CSS (basic), Vercel SPA fallback, cover continue, page hotspots.
@@ -39,6 +39,7 @@ Already matched: page URLs, history, swipe, keyboard, dots, resume, live region,
 - [x] **SEO pack** — `index.html` meta, OG/Twitter, JSON-LD Book, canonical, manifest, `applyDocumentMeta(lang)`
 - [ ] Confirm production `VITE_SITE_URL` + raster `/og.jpg` (or PNG) once domain is known
 - [ ] Spanish copy polish pass (kid-ear pass; try both genders on refresh)
+- [ ] **v1.0.0** only after Spanish is ratified
 
 ---
 

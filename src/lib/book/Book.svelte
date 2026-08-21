@@ -6,6 +6,7 @@
   import BoomField from './BoomField.svelte'
   import ProseText from './ProseText.svelte'
   import LanguageToggle from './LanguageToggle.svelte'
+  import VersionStamp from './VersionStamp.svelte'
   import { pick } from './lang'
   import { resolveLines, resolveString } from './resolve'
   import { ui } from './ui'
@@ -330,6 +331,10 @@
     onLast={goLast}
     onGoPage={goPage}
   />
+
+  <div class="version-slot">
+    <VersionStamp />
+  </div>
 </div>
 
 <style>
@@ -674,6 +679,18 @@
     color: var(--ink-soft);
   }
 
+  .version-slot {
+    position: absolute;
+    right: var(--page-gutter);
+    bottom: max(0.35rem, env(safe-area-inset-bottom));
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  .version-slot :global(.version-stamp) {
+    pointer-events: auto;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .screen-in {
       animation: none;
@@ -685,7 +702,8 @@
     :global(.reader-bar),
     .cta-row,
     .cover-lang,
-    .cta {
+    .cta,
+    .version-slot {
       display: none !important;
     }
   }

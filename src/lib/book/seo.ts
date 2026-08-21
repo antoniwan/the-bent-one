@@ -9,6 +9,8 @@ export const SITE_URL =
 
 export const SITE_IMAGE = `${SITE_URL}/og.svg`
 
+export const REPO_URL = 'https://github.com/antoniwan/the-bent-one'
+
 export const SEO = {
   defaultTitle: BOOK.title.en,
   description: {
