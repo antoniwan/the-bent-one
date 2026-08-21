@@ -91,6 +91,9 @@
         <span class="scroll-cue-label">More ↓</span>
       </div>
     {/if}
+    {#if spread.id === 14}
+      <p class="the-end">The End</p>
+    {/if}
   </div>
 </article>
 
@@ -302,6 +305,21 @@
 
   .line.lead {
     font-size: clamp(1.05rem, 2.2vw, 1.28rem);
+  }
+
+  .the-end {
+    margin: 1.25rem 0 0;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--rule);
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-align: center;
+    color: var(--ink);
+    opacity: 0;
+    animation: prose-in 0.7s ease forwards;
+    animation-delay: 1.4s;
   }
 
   .pause-first .line:first-child {

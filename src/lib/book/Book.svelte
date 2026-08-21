@@ -158,9 +158,20 @@
   class="book"
   class:allow-escape={location.kind === 'page' && page?.id === 4}
   class:allow-boom={location.kind === 'page' && page?.id === 10}
+  class:allow-dust={
+    location.kind === 'page' && page != null && page.id >= 11
+  }
 >
   {#if location.kind === 'page' && page?.id === 10}
-    <BoomField />
+    <BoomField mode="boom" />
+  {:else if location.kind === 'page' && page?.id === 11}
+    <BoomField mode="after" strength={1} />
+  {:else if location.kind === 'page' && page?.id === 12}
+    <BoomField mode="after" strength={0.42} />
+  {:else if location.kind === 'page' && page?.id === 13}
+    <BoomField mode="after" strength={0.16} />
+  {:else if location.kind === 'page' && page?.id === 14}
+    <BoomField mode="after" strength={0.025} />
   {/if}
   <header class="top">
     <p class="brand">
@@ -303,13 +314,17 @@
     overflow: visible;
   }
 
-  .book.allow-boom {
+  .book.allow-boom,
+  .book.allow-dust {
     overflow: visible;
   }
 
   .book.allow-boom .top,
   .book.allow-boom .stage-main,
-  .book.allow-boom :global(.reader-bar) {
+  .book.allow-boom :global(.reader-bar),
+  .book.allow-dust .top,
+  .book.allow-dust .stage-main,
+  .book.allow-dust :global(.reader-bar) {
     position: relative;
     z-index: 2;
   }

@@ -45,7 +45,7 @@ export interface Dot {
   cx: number
   cy: number
   r: number
-  color: 'ink' | 'bent' | 'decoy'
+  color: 'ink' | 'bent' | 'decoy' | 'ochre' | 'water'
   delay?: number
 }
 
@@ -1751,109 +1751,110 @@ export function sceneForSpread(id: number): ScenePart[] {
     }
 
     case 11: {
+      // Aftermath: few short remains after the boom — sparse dust of lines
       const field = fieldOfLines(
         777,
-        180,
-        { x: -40, y: -40, w: 1080, h: 1080 },
+        52,
+        { x: 40, y: 60, w: 920, h: 880 },
         {
-          lenMin: 18,
-          lenMax: 95,
-          weightMin: 0.8,
-          weightMax: 3.2,
+          lenMin: 8,
+          lenMax: 36,
+          weightMin: 0.7,
+          weightMax: 2.4,
+          colors: ['ink', 'ochre', 'water'],
           delayBase: 0.05,
-          delayStep: 0.008,
+          delayStep: 0.012,
           idPrefix: 'drift',
         },
       )
       return [
         { kind: 'drift', className: 'drift-field', lines: field },
         {
-          kind: 'bent',
+          kind: 'group',
+          className: 'bent-wiggle',
           transform: bentTransform(320, 480, 1.15, -12),
-          line: {
-            id: 'the-one',
-            d: BENT_PATH,
-            color: 'bent',
-            weight: 2.6,
-            delay: 0.02,
-            duration: 1.2,
-          },
-        },
-      ]
-    }
-
-    case 12: {
-      // Quiet devastation: straight red among other straight reds
-      return [
-        {
-          kind: 'lines',
           lines: [
             {
-              id: 'was-ours',
-              d: straight(420, 490, 580, 490),
+              id: 'the-one',
+              d: BENT_PATH,
               color: 'bent',
-              weight: 2.4,
-              delay: 0.4,
-              duration: 1.5,
-            },
-            {
-              id: 'red2',
-              d: straight(300, 420, 400, 455),
-              color: 'decoy',
-              weight: 2,
-              delay: 0.6,
-            },
-            {
-              id: 'red3',
-              d: straight(620, 530, 720, 510),
-              color: 'decoy',
-              weight: 2.1,
-              delay: 0.7,
-            },
-            {
-              id: 'red4',
-              d: straight(480, 600, 560, 640),
-              color: 'decoy',
-              weight: 1.8,
-              delay: 0.8,
-            },
-            {
-              id: 'ink1',
-              d: straight(200, 300, 280, 280),
-              weight: 1.5,
-              delay: 0.9,
-              opacity: 0.5,
-            },
-            {
-              id: 'ink2',
-              d: straight(750, 350, 820, 400),
-              weight: 1.4,
-              delay: 0.95,
-              opacity: 0.45,
+              weight: 2.6,
+              delay: 0.02,
+              duration: 1.2,
             },
           ],
         },
       ]
     }
 
+    case 12: {
+      // Straight now — scraps in every color; ours is red but unbent
+      const rand = mulberry32(1212)
+      const palette: LineSpec['color'][] = ['ink', 'ochre', 'water']
+      const lines: LineSpec[] = [
+        {
+          id: 'was-ours',
+          d: straight(420, 490, 580, 490),
+          color: 'bent',
+          weight: 2.4,
+          delay: 0.35,
+          duration: 1.5,
+        },
+      ]
+      for (let i = 0; i < 28; i++) {
+        const x = 60 + rand() * 880
+        const y = 80 + rand() * 820
+        const len = 18 + rand() * 55
+        const a = rand() * Math.PI
+        lines.push({
+          id: `stray-${i}`,
+          d: straight(x, y, x + Math.cos(a) * len, y + Math.sin(a) * len),
+          color: palette[i % 3],
+          weight: 1.1 + rand() * 1.4,
+          delay: 0.45 + i * 0.025,
+          opacity: 0.55 + rand() * 0.35,
+        })
+      }
+      // a couple decoy reds so ours isn’t lonely-obvious
+      lines.push(
+        {
+          id: 'decoy-a',
+          d: straight(220, 360, 310, 390),
+          color: 'decoy',
+          weight: 1.9,
+          delay: 0.55,
+        },
+        {
+          id: 'decoy-b',
+          d: straight(700, 620, 790, 590),
+          color: 'decoy',
+          weight: 1.8,
+          delay: 0.62,
+        },
+      )
+      return [{ kind: 'lines', lines }]
+    }
+
     case 13: {
       const rand = mulberry32(1313)
       const lines: LineSpec[] = []
       const dots: Dot[] = []
-      // gradient left→right: long → short → dashes → dots
+      const palette: Array<Dot['color']> = ['ink', 'ochre', 'water']
+      // gradient left→right: long → short → dots (all town colors)
       for (let i = 0; i < 120; i++) {
         const t = i / 120
         const x = 40 + t * 920 + (rand() - 0.5) * 30
         const y = 80 + rand() * 840
         const len = Math.max(2, 70 * (1 - t) * (1 - t) + 4)
-        const isRed = rand() > 0.88
+        const isRed = rand() > 0.9
+        const tone = isRed ? 'decoy' : palette[i % 3]
         if (t > 0.72 || len < 8) {
           dots.push({
             id: `d-${i}`,
             cx: x,
             cy: y,
             r: 1.2 + rand() * 2.2,
-            color: isRed ? 'decoy' : 'ink',
+            color: tone,
             delay: 0.2 + t * 0.8,
           })
         } else {
@@ -1866,14 +1867,13 @@ export function sceneForSpread(id: number): ScenePart[] {
               x + Math.cos(angle) * len,
               y + Math.sin(angle) * len,
             ),
-            color: isRed ? 'decoy' : 'ink',
+            color: tone === 'decoy' ? 'decoy' : (tone as LineSpec['color']),
             weight: 0.9 + rand() * 1.8,
             delay: 0.1 + t * 0.6,
             duration: 0.5,
           })
         }
       }
-      // one red that "used to be ours" — a short segment mid-right then dots
       dots.push({
         id: 'maybe-ours',
         cx: 780,
@@ -1891,18 +1891,20 @@ export function sceneForSpread(id: number): ScenePart[] {
     case 14: {
       const rand = mulberry32(1414)
       const dots: Dot[] = []
+      const palette: Array<Dot['color']> = ['ink', 'ochre', 'water']
       for (let i = 0; i < 160; i++) {
-        const isRed = rand() > 0.82
+        const roll = rand()
+        const color: Dot['color'] =
+          roll > 0.92 ? (rand() > 0.5 ? 'bent' : 'decoy') : palette[i % 3]
         dots.push({
           id: `field-${i}`,
           cx: 30 + rand() * 940,
           cy: 30 + rand() * 940,
           r: 1 + rand() * 2.5,
-          color: isRed ? (rand() > 0.5 ? 'bent' : 'decoy') : 'ink',
+          color,
           delay: rand() * 1.2,
         })
       }
-      // three lonely dots low, far apart — final recto echo
       dots.push(
         {
           id: 'final-1',
@@ -1917,7 +1919,7 @@ export function sceneForSpread(id: number): ScenePart[] {
           cx: 500,
           cy: 890,
           r: 1.8,
-          color: 'decoy',
+          color: 'ochre',
           delay: 1.55,
         },
         {
@@ -1925,7 +1927,7 @@ export function sceneForSpread(id: number): ScenePart[] {
           cx: 820,
           cy: 870,
           r: 2,
-          color: 'ink',
+          color: 'water',
           delay: 1.7,
         },
       )

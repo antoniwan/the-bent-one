@@ -14,6 +14,8 @@
 
   function dotFill(color: Dot['color']) {
     if (color === 'bent' || color === 'decoy') return 'var(--line-bent)'
+    if (color === 'ochre') return 'var(--line-ochre)'
+    if (color === 'water') return 'var(--line-water)'
     return 'var(--line-ink)'
   }
 </script>
@@ -166,6 +168,11 @@
 
   .spread-art :global(.boom-shard) {
     transform-origin: 500px 470px;
+  }
+
+  .spread-art :global(.bent-wiggle) {
+    animation: bent-wiggle 0.2s steps(2, end) infinite;
+    will-change: transform;
   }
 
   .spread-art.bleed :global(.boom-bent) {
@@ -349,6 +356,18 @@
     }
   }
 
+  @keyframes bent-wiggle {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+    50% {
+      transform: translate(3px, -2px) rotate(1.2deg);
+    }
+    100% {
+      transform: translate(-2px, 2px) rotate(-0.8deg);
+    }
+  }
+
   @keyframes rain-fall {
     from {
       transform: translate(-24px, -70px);
@@ -386,7 +405,8 @@
     .spread-art :global(.bird-fly),
     .spread-art :global(.loose-settle),
     .spread-art :global(.unravel-jitter),
-    .spread-art :global(.boom-bent) {
+    .spread-art :global(.boom-bent),
+    .spread-art :global(.bent-wiggle) {
       animation: none;
     }
     .dot {

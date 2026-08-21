@@ -83,6 +83,8 @@ export function fieldOfLines(
     weightMin?: number
     weightMax?: number
     color?: LineSpec['color']
+    /** Cycle these colors across the field (overrides single `color`). */
+    colors?: LineSpec['color'][]
     delayBase?: number
     delayStep?: number
     idPrefix?: string
@@ -95,6 +97,7 @@ export function fieldOfLines(
     weightMin = 1,
     weightMax = 3.5,
     color = 'ink',
+    colors,
     delayBase = 0.15,
     delayStep = 0.02,
     idPrefix = 'seg',
@@ -103,7 +106,7 @@ export function fieldOfLines(
   return Array.from({ length: count }, (_, i) => ({
     id: `${idPrefix}-${i}`,
     d: randomSegment(rand, bounds, lenMin, lenMax),
-    color,
+    color: colors?.length ? colors[i % colors.length] : color,
     weight: weightMin + rand() * (weightMax - weightMin),
     delay: delayBase + i * delayStep,
     duration: 0.6 + rand() * 0.5,
