@@ -31,7 +31,7 @@ export const BOOK = {
   } satisfies LocalizedString,
   /**
    * Front matter: possibility and placement, not plot summary.
-   * Spanish uses {{tokens}} for feminine agreement around *línea*.
+   * Spanish: short boricua / Seuss beats around *línea*; see esGender.ts.
    */
   rule: {
     en: [
@@ -40,9 +40,9 @@ export const BOOK = {
       'One of them is bent, and red.',
     ],
     es: [
-      '{{Un}} {{linea}} es lo que es según dónde se siente.',
-      'Si se apoya con {{otros}}, puede ser un techo. Si se queda {{solo}}, es sólo {{ella}} {{mismo}}. Si {{la}} lanzas hacia afuera, puede parecer una explosión. Si {{la}} partes lo bastante {{chiquito}}, parece un punto.',
-      '{{Uno}} de {{ellos}} está {{doblado}}, y es {{rojo}}.',
+      '{{Un}} {{linea}} es lo que es por dónde {{la}} pones.',
+      'Si {{la}} juntas con {{otros}}, puede ser un techo. Si {{la}} dejas {{solo}}, es sólo {{ella}}. Si {{la}} tiras pa\' afuera, ¡parece una explosión! Si {{la}} haces bien {{chiquito}}, se vuelve un punto.',
+      '{{Uno}} de {{ellos}} está {{doblado}}, y es {{rojo}}. Parece que tiene una barriguita.',
     ],
   } satisfies LocalizedLines,
   credit: {
@@ -70,7 +70,7 @@ export const BOOK = {
  * - Treat difference as character, not a flaw that needs apology
  * - Observe with the reader; do not give orders
  * - The ending may stay unresolved without becoming cruel
- * - Spanish: feminine agreement around *línea* / *líneas*; see esGender.ts
+ * - Spanish: feminine *línea*; short, playful, boricua-leaning beats for kids
  */
 export const pages: PageMeta[] = [
   {
