@@ -24,6 +24,13 @@ export const BOOK = {
     'One of them is bent, and red.',
   ],
   credit: 'A little book',
+  /**
+   * Back matter — outside the story. Kid echo + a small adult squeeze.
+   */
+  coda: [
+    'We don’t know which one it was.',
+    'A bend isn’t something to fix. It’s a way of being — and that was always enough.',
+  ],
 } as const
 
 /**
@@ -140,8 +147,9 @@ export const pages: PageMeta[] = [
       'Only one. The straight neighbor on our roof.',
       'It slipped off the back and lay down in the grass.',
       'It did not want to be a roof anymore.',
+      'Our little bent red line didn’t understand what was happening at all!',
     ],
-    craft: 'Zoom house; straight neighbor slips; autonomy, not rescue.',
+    craft: 'Zoom house; neighbor slips; autonomy; bent one is as confused as the kids.',
   },
   {
     id: 9,

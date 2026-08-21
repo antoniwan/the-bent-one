@@ -274,7 +274,11 @@
           <div class="back-dots" aria-hidden="true">
             <span></span><span></span><span></span>
           </div>
-          <p class="last">We don’t know which one it was.</p>
+          <div class="coda">
+            {#each BOOK.coda as para, i}
+              <p class:moral={i > 0}><ProseText text={para} /></p>
+            {/each}
+          </div>
           <p class="credit">{BOOK.credit} · {BOOK.author}</p>
           <button type="button" class="cta ghost" onclick={goFirst}>Start again</button>
         </section>
@@ -596,12 +600,27 @@
     background: var(--line-bent);
   }
 
-  .last {
+  .coda {
+    max-width: 28rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .coda p {
     margin: 0;
     font-family: var(--font-body);
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     color: var(--ink-soft);
     font-style: italic;
+    line-height: 1.45;
+  }
+
+  .coda .moral {
+    font-style: normal;
+    font-size: 1.05rem;
+    color: var(--ink);
+    line-height: 1.5;
   }
 
   .credit {
