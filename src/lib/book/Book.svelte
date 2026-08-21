@@ -280,12 +280,15 @@
   .book {
     position: relative;
     display: grid;
-    grid-template-rows: auto 1fr auto;
-    min-height: 100svh;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    height: 100%;
+    height: 100svh;
+    max-height: 100svh;
     max-width: 960px;
     margin-inline: auto;
-    padding: clamp(0.75rem, 2vw, 1.5rem);
+    padding: clamp(0.5rem, 1.5vw, 1rem);
     box-sizing: border-box;
+    overflow: hidden;
   }
 
   .book.allow-escape {
@@ -299,9 +302,11 @@
     justify-content: space-between;
     align-items: baseline;
     gap: 1rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.35rem;
     border-bottom: 1px solid var(--rule);
-    padding-bottom: 0.65rem;
+    padding-bottom: 0.45rem;
+    flex-shrink: 0;
+    transition: border-bottom-color 0.45s ease;
   }
 
   /* No fill / no rule on escape page — a band would cut through the fleeing shapes */
@@ -368,6 +373,7 @@
     position: relative;
     z-index: 1;
     min-height: 0;
+    height: 100%;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -377,21 +383,28 @@
     overflow: visible;
   }
 
-  .screen-in {
-    animation: page-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  .stage-main > :global(*) {
+    min-height: 0;
+    flex: 1 1 auto;
   }
 
   .cover-screen,
   .endpaper,
   .back-screen {
     flex: 1;
+    min-height: 0;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     gap: 1rem;
-    padding: 1rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .screen-in {
+    animation: page-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .cover-stage {

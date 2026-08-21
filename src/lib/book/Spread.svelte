@@ -59,10 +59,10 @@
 <style>
   .spread {
     display: grid;
-    grid-template-rows: minmax(0, 1.15fr) auto;
+    grid-template-rows: minmax(0, 1fr) minmax(0, auto);
     height: 100%;
     min-height: 0;
-    gap: clamp(0.75rem, 2vh, 1.5rem);
+    gap: clamp(0.4rem, 1.2vh, 0.85rem);
     animation: page-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
@@ -73,10 +73,10 @@
   .stage {
     position: relative;
     min-height: 0;
+    width: min(100%, 52vh, 620px);
+    max-height: 100%;
     aspect-ratio: 1 / 1;
-    max-height: min(62vh, 100%);
     margin-inline: auto;
-    width: min(100%, 62vh, 720px);
     background:
       radial-gradient(ellipse at 50% 40%, var(--paper-glow) 0%, transparent 70%),
       var(--paper);
@@ -121,9 +121,16 @@
 
   .prose {
     max-width: 34rem;
+    width: 100%;
     margin-inline: auto;
     text-align: center;
     padding-inline: 1rem;
+    min-height: 0;
+    max-height: min(28vh, 11.5rem);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   .escape-top .prose {
@@ -132,10 +139,10 @@
   }
 
   .line {
-    margin: 0 0 0.65em;
+    margin: 0 0 0.55em;
     font-family: var(--font-body);
-    font-size: clamp(1.05rem, 2.2vw, 1.25rem);
-    line-height: 1.55;
+    font-size: clamp(0.98rem, 1.9vw, 1.15rem);
+    line-height: 1.5;
     color: var(--ink);
     letter-spacing: 0.01em;
     opacity: 0;
@@ -144,11 +151,11 @@
   }
 
   .line.lead {
-    font-size: clamp(1.15rem, 2.5vw, 1.4rem);
+    font-size: clamp(1.05rem, 2.2vw, 1.28rem);
   }
 
   .pause-first .line:first-child {
-    margin-bottom: 1.75em;
+    margin-bottom: 1.4em;
     animation-delay: 0.25s;
   }
 
@@ -191,19 +198,26 @@
 
   @media (max-width: 720px) {
     .spread {
-      grid-template-rows: auto auto;
+      grid-template-rows: minmax(0, 1fr) minmax(0, auto);
     }
 
     .stage {
-      max-height: none;
-      width: 100%;
-      aspect-ratio: 1 / 1;
+      width: min(100%, 48vh);
+    }
+
+    .prose {
+      max-height: min(32vh, 12rem);
     }
   }
 
   @media print {
     .hotspot {
       display: none !important;
+    }
+
+    .prose {
+      max-height: none;
+      overflow: visible;
     }
   }
 </style>

@@ -106,9 +106,10 @@
     grid-template-columns: auto 1fr auto;
     gap: 0.75rem;
     align-items: center;
-    margin-top: 0.75rem;
-    padding-top: 0.75rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
     border-top: 1px solid var(--rule);
+    flex-shrink: 0;
   }
 
   .cluster {

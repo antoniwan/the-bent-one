@@ -704,6 +704,14 @@ export function sceneForSpread(id: number): ScenePart[] {
           opacity: 0.65,
         })),
         ...almostTriangle(600, 25, 690, 35, 640, -55, 'flee-tri', 0.45, 1, 1.2, 0.6),
+        // the header rule itself, absconding
+        {
+          id: 'flee-header-rule',
+          d: straight(120, -48, 880, -52),
+          weight: 1.35,
+          delay: 0.35,
+          opacity: 0.7,
+        },
         {
           id: 'flee-seg-1',
           d: straight(560, -5, 605, -80),
@@ -739,46 +747,128 @@ export function sceneForSpread(id: number): ScenePart[] {
     }
 
     case 5: {
-      const groundY = 720
+      // First ground in the book. Square body. Bent red line IS the roof.
+      const groundY = 780
+      const x = 340
+      const w = 280
+      const wallH = 210
+      const y = groundY - wallH // top of walls / eaves
+      const leftEave = x - 24
+      const rightEave = x + w + 24
+      // Roof: bent chord eaves→eaves, bulging upward (SVG y decreases up)
+      const roof = bentChord(leftEave, y, rightEave, y, -0.28)
+
+      // Lit window
+      const wx = x + w * 0.38
+      const wy = y + wallH * 0.28
+      const ws = w * 0.26
+
+      // Simple door
+      const doorW = w * 0.22
+      const doorH = wallH * 0.42
+      const dx = x + w * 0.18
+      const dy = groundY - doorH
+
       return [
+        {
+          kind: 'fill',
+          d: `M ${wx + 4} ${wy + 4} H ${wx + ws - 4} V ${wy + ws - 4} H ${wx + 4} Z`,
+          fill: 'var(--window-glow)',
+          opacity: 0.6,
+        },
         {
           kind: 'lines',
           lines: [
             {
               id: 'ground',
-              d: straight(120, groundY, 880, groundY),
-              weight: 2.8,
-              delay: 0.1,
+              d: straight(100, groundY, 900, groundY),
+              weight: 3,
+              delay: 0.08,
             },
-            // rain lines sliding off crooked
+            // square house body — open top; roof sits on the eaves
+            {
+              id: 'wall-l',
+              d: straight(x, groundY, x, y),
+              weight: 2.4,
+              delay: 0.18,
+            },
+            {
+              id: 'wall-r',
+              d: straight(x + w, groundY, x + w, y),
+              weight: 2.3,
+              delay: 0.22,
+            },
+            {
+              id: 'floor',
+              d: straight(x, groundY, x + w, groundY),
+              weight: 2.2,
+              delay: 0.2,
+              opacity: 0.35,
+            },
+            {
+              id: 'eaves',
+              d: straight(leftEave, y, rightEave, y),
+              weight: 1.5,
+              delay: 0.28,
+              opacity: 0.55,
+            },
+            // door
+            {
+              id: 'door-l',
+              d: straight(dx, groundY, dx, dy),
+              weight: 1.5,
+              delay: 0.35,
+            },
+            {
+              id: 'door-r',
+              d: straight(dx + doorW, groundY, dx + doorW, dy),
+              weight: 1.45,
+              delay: 0.38,
+            },
+            {
+              id: 'door-t',
+              d: straight(dx, dy, dx + doorW, dy),
+              weight: 1.4,
+              delay: 0.4,
+            },
+            // window frame
+            ...openSquare(wx, wy, ws, 4, 'win', 0.42).map((l) => ({
+              ...l,
+              weight: 1.35,
+            })),
+            // rain sliding off the crooked roof
             {
               id: 'rain1',
-              d: straight(470, 310, 490, 380),
+              d: straight(470, y - 95, 495, y - 20),
               weight: 1,
-              delay: 0.9,
-              opacity: 0.45,
+              delay: 1.05,
+              opacity: 0.42,
             },
             {
               id: 'rain2',
-              d: straight(510, 300, 545, 390),
+              d: straight(520, y - 110, 555, y - 15),
               weight: 1,
-              delay: 0.95,
-              opacity: 0.4,
+              delay: 1.1,
+              opacity: 0.38,
             },
             {
               id: 'rain3',
-              d: straight(550, 320, 580, 400),
+              d: straight(565, y - 90, 600, y - 10),
               weight: 0.9,
-              delay: 1.0,
-              opacity: 0.35,
+              delay: 1.15,
+              opacity: 0.34,
+            },
+            // ours — the roof
+            {
+              id: 'the-one',
+              d: roof,
+              color: 'bent',
+              weight: 3,
+              delay: 0.45,
+              duration: 1.4,
             },
           ],
         },
-        ...house(400, 520, 200, 160, 'home', {
-          roofBent: true,
-          lit: true,
-          delay: 0.25,
-        }),
       ]
     }
 
