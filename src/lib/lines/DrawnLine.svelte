@@ -46,6 +46,9 @@
   onMount(() => {
     if (!pathEl || !animate) {
       ready = true
+      if (pathEl && !animate) {
+        pathEl.style.opacity = String(opacity)
+      }
       return
     }
     const length = pathEl.getTotalLength()

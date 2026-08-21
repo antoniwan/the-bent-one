@@ -747,27 +747,64 @@ export function sceneForSpread(id: number): ScenePart[] {
     }
 
     case 5: {
-      // First ground in the book. Square body. Bent red line IS the roof.
+      // Ground + square house. Roof = inverted V; bent red is one pitch.
       const groundY = 780
-      const x = 340
-      const w = 280
-      const wallH = 210
-      const y = groundY - wallH // top of walls / eaves
-      const leftEave = x - 24
-      const rightEave = x + w + 24
-      // Roof: bent chord eaves→eaves, bulging upward (SVG y decreases up)
-      const roof = bentChord(leftEave, y, rightEave, y, -0.28)
+      const x = 360
+      const w = 260
+      const wallH = 200
+      const eavesY = groundY - wallH
+      const leftEaveX = x - 18
+      const rightEaveX = x + w + 18
+      const peakX = x + w * 0.48
+      const peakY = eavesY - 150
 
-      // Lit window
-      const wx = x + w * 0.38
-      const wy = y + wallH * 0.28
+      const leftRoof = straight(leftEaveX, eavesY, peakX, peakY)
+      const rightRoof = bentChord(peakX, peakY, rightEaveX, eavesY, 0.14)
+
+      const wx = x + w * 0.4
+      const wy = eavesY + wallH * 0.26
       const ws = w * 0.26
+      const doorW = w * 0.2
+      const doorH = wallH * 0.4
+      const doorX = x + w * 0.16
+      const doorY = groundY - doorH
 
-      // Simple door
-      const doorW = w * 0.22
-      const doorH = wallH * 0.42
-      const dx = x + w * 0.18
-      const dy = groundY - doorH
+      const rain = (id: string, x0: number, y0: number, scale = 1): LineSpec => ({
+        id,
+        d: straight(x0, y0, x0 + 16 * scale, y0 + 36 * scale),
+        weight: 1.05,
+        opacity: 0.38,
+        animate: false,
+        className: 'rain-drop',
+      })
+
+      const rainField: LineSpec[] = []
+      let n = 0
+      for (let col = 0; col < 14; col++) {
+        for (let row = 0; row < 5; row++) {
+          const x0 = 40 + col * 70 + (row % 2) * 18
+          const y0 = 30 + row * 55 + (col % 3) * 8
+          rainField.push(rain(`rain-${n++}`, x0, y0, 0.85 + (n % 3) * 0.1))
+        }
+      }
+
+      const hitT = [0.28, 0.45, 0.62, 0.78]
+      const deflect: LineSpec[] = hitT.map((t, i) => {
+        const hx = peakX + (rightEaveX - peakX) * t
+        const hy = peakY + (eavesY - peakY) * t + Math.sin(t * Math.PI) * 18
+        const aboveX = hx - 22
+        const aboveY = hy - 70
+        const slideX = hx + 55 + i * 8
+        const slideY = hy + 70 + i * 6
+        return {
+          id: `deflect-${i}`,
+          d: `M ${aboveX} ${aboveY} L ${hx} ${hy} L ${slideX} ${slideY}`,
+          weight: 1.25,
+          opacity: 0.55,
+          animate: false,
+          className: 'rain-deflect',
+        }
+      })
 
       return [
         {
@@ -775,6 +812,12 @@ export function sceneForSpread(id: number): ScenePart[] {
           d: `M ${wx + 4} ${wy + 4} H ${wx + ws - 4} V ${wy + ws - 4} H ${wx + 4} Z`,
           fill: 'var(--window-glow)',
           opacity: 0.6,
+        },
+        { kind: 'group', className: 'rain-sheet', lines: rainField },
+        {
+          kind: 'group',
+          className: 'rain-sheet rain-sheet-b',
+          lines: rainField.map((l) => ({ ...l, id: `${l.id}-b`, opacity: 0.28 })),
         },
         {
           kind: 'lines',
@@ -785,16 +828,15 @@ export function sceneForSpread(id: number): ScenePart[] {
               weight: 3,
               delay: 0.08,
             },
-            // square house body — open top; roof sits on the eaves
             {
               id: 'wall-l',
-              d: straight(x, groundY, x, y),
+              d: straight(x, groundY, x, eavesY),
               weight: 2.4,
               delay: 0.18,
             },
             {
               id: 'wall-r',
-              d: straight(x + w, groundY, x + w, y),
+              d: straight(x + w, groundY, x + w, eavesY),
               weight: 2.3,
               delay: 0.22,
             },
@@ -806,69 +848,45 @@ export function sceneForSpread(id: number): ScenePart[] {
               opacity: 0.35,
             },
             {
-              id: 'eaves',
-              d: straight(leftEave, y, rightEave, y),
-              weight: 1.5,
-              delay: 0.28,
-              opacity: 0.55,
-            },
-            // door
-            {
               id: 'door-l',
-              d: straight(dx, groundY, dx, dy),
+              d: straight(doorX, groundY, doorX, doorY),
               weight: 1.5,
-              delay: 0.35,
+              delay: 0.32,
             },
             {
               id: 'door-r',
-              d: straight(dx + doorW, groundY, dx + doorW, dy),
+              d: straight(doorX + doorW, groundY, doorX + doorW, doorY),
               weight: 1.45,
-              delay: 0.38,
+              delay: 0.35,
             },
             {
               id: 'door-t',
-              d: straight(dx, dy, dx + doorW, dy),
+              d: straight(doorX, doorY, doorX + doorW, doorY),
               weight: 1.4,
-              delay: 0.4,
+              delay: 0.38,
             },
-            // window frame
-            ...openSquare(wx, wy, ws, 4, 'win', 0.42).map((l) => ({
+            ...openSquare(wx, wy, ws, 4, 'win', 0.4).map((l) => ({
               ...l,
               weight: 1.35,
             })),
-            // rain sliding off the crooked roof
             {
-              id: 'rain1',
-              d: straight(470, y - 95, 495, y - 20),
-              weight: 1,
-              delay: 1.05,
-              opacity: 0.42,
+              id: 'roof-left',
+              d: leftRoof,
+              weight: 2.5,
+              delay: 0.42,
             },
-            {
-              id: 'rain2',
-              d: straight(520, y - 110, 555, y - 15),
-              weight: 1,
-              delay: 1.1,
-              opacity: 0.38,
-            },
-            {
-              id: 'rain3',
-              d: straight(565, y - 90, 600, y - 10),
-              weight: 0.9,
-              delay: 1.15,
-              opacity: 0.34,
-            },
-            // ours — the roof
             {
               id: 'the-one',
-              d: roof,
+              d: rightRoof,
               color: 'bent',
               weight: 3,
-              delay: 0.45,
-              duration: 1.4,
+              delay: 0.48,
+              duration: 1.35,
             },
           ],
         },
+        // After the roof so drops read on top of the bent pitch
+        { kind: 'group', className: 'rain-deflect-layer', lines: deflect },
       ]
     }
 

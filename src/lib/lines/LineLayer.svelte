@@ -24,7 +24,7 @@
       dashed={line.dashed}
       dashPattern={line.dashPattern}
       className={line.className}
-      {animate}
+      animate={line.animate ?? animate}
     />
   {/each}
 {/key}

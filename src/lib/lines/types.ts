@@ -11,6 +11,8 @@ export interface LineSpec {
   dashed?: boolean
   dashPattern?: string
   className?: string
+  /** When false, skip stroke-draw intro (useful for looping rain). Default true. */
+  animate?: boolean
 }
 
 export const VIEWBOX = { w: 1000, h: 1000 } as const

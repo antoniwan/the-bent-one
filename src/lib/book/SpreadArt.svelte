@@ -99,6 +99,29 @@
     animation: flee-up 7s ease-in-out infinite alternate-reverse;
   }
 
+  .spread-art :global(.rain-sheet) {
+    animation: rain-fall 1.35s linear infinite;
+  }
+
+  .spread-art :global(.rain-sheet-b) {
+    animation-delay: -0.67s;
+  }
+
+  .spread-art :global(.rain-deflect) {
+    stroke-dasharray: 14 120;
+    animation: rain-run 1.7s linear infinite;
+  }
+
+  .spread-art :global(.rain-deflect-layer .rain-deflect:nth-child(2)) {
+    animation-delay: -0.4s;
+  }
+  .spread-art :global(.rain-deflect-layer .rain-deflect:nth-child(3)) {
+    animation-delay: -0.85s;
+  }
+  .spread-art :global(.rain-deflect-layer .rain-deflect:nth-child(4)) {
+    animation-delay: -1.2s;
+  }
+
   .scene-fill {
     animation: fill-in 1.2s ease both;
   }
@@ -155,12 +178,40 @@
     }
   }
 
+  @keyframes rain-fall {
+    from {
+      transform: translate(-24px, -70px);
+      opacity: 0.2;
+    }
+    12% {
+      opacity: 1;
+    }
+    88% {
+      opacity: 1;
+    }
+    to {
+      transform: translate(48px, 150px);
+      opacity: 0.15;
+    }
+  }
+
+  @keyframes rain-run {
+    from {
+      stroke-dashoffset: 0;
+    }
+    to {
+      stroke-dashoffset: -160;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .drift-field {
       animation: none;
     }
     .spread-art :global(.flee-up),
-    .spread-art :global(.flee-up-slow) {
+    .spread-art :global(.flee-up-slow),
+    .spread-art :global(.rain-sheet),
+    .spread-art :global(.rain-deflect) {
       animation: none;
     }
     .dot {
