@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;1,8..60,400&display=swap');
+@import '@fontsource-variable/fraunces/wght.css';
+@import '@fontsource-variable/source-serif-4/wght.css';
+@import '@fontsource-variable/source-serif-4/wght-italic.css';
 
 :root {
   --paper: #f7f4ef;
@@ -13,8 +15,9 @@
   --window-glow: #e8c96a;
   --page-bg: #ebe4da;
 
-  --font-display: 'Fraunces', 'Times New Roman', serif;
-  --font-body: 'Source Serif 4', 'Times New Roman', serif;
+  --font-display: 'Fraunces Variable', Fraunces, 'Times New Roman', serif;
+  --font-body: 'Source Serif 4 Variable', 'Source Serif 4', 'Times New Roman',
+    serif;
 
   color-scheme: light;
   font-synthesis: none;
