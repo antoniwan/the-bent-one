@@ -58,7 +58,7 @@ Social previews currently use `public/og.svg`. Many networks prefer a raster `pu
 | `src/lib/book/spreads.ts` | Story text, cover / front / back copy, page slugs |
 | `src/lib/book/ui.ts` | Chrome strings (EN / ES) |
 | `src/lib/book/seo.ts` | Document meta updates when language changes |
-| `src/lib/book/esGender.ts` | Spanish agreement tokens (*línea*) |
+| `src/lib/book/esGender.ts` | DEV title tokens (La Doblada / El Doblado) |
 | `src/lib/lines/` | SVG stroke primitives and geometry helpers |
 | `src/lib/book/Book.svelte` | Shell, cover, routing, navigation |
 | `src/lib/book/ReaderBar.svelte` | Footer chrome and language control |
