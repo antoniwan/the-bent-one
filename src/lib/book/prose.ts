@@ -55,6 +55,7 @@ const GEOMETRIC: string[] = [
   'explosion',
   'straight',
   'crooked',
+  'dashed',
   'flat',
 ]
 
