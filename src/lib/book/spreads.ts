@@ -1,5 +1,6 @@
 export interface SpreadMeta {
   id: number
+  slug: string
   title: string
   pages: string
   text: string[]
@@ -7,9 +8,17 @@ export interface SpreadMeta {
   seek: string
 }
 
+export const BOOK = {
+  title: 'The Bent One',
+  author: 'Antonio Rodriguez Martinez',
+  deck: 'Find the line with the bend in it. It is red. Everything else is black.',
+  credit: 'A web picture book',
+} as const
+
 export const spreads: SpreadMeta[] = [
   {
     id: 1,
+    slug: 'one-line',
     title: 'One line',
     pages: 'pp 5–6',
     text: [
@@ -22,6 +31,7 @@ export const spreads: SpreadMeta[] = [
   },
   {
     id: 2,
+    slug: 'company-arrives',
     title: 'Company arrives',
     pages: 'pp 7–8',
     text: [
@@ -34,6 +44,7 @@ export const spreads: SpreadMeta[] = [
   },
   {
     id: 3,
+    slug: 'the-first-shape',
     title: 'The first shape',
     pages: 'pp 9–10',
     text: [
@@ -46,6 +57,7 @@ export const spreads: SpreadMeta[] = [
   },
   {
     id: 4,
+    slug: 'the-vocabulary',
     title: 'The vocabulary',
     pages: 'pp 11–12',
     text: [
@@ -58,6 +70,7 @@ export const spreads: SpreadMeta[] = [
   },
   {
     id: 5,
+    slug: 'the-trick',
     title: 'The trick',
     pages: 'pp 13–14',
     text: [
@@ -70,6 +83,7 @@ export const spreads: SpreadMeta[] = [
   },
   {
     id: 6,
+    slug: 'the-world',
     title: 'The world',
     pages: 'pp 15–16',
     text: [
@@ -82,6 +96,7 @@ export const spreads: SpreadMeta[] = [
   },
   {
     id: 7,
+    slug: 'peak',
     title: 'Peak',
     pages: 'pp 17–18',
     text: [
@@ -94,6 +109,7 @@ export const spreads: SpreadMeta[] = [
   },
   {
     id: 8,
+    slug: 'one-line-comes-loose',
     title: 'One line comes loose',
     pages: 'pp 19–20',
     text: [
@@ -105,6 +121,7 @@ export const spreads: SpreadMeta[] = [
   },
   {
     id: 9,
+    slug: 'falling',
     title: 'Falling',
     pages: 'pp 21–22',
     text: [
@@ -116,6 +133,7 @@ export const spreads: SpreadMeta[] = [
   },
   {
     id: 10,
+    slug: 'the-explosion',
     title: 'The explosion',
     pages: 'pp 23–24',
     text: [
@@ -128,6 +146,7 @@ export const spreads: SpreadMeta[] = [
   },
   {
     id: 11,
+    slug: 'lines-again',
     title: 'Lines again',
     pages: 'pp 25–26',
     text: [
@@ -140,6 +159,7 @@ export const spreads: SpreadMeta[] = [
   },
   {
     id: 12,
+    slug: 'the-bend-comes-out',
     title: 'The bend comes out',
     pages: 'pp 27–28',
     text: [
@@ -152,6 +172,7 @@ export const spreads: SpreadMeta[] = [
   },
   {
     id: 13,
+    slug: 'the-breaking',
     title: 'The breaking',
     pages: 'pp 29–30',
     text: [
@@ -165,6 +186,7 @@ export const spreads: SpreadMeta[] = [
   },
   {
     id: 14,
+    slug: 'the-field',
     title: 'The field',
     pages: 'pp 31–32',
     text: [

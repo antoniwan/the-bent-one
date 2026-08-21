@@ -1,200 +1,282 @@
 <script lang="ts">
-  import { spreads } from './spreads'
+  import { onMount } from 'svelte'
+  import { BOOK, spreads } from './spreads'
   import Spread from './Spread.svelte'
+  import ReaderBar from './ReaderBar.svelte'
+  import {
+    liveLabel,
+    locationToStep,
+    pathForLocation,
+    stepToLocation,
+    type BookLocation,
+  } from './paths'
+  import {
+    canResume,
+    goRelative,
+    navigateTo,
+    readResumeStep,
+    saveStep,
+    syncLocationFromUrl,
+  } from './storage'
 
-  type Screen = 'cover' | 'endpapers' | 'spread' | 'back'
-
-  let screen = $state<Screen>('cover')
-  let index = $state(0)
+  let location = $state<BookLocation>({ kind: 'cover' })
+  let direction = $state<1 | -1>(1)
   let playKey = $state(0)
+  let resumeStep = $state(0)
 
-  const spread = $derived(spreads[index])
-  const progress = $derived.by(() => {
-    if (screen === 'spread') return (index + 1) / spreads.length
-    if (screen === 'back') return 1
-    return 0
-  })
+  const spread = $derived(
+    location.kind === 'spread' ? spreads[location.index] : null,
+  )
+  const announcement = $derived(liveLabel(location))
+  const showContinue = $derived(canResume(resumeStep))
 
-  function goCover() {
-    screen = 'cover'
-  }
-
-  function openBook() {
-    screen = 'endpapers'
+  function go(loc: BookLocation, dir?: 1 | -1, replace = false) {
+    const result = navigateTo(loc, { direction: dir, replace })
+    location = result.location
+    direction = result.direction
     playKey += 1
-  }
-
-  function startReading() {
-    screen = 'spread'
-    index = 0
-    playKey += 1
+    resumeStep = locationToStep(location)
   }
 
   function next() {
-    if (screen === 'cover') {
-      openBook()
-      return
-    }
-    if (screen === 'endpapers') {
-      startReading()
-      return
-    }
-    if (screen === 'spread') {
-      if (index < spreads.length - 1) {
-        index += 1
-        playKey += 1
-      } else {
-        screen = 'back'
-        playKey += 1
-      }
-    }
+    if (location.kind === 'back') return
+    go(goRelative(location, 1), 1)
   }
 
   function prev() {
-    if (screen === 'back') {
-      screen = 'spread'
-      index = spreads.length - 1
-      playKey += 1
-      return
-    }
-    if (screen === 'spread') {
-      if (index > 0) {
-        index -= 1
-        playKey += 1
-      } else {
-        screen = 'endpapers'
-        playKey += 1
-      }
-      return
-    }
-    if (screen === 'endpapers') {
-      goCover()
-    }
+    if (location.kind === 'cover') return
+    go(goRelative(location, -1), -1)
+  }
+
+  function goFirst() {
+    go({ kind: 'cover' }, -1)
+  }
+
+  function goLast() {
+    go({ kind: 'back' }, 1)
+  }
+
+  function goSpread(index: number) {
+    const current = locationToStep(location)
+    const nextStep = locationToStep({ kind: 'spread', index })
+    go({ kind: 'spread', index }, nextStep >= current ? 1 : -1)
+  }
+
+  function openBook() {
+    go({ kind: 'front' }, 1)
+  }
+
+  function continueReading() {
+    go(stepToLocation(resumeStep), 1)
+  }
+
+  function startReading() {
+    go({ kind: 'spread', index: 0 }, 1)
   }
 
   function onKey(e: KeyboardEvent) {
-    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+    const tag = (e.target as HTMLElement | null)?.tagName
+    if (
+      tag === 'INPUT' ||
+      tag === 'TEXTAREA' ||
+      (e.target as HTMLElement | null)?.isContentEditable
+    ) {
+      return
+    }
+
+    if (
+      e.key === 'ArrowRight' ||
+      e.key === ' ' ||
+      e.key === 'Enter' ||
+      e.key === 'PageDown'
+    ) {
       e.preventDefault()
       next()
-    } else if (e.key === 'ArrowLeft') {
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
       e.preventDefault()
       prev()
     } else if (e.key === 'Home') {
-      goCover()
+      e.preventDefault()
+      goFirst()
+    } else if (e.key === 'End') {
+      e.preventDefault()
+      goLast()
     }
   }
+
+  onMount(() => {
+    resumeStep = readResumeStep()
+    const fromUrl = syncLocationFromUrl()
+    location = fromUrl
+    saveStep(locationToStep(fromUrl))
+    playKey += 1
+
+    const onPop = () => {
+      const loc = syncLocationFromUrl()
+      const nextStep = locationToStep(loc)
+      const prevStep = locationToStep(location)
+      direction = nextStep >= prevStep ? 1 : -1
+      location = loc
+      playKey += 1
+      resumeStep = nextStep
+      saveStep(nextStep)
+    }
+
+    let startX = 0
+    let startY = 0
+
+    const onTouchStart = (event: TouchEvent) => {
+      startX = event.changedTouches[0].clientX
+      startY = event.changedTouches[0].clientY
+    }
+
+    const onTouchEnd = (event: TouchEvent) => {
+      const dx = event.changedTouches[0].clientX - startX
+      const dy = event.changedTouches[0].clientY - startY
+      if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy)) return
+      if (dx < 0) next()
+      else prev()
+    }
+
+    window.addEventListener('popstate', onPop)
+    window.addEventListener('touchstart', onTouchStart, { passive: true })
+    window.addEventListener('touchend', onTouchEnd, { passive: true })
+
+    return () => {
+      window.removeEventListener('popstate', onPop)
+      window.removeEventListener('touchstart', onTouchStart)
+      window.removeEventListener('touchend', onTouchEnd)
+    }
+  })
 </script>
 
 <svelte:window onkeydown={onKey} />
 
-<div class="book" style="--progress: {progress}">
+<div class="book">
   <header class="top">
-    <p class="brand">The Bent One</p>
-    {#if screen === 'spread'}
-      <p class="meta" aria-live="polite">
+    <p class="brand">
+      <a href={pathForLocation({ kind: 'cover' })} onclick={(e) => { e.preventDefault(); goFirst() }}>
+        {BOOK.title}
+      </a>
+    </p>
+    <p class="meta">
+      {#if location.kind === 'spread' && spread}
         <span class="num">{String(spread.id).padStart(2, '0')}</span>
         <span class="title">{spread.title}</span>
-      </p>
-    {:else}
-      <p class="meta quiet">
-        {#if screen === 'cover'}A picture book
-        {:else if screen === 'endpapers'}Keep in view
-        {:else}The end
-        {/if}
-      </p>
-    {/if}
+      {:else if location.kind === 'cover'}
+        <span class="quiet">A picture book</span>
+      {:else if location.kind === 'front'}
+        <span class="quiet">Keep in view</span>
+      {:else}
+        <span class="quiet">The end</span>
+      {/if}
+    </p>
   </header>
 
-  <main class="page">
-    {#if screen === 'cover'}
-      <section class="cover-screen">
-        <div class="cover-stage">
-          <svg viewBox="0 0 1000 1000" class="cover-art" aria-hidden="true">
-            <path
-              class="cover-line"
-              d="M 420 470 L 452 472 L 460 461 L 468 471 L 540 470"
-              fill="none"
-              stroke="var(--line-bent)"
-              stroke-width="2.4"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </div>
-        <h1>The Bent One</h1>
-        <p class="deck">
-          Find the line with the bend in it. It is red. Everything else is black.
-        </p>
-        <button type="button" class="cta" onclick={openBook}>Open the book</button>
-      </section>
-    {:else if screen === 'endpapers'}
-      <section class="endpaper">
-        <div class="end-visual" aria-hidden="true">
-          <svg viewBox="0 0 400 200">
-            <path
-              d="M 40 100 L 120 100"
-              fill="none"
-              stroke="var(--line-ink)"
-              stroke-width="2"
-              stroke-linecap="round"
-            />
-            <path
-              d="M 160 100 L 200 100 L 210 88 L 220 100 L 280 100"
-              fill="none"
-              stroke="var(--line-bent)"
-              stroke-width="2.4"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M 320 100 L 360 100"
-              fill="none"
-              stroke="var(--line-ink)"
-              stroke-width="2"
-              stroke-linecap="round"
-            />
-          </svg>
-        </div>
-        <p class="rule-label">The rule of the world</p>
-        <p class="rule">
-          Everything is made of visible, separable line segments, and you can always
-          see the joints.
-        </p>
-        <button type="button" class="cta" onclick={startReading}>Begin</button>
-      </section>
-    {:else if screen === 'spread'}
-      <Spread {spread} {playKey} />
-    {:else}
-      <section class="back-screen">
-        <div class="back-dots" aria-hidden="true">
-          <span></span><span></span><span></span>
-        </div>
-        <p class="last">We don’t know which one it was.</p>
-        <button type="button" class="cta ghost" onclick={goCover}>Start again</button>
-      </section>
-    {/if}
+  <p class="sr-only" aria-live="polite">{announcement}</p>
+
+  <main
+    class="page"
+    style="--page-delta: {direction > 0 ? '18px' : '-18px'}"
+  >
+    {#key playKey}
+      {#if location.kind === 'cover'}
+        <section class="cover-screen screen-in">
+          <div class="cover-stage">
+            <svg viewBox="0 0 1000 1000" class="cover-art" aria-hidden="true">
+              <path
+                class="cover-line"
+                d="M 420 470 L 452 472 L 460 461 L 468 471 L 540 470"
+                fill="none"
+                stroke="var(--line-bent)"
+                stroke-width="2.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <p class="eyebrow">A picture book</p>
+          <h1>{BOOK.title}</h1>
+          <p class="deck">{BOOK.deck}</p>
+          <p class="byline">by {BOOK.author}</p>
+          <div class="cta-row">
+            <button type="button" class="cta" onclick={openBook}>Open the book</button>
+            {#if showContinue}
+              <button type="button" class="cta ghost" onclick={continueReading}>
+                Continue reading
+              </button>
+            {/if}
+          </div>
+        </section>
+      {:else if location.kind === 'front'}
+        <section class="endpaper screen-in">
+          <div class="end-visual" aria-hidden="true">
+            <svg viewBox="0 0 400 200">
+              <path
+                d="M 40 100 L 120 100"
+                fill="none"
+                stroke="var(--line-ink)"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M 160 100 L 200 100 L 210 88 L 220 100 L 280 100"
+                fill="none"
+                stroke="var(--line-bent)"
+                stroke-width="2.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M 320 100 L 360 100"
+                fill="none"
+                stroke="var(--line-ink)"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+          <p class="rule-label">The rule of the world</p>
+          <p class="rule">
+            Everything is made of visible, separable line segments, and you can always
+            see the joints.
+          </p>
+          <button type="button" class="cta" onclick={startReading}>Begin</button>
+        </section>
+      {:else if location.kind === 'spread' && spread}
+        <Spread
+          {spread}
+          {playKey}
+          {direction}
+          onPrev={prev}
+          onNext={next}
+        />
+      {:else}
+        <section class="back-screen screen-in">
+          <div class="back-dots" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <p class="last">We don’t know which one it was.</p>
+          <p class="credit">{BOOK.credit} · {BOOK.author}</p>
+          <button type="button" class="cta ghost" onclick={goFirst}>Start again</button>
+        </section>
+      {/if}
+    {/key}
   </main>
 
-  <nav class="nav" aria-label="Book navigation">
-    <button type="button" class="nav-btn" onclick={prev} disabled={screen === 'cover'}>
-      Back
-    </button>
-    <div class="progress" aria-hidden="true">
-      <div class="bar"></div>
-    </div>
-    <button
-      type="button"
-      class="nav-btn"
-      onclick={next}
-      disabled={screen === 'back'}
-    >
-      {screen === 'cover' || screen === 'endpapers' ? 'Next' : index === spreads.length - 1 ? 'Close' : 'Next'}
-    </button>
-  </nav>
+  <ReaderBar
+    {location}
+    onPrev={prev}
+    onNext={next}
+    onFirst={goFirst}
+    onLast={goLast}
+    onGoSpread={goSpread}
+  />
 </div>
 
 <style>
   .book {
+    position: relative;
     display: grid;
     grid-template-rows: auto 1fr auto;
     min-height: 100svh;
@@ -209,7 +291,7 @@
     justify-content: space-between;
     align-items: baseline;
     gap: 1rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
     border-bottom: 1px solid var(--rule);
     padding-bottom: 0.65rem;
   }
@@ -222,6 +304,15 @@
     color: var(--ink);
   }
 
+  .brand a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .brand a:hover {
+    color: var(--line-bent);
+  }
+
   .meta {
     margin: 0;
     font-family: var(--font-body);
@@ -232,7 +323,7 @@
     align-items: baseline;
   }
 
-  .meta.quiet {
+  .quiet {
     font-style: italic;
   }
 
@@ -242,10 +333,26 @@
     font-weight: 600;
   }
 
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
   .page {
     min-height: 0;
     display: flex;
     flex-direction: column;
+  }
+
+  .screen-in {
+    animation: page-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .cover-screen,
@@ -288,6 +395,26 @@
     }
   }
 
+  @keyframes page-in {
+    from {
+      opacity: 0;
+      transform: translateX(var(--page-delta, 18px));
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .eyebrow {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
   h1 {
     margin: 0;
     font-family: var(--font-display);
@@ -307,8 +434,22 @@
     color: var(--ink-soft);
   }
 
+  .byline {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
   .cta {
-    margin-top: 0.75rem;
     font-family: var(--font-body);
     font-size: 1rem;
     padding: 0.7rem 1.4rem;
@@ -316,7 +457,10 @@
     background: var(--ink);
     color: var(--paper);
     cursor: pointer;
-    transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+    transition:
+      transform 0.2s ease,
+      background 0.2s ease,
+      color 0.2s ease;
   }
 
   .cta:hover {
@@ -387,46 +531,24 @@
     font-style: italic;
   }
 
-  .nav {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 1rem;
-    align-items: center;
-    margin-top: 1rem;
-    padding-top: 0.75rem;
-    border-top: 1px solid var(--rule);
-  }
-
-  .nav-btn {
-    font-family: var(--font-body);
+  .credit {
+    margin: 0;
     font-size: 0.9rem;
-    background: none;
-    border: none;
-    color: var(--ink);
-    cursor: pointer;
-    padding: 0.4rem 0.2rem;
-    min-width: 4rem;
+    color: var(--ink-soft);
   }
 
-  .nav-btn:disabled {
-    opacity: 0.3;
-    cursor: default;
+  @media (prefers-reduced-motion: reduce) {
+    .screen-in {
+      animation: none;
+    }
   }
 
-  .nav-btn:not(:disabled):hover {
-    color: var(--line-bent);
-  }
-
-  .progress {
-    height: 2px;
-    background: var(--rule);
-    overflow: hidden;
-  }
-
-  .bar {
-    height: 100%;
-    width: calc(var(--progress) * 100%);
-    background: var(--line-bent);
-    transition: width 0.4s ease;
+  @media print {
+    .top,
+    :global(.reader-bar),
+    .cta-row,
+    .cta {
+      display: none !important;
+    }
   }
 </style>

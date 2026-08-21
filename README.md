@@ -1,47 +1,53 @@
-# Svelte + TS + Vite
+# The Bent One
 
-This template should help get you started developing with Svelte and TypeScript in Vite.
+A web picture book: a child (and the reader) keeps track of one bent red line through everything it becomes — then loses it.
 
-## Recommended IDE Setup
+SVG lines are drawn on the page. Finding the bent one is the job.
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+Reader UX is inspired by [Mia, the Sun, and the Moon](https://github.com/antoniwan/book-sun-and-moon).
 
-## Need an official Svelte framework?
+## Read it
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
-
-## Technical considerations
-
-**Why use this over SvelteKit?**
-
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
-
-This template contains as little as possible to get started with Vite + TypeScript + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
-
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
-
-**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
-
-Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
-
-**Why include `.vscode/extensions.json`?**
-
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
-
-**Why enable `allowJs` in the TS template?**
-
-While `allowJs: false` would indeed prevent the use of `.js` files in the project, it does not prevent the use of JavaScript syntax in `.svelte` files. In addition, it would force `checkJs: false`, bringing the worst of both worlds: not being able to guarantee the entire codebase is TypeScript, and also having worse typechecking for the existing JavaScript. In addition, there are valid use cases in which a mixed codebase may be relevant.
-
-**Why is HMR not preserving my local component state?**
-
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/rixo/svelte-hmr#svelte-hmr).
-
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
-
-```ts
-// store.ts
-// An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
+```bash
+npm install
+npm run dev
 ```
+
+Open the local URL Vite prints (usually `http://localhost:5173`).
+
+- Arrow keys, Space, Enter, and PageUp/PageDown turn the page
+- Home goes to the cover; End jumps to the last page
+- Swipe left/right on touch devices
+- Tap the left or right edge of the illustration to go back or forward (center stays free for seeking)
+- Use the dots in the reader bar to jump to a spread
+- Each page has its own URL, such as `/1/one-line` or `/14/the-field`
+- **Continue reading** appears on the cover if you left mid-book
+
+## Build
+
+```bash
+npm run build
+npm run preview
+```
+
+For Vercel, `vercel.json` rewrites all routes to `index.html` so deep links work.
+
+## Project shape
+
+| Path | Role |
+|------|------|
+| `src/lib/book/scenes.ts` | Spread compositions (the drawings) |
+| `src/lib/book/spreads.ts` | Story text + slugs |
+| `src/lib/lines/` | SVG draw-on line primitives |
+| `src/lib/book/Book.svelte` | Shell, cover, routing |
+| `src/lib/book/ReaderBar.svelte` | Footer chrome |
+| `TODO.md` | Layout backlog + craft follow-ups |
+
+## Craft rules (don’t break lightly)
+
+- One bent red line; everything else black (ochre + blue only on spread 7)
+- From spread 10, decoy reds appear — never announce the trap
+- Everything is separable line segments; joints stay visible
+- Prose stays under the square art so seeking isn’t covered
+
+See `TODO.md` for remaining polish.

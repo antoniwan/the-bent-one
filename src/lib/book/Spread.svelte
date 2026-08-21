@@ -5,23 +5,49 @@
   interface Props {
     spread: SpreadMeta
     playKey: number
-    isCover?: boolean
+    direction?: 1 | -1
+    onPrev?: () => void
+    onNext?: () => void
   }
 
-  let { spread, playKey, isCover = false }: Props = $props()
+  let {
+    spread,
+    playKey,
+    direction = 1,
+    onPrev,
+    onNext,
+  }: Props = $props()
 </script>
 
-<article class="spread" class:cover={isCover} data-spread={spread.id}>
+<article
+  class="spread"
+  class:from-next={direction < 0}
+  class:from-prev={direction > 0}
+  data-spread={spread.id}
+  style="--page-delta: {direction > 0 ? '18px' : '-18px'}"
+>
   <div class="stage">
     <SpreadArt spreadId={spread.id} {playKey} />
+    {#if onPrev}
+      <button
+        type="button"
+        class="hotspot left"
+        aria-label="Previous page"
+        onclick={onPrev}
+      ></button>
+    {/if}
+    {#if onNext}
+      <button
+        type="button"
+        class="hotspot right"
+        aria-label="Next page"
+        onclick={onNext}
+      ></button>
+    {/if}
   </div>
   <div class="prose" class:pause-first={spread.id === 12}>
     {#each spread.text as line, i}
-      <p
-        class="line"
-        class:lead={i === 0}
-        style="--i: {i}"
-      >
+      <p class="line" class:lead={i === 0} style="--i: {i}">
         {line}
       </p>
     {/each}
@@ -35,6 +61,7 @@
     height: 100%;
     min-height: 0;
     gap: clamp(0.75rem, 2vh, 1.5rem);
+    animation: page-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .stage {
@@ -53,6 +80,32 @@
 
   .stage :global(.spread-art.bleed) {
     transform: scale(1.06);
+  }
+
+  .hotspot {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 25%;
+    border: none;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  .hotspot.left {
+    left: 0;
+  }
+
+  .hotspot.right {
+    right: 0;
+  }
+
+  .hotspot:focus-visible {
+    outline: none;
+    background: color-mix(in srgb, var(--line-bent) 8%, transparent);
   }
 
   .prose {
@@ -87,6 +140,17 @@
     animation-delay: calc(1.1s + var(--i) * 0.22s);
   }
 
+  @keyframes page-in {
+    from {
+      opacity: 0;
+      transform: translateX(var(--page-delta, 18px));
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
   @keyframes prose-in {
     from {
       opacity: 0;
@@ -99,6 +163,10 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .spread {
+      animation: none;
+    }
+
     .line {
       opacity: 1;
       animation: none;
@@ -114,6 +182,12 @@
       max-height: none;
       width: 100%;
       aspect-ratio: 1 / 1;
+    }
+  }
+
+  @media print {
+    .hotspot {
+      display: none !important;
     }
   }
 </style>
