@@ -464,12 +464,6 @@ function stackingWorld(
     parts.push(
       {
         kind: 'fill',
-        d: `M 20 ${groundY - 8} Q 180 ${groundY - 28} 340 ${groundY - 10} T 700 ${groundY - 16} T 980 ${groundY - 6} L 980 ${groundY + 40} L 20 ${groundY + 40} Z`,
-        fill: 'var(--line-water)',
-        opacity: 0.28,
-      },
-      {
-        kind: 'fill',
         d: 'M 88 86 H 152 V 150 H 88 Z',
         fill: 'var(--window-glow)',
         opacity: 0.22,
@@ -789,11 +783,92 @@ function stackingWorld(
     ])
   })
 
-  // Boats at the waterline — clear hull + mast + triangle sail
-  pushLines([
-    ...littleBoat(48, groundY - 6, 1, 'boat-a', delay + 0.2, colored ? 'water' : 'ink'),
-    ...littleBoat(155, groundY - 2, 0.72, 'boat-b', delay + 0.28, colored ? 'ochre' : 'ink'),
-  ])
+  // Boats — on page 7 they sit in the sea below the town
+  if (colored) {
+    const shoreY = 878
+    // Layered sea from the bottom edge of the picture up to a clear shore
+    parts.unshift(
+      {
+        kind: 'fill',
+        d: `M 0 1000 L 0 ${shoreY + 55} Q 160 ${shoreY + 38} 320 ${shoreY + 58} T 640 ${shoreY + 42} T 1000 ${shoreY + 62} L 1000 1000 Z`,
+        fill: 'var(--line-water)',
+        opacity: 0.38,
+      },
+      {
+        kind: 'fill',
+        d: `M 0 1000 L 0 ${shoreY + 28} Q 120 ${shoreY + 12} 280 ${shoreY + 32} T 560 ${shoreY + 18} T 820 ${shoreY + 34} T 1000 ${shoreY + 22} L 1000 1000 Z`,
+        fill: 'var(--line-water)',
+        opacity: 0.22,
+      },
+      {
+        kind: 'fill',
+        d: `M 0 1000 L 0 ${shoreY + 6} Q 90 ${shoreY - 8} 220 ${shoreY + 10} T 480 ${shoreY - 2} T 740 ${shoreY + 12} T 1000 ${shoreY + 4} L 1000 1000 Z`,
+        fill: 'var(--line-water)',
+        opacity: 0.14,
+      },
+    )
+
+    const seaLines: LineSpec[] = [
+      // shore lip — separates city from sea
+      {
+        id: 'shore',
+        d: `M 0 ${shoreY} Q 140 ${shoreY - 10} 300 ${shoreY + 4} T 620 ${shoreY - 6} T 1000 ${shoreY + 2}`,
+        weight: 1.6,
+        delay: delay + 0.15,
+        color: 'water',
+        opacity: 0.75,
+      },
+    ]
+    const waveBands = [
+      { y: shoreY + 22, amp: 7, step: 70, w: 1.15, o: 0.55 },
+      { y: shoreY + 42, amp: 9, step: 85, w: 1.25, o: 0.5 },
+      { y: shoreY + 64, amp: 11, step: 95, w: 1.35, o: 0.45 },
+      { y: shoreY + 88, amp: 8, step: 110, w: 1.1, o: 0.4 },
+      { y: shoreY + 112, amp: 10, step: 78, w: 1.2, o: 0.35 },
+    ]
+    waveBands.forEach((band, bi) => {
+      let d = `M 0 ${band.y}`
+      for (let x = 0; x <= 1000; x += band.step) {
+        const peak = band.y - band.amp * (bi % 2 === 0 ? 1 : 0.7)
+        const trough = band.y + band.amp * 0.55
+        d += ` Q ${x + band.step * 0.35} ${peak} ${x + band.step * 0.55} ${band.y}`
+        d += ` Q ${x + band.step * 0.75} ${trough} ${Math.min(1000, x + band.step)} ${band.y}`
+      }
+      seaLines.push({
+        id: `wave-${bi}`,
+        d,
+        weight: band.w,
+        delay: delay + 0.2 + bi * 0.04,
+        color: 'water',
+        opacity: band.o,
+      })
+    })
+    // a few short chop marks for denser line-work near the bottom
+    for (let i = 0; i < 9; i++) {
+      const x = 40 + i * 110 + (i % 3) * 12
+      const y = shoreY + 70 + (i % 4) * 18
+      seaLines.push({
+        id: `chop-${i}`,
+        d: straight(x, y, x + 28 + (i % 2) * 10, y - 3 + (i % 3)),
+        weight: 0.95,
+        delay: delay + 0.35 + i * 0.02,
+        color: 'water',
+        opacity: 0.4,
+      })
+    }
+    pushLines(seaLines)
+
+    pushLines([
+      ...littleBoat(70, shoreY + 28, 0.95, 'boat-a', delay + 0.25, 'water'),
+      ...littleBoat(210, shoreY + 40, 0.7, 'boat-b', delay + 0.32, 'ochre'),
+      ...littleBoat(820, shoreY + 34, 0.8, 'boat-c', delay + 0.38, 'water'),
+    ])
+  } else {
+    pushLines([
+      ...littleBoat(48, groundY - 6, 1, 'boat-a', delay + 0.2, 'ink'),
+      ...littleBoat(155, groundY - 2, 0.72, 'boat-b', delay + 0.28, 'ink'),
+    ])
+  }
 
   pushLines(
     closedTriangle(820, 160, 848, 178, 828, 148, 'beak', delay + 0.35, 1.25, 0.55),

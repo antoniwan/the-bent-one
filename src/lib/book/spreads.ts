@@ -125,10 +125,10 @@ export const pages: PageMeta[] = [
     text: [
       'For a long time, the shapes kept busy.',
       'They tried new joins. They touched different corners. Some lined up. Some made something nobody had seen yet.',
-      'A few of them even got color. Nobody knew why. Not even the bent red line.',
+      'A few of them even got color. Nobody knew why or how!',
       'It was the best part.',
     ],
-    craft: 'Warmth; same world as 6, color arrives; bent one is not omniscient.',
+    craft: 'Warmth; same world as 6, color arrives as a wonder.',
   },
   {
     id: 8,
