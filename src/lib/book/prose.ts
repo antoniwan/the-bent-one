@@ -151,6 +151,10 @@ const GEOMETRIC_ES: string[] = [
   'plana',
   'plano',
   'planos',
+  'inquietas',
+  'inquieta',
+  'inquietos',
+  'inquieto',
 ]
 
 const RED_EN = 'red'
