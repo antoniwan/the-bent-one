@@ -103,11 +103,13 @@
 {/if}
 
 <style>
-  .drawn-line {
-    vector-effect: non-scaling-stroke;
+  .drawn-line.is-bent {
+    /* Keep stroke scaling with the path so long bent sides don’t look cut off */
+    vector-effect: none;
+    filter: drop-shadow(0 0 0.5px var(--line-bent));
   }
 
-  .is-bent {
-    filter: drop-shadow(0 0 0.5px var(--line-bent));
+  .drawn-line:not(.is-bent) {
+    vector-effect: non-scaling-stroke;
   }
 </style>

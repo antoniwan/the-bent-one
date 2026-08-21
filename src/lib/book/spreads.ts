@@ -62,8 +62,9 @@ export const pages: PageMeta[] = [
     text: [
       'Three lines leaned together and made a triangle.',
       'Ours was one of the three.',
-      'It was not a very good triangle. One side had a bend in it.',
-      'The triangle did not seem to mind.',
+      'More lines liked becoming triangles after that. Some did. Some only almost.',
+      'It was a peculiar triangle. One side had a bend in it.',
+      'The triangle did not seem to mind. The bend suited it.',
     ],
     craft: 'Trivial.',
   },

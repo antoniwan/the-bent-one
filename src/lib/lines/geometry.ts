@@ -29,6 +29,35 @@ export function bentTransform(
   return `translate(${x} ${y}) rotate(${rotateDeg}) scale(${scale})`
 }
 
+/**
+ * A soft bent chord that starts and ends exactly on (x1,y1) → (x2,y2).
+ * bulge is a fraction of length; positive uses the left normal of the direction.
+ */
+export function bentChord(
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  bulge = 0.08,
+): string {
+  const dx = x2 - x1
+  const dy = y2 - y1
+  const len = Math.hypot(dx, dy) || 1
+  const ux = dx / len
+  const uy = dy / len
+  const nx = -uy
+  const ny = ux
+
+  const at = (t: number, lat: number) => {
+    const px = x1 + dx * t + nx * len * lat
+    const py = y1 + dy * t + ny * len * lat
+    return `${px.toFixed(2)} ${py.toFixed(2)}`
+  }
+
+  // Same character as BENT_PATH: gentle approach, soft peak ~⅓ along, settle, end exact
+  return `M ${x1} ${y1} L ${at(0.28, bulge * 0.15)} L ${at(0.38, bulge)} L ${at(0.48, bulge * 0.12)} L ${x2} ${y2}`
+}
+
 export function randomSegment(
   rand: () => number,
   bounds: { x: number; y: number; w: number; h: number },

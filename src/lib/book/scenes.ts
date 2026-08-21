@@ -1,6 +1,7 @@
 import type { LineSpec } from '../lines/types'
 import { BENT_PATH } from '../lines/types'
 import {
+  bentChord,
   bentTransform,
   edgeEnteringLines,
   fieldOfLines,
@@ -136,6 +137,143 @@ function openHex(
       delay: delay + i * 0.06,
     }
   })
+}
+
+/** Three sides that meet at the corners. */
+function closedTriangle(
+  ax: number,
+  ay: number,
+  bx: number,
+  by: number,
+  cx: number,
+  cy: number,
+  id: string,
+  delay = 0.3,
+  weight = 1.6,
+  opacity = 1,
+): LineSpec[] {
+  return [
+    {
+      id: `${id}-ab`,
+      d: straight(ax, ay, bx, by),
+      weight,
+      delay,
+      opacity,
+    },
+    {
+      id: `${id}-bc`,
+      d: straight(bx, by, cx, cy),
+      weight: weight * 0.95,
+      delay: delay + 0.04,
+      opacity,
+    },
+    {
+      id: `${id}-ca`,
+      d: straight(cx, cy, ax, ay),
+      weight: weight * 0.9,
+      delay: delay + 0.08,
+      opacity,
+    },
+  ]
+}
+
+/**
+ * Almost a triangle: corners don't quite meet, or one side stops short.
+ * mode 0 = gap at each corner, 1 = missing tip, 2 = third side too short
+ */
+function almostTriangle(
+  ax: number,
+  ay: number,
+  bx: number,
+  by: number,
+  cx: number,
+  cy: number,
+  id: string,
+  delay = 0.3,
+  mode = 0,
+  weight = 1.4,
+  opacity = 0.85,
+): LineSpec[] {
+  const lerp = (x1: number, y1: number, x2: number, y2: number, t: number) =>
+    [x1 + (x2 - x1) * t, y1 + (y2 - y1) * t] as const
+
+  if (mode === 1) {
+    // two sides only — an open V
+    return [
+      {
+        id: `${id}-a`,
+        d: straight(ax, ay, cx, cy),
+        weight,
+        delay,
+        opacity,
+      },
+      {
+        id: `${id}-b`,
+        d: straight(bx, by, cx, cy),
+        weight: weight * 0.95,
+        delay: delay + 0.05,
+        opacity,
+      },
+    ]
+  }
+
+  if (mode === 2) {
+    const [mx, my] = lerp(cx, cy, ax, ay, 0.72)
+    return [
+      {
+        id: `${id}-ab`,
+        d: straight(ax, ay, bx, by),
+        weight,
+        delay,
+        opacity,
+      },
+      {
+        id: `${id}-bc`,
+        d: straight(bx, by, cx, cy),
+        weight,
+        delay: delay + 0.04,
+        opacity,
+      },
+      {
+        id: `${id}-ca`,
+        d: straight(cx, cy, mx, my),
+        weight: weight * 0.9,
+        delay: delay + 0.08,
+        opacity,
+      },
+    ]
+  }
+
+  // mode 0: each side stops short of the corners (open joints)
+  const [ab1x, ab1y] = lerp(ax, ay, bx, by, 0.08)
+  const [ab2x, ab2y] = lerp(ax, ay, bx, by, 0.92)
+  const [bc1x, bc1y] = lerp(bx, by, cx, cy, 0.08)
+  const [bc2x, bc2y] = lerp(bx, by, cx, cy, 0.92)
+  const [ca1x, ca1y] = lerp(cx, cy, ax, ay, 0.08)
+  const [ca2x, ca2y] = lerp(cx, cy, ax, ay, 0.92)
+  return [
+    {
+      id: `${id}-ab`,
+      d: straight(ab1x, ab1y, ab2x, ab2y),
+      weight,
+      delay,
+      opacity,
+    },
+    {
+      id: `${id}-bc`,
+      d: straight(bc1x, bc1y, bc2x, bc2y),
+      weight,
+      delay: delay + 0.04,
+      opacity,
+    },
+    {
+      id: `${id}-ca`,
+      d: straight(ca1x, ca1y, ca2x, ca2y),
+      weight,
+      delay: delay + 0.08,
+      opacity,
+    },
+  ]
 }
 
 function house(
@@ -426,51 +564,92 @@ export function sceneForSpread(id: number): ScenePart[] {
       ]
 
     case 3: {
-      // Triangle: red bent left side
-      const ax = 420
-      const ay = 620
-      const bx = 580
-      const by = 620
+      // Hero triangle: three corners meet. Bent red side is a full chord A→C.
+      const ax = 378
+      const ay = 655
+      const bx = 622
+      const by = 655
       const cx = 500
-      const cy = 380
-      return [
-        {
-          kind: 'lines',
-          lines: [
-            ...fieldOfLines(7, 8, { x: 80, y: 100, w: 840, h: 700 }, {
-              lenMin: 30,
-              lenMax: 70,
-              delayBase: 0.5,
-              idPrefix: 'watch',
-            }),
-            {
-              id: 'tri-base',
-              d: straight(ax, ay, bx, by),
-              weight: 2.2,
-              delay: 0.2,
-            },
-            {
-              id: 'tri-right',
-              d: straight(bx, by, cx, cy),
-              weight: 2,
-              delay: 0.28,
-            },
-          ],
-        },
-        {
-          kind: 'bent',
-          // left side of triangle — place bent along left edge
-          transform: bentTransform(ax + 8, ay - 10, 2.4, -58),
-          line: {
-            id: 'the-one',
-            d: BENT_PATH,
-            color: 'bent',
-            weight: 2.6,
-            delay: 0.15,
-            duration: 1.2,
+      const cy = 348
+
+      // Bulge outward (away from B) so the kink reads clearly but the side stays whole
+      const midX = (ax + cx) / 2
+      const midY = (ay + cy) / 2
+      const toBx = bx - midX
+      const toBy = by - midY
+      const dx = cx - ax
+      const dy = cy - ay
+      const len = Math.hypot(dx, dy) || 1
+      const leftNx = -dy / len
+      const leftNy = dx / len
+      const towardB = leftNx * toBx + leftNy * toBy
+      const bulge = towardB > 0 ? -0.09 : 0.09
+
+      const ink: LineSpec[] = [
+        // closed companions
+        ...closedTriangle(120, 200, 210, 200, 165, 120, 't1', 0.35, 1.3, 0.7),
+        ...closedTriangle(720, 160, 820, 175, 760, 90, 't2', 0.4, 1.25, 0.65),
+        ...closedTriangle(780, 520, 900, 560, 820, 430, 't3', 0.45, 1.4, 0.7),
+        ...closedTriangle(90, 520, 200, 580, 70, 620, 't4', 0.5, 1.2, 0.6),
+        ...closedTriangle(560, 780, 680, 800, 620, 700, 't5', 0.55, 1.35, 0.65),
+        // almost-triangles (watching, not quite)
+        ...almostTriangle(280, 140, 360, 160, 300, 70, 'a1', 0.38, 0, 1.2, 0.55),
+        ...almostTriangle(840, 300, 940, 320, 900, 220, 'a2', 0.42, 1, 1.3, 0.5),
+        ...almostTriangle(40, 340, 140, 360, 90, 260, 'a3', 0.48, 2, 1.25, 0.55),
+        ...almostTriangle(640, 600, 760, 640, 700, 520, 'a4', 0.52, 0, 1.2, 0.5),
+        ...almostTriangle(200, 760, 320, 790, 240, 680, 'a5', 0.58, 1, 1.15, 0.45),
+        ...almostTriangle(400, 100, 480, 90, 450, 40, 'a6', 0.62, 2, 1.1, 0.45),
+        // leftover company from earlier pages
+        ...fieldOfLines(
+          31,
+          14,
+          { x: 40, y: 40, w: 920, h: 920 },
+          {
+            lenMin: 28,
+            lenMax: 75,
+            delayBase: 0.65,
+            delayStep: 0.025,
+            idPrefix: 'watch',
+            weightMin: 0.9,
+            weightMax: 2.2,
           },
+        ).map((l) => ({ ...l, opacity: (l.opacity ?? 1) * 0.55 })),
+        // hero base + right — meet at A, B, C
+        {
+          id: 'main-base',
+          d: straight(ax, ay, bx, by),
+          weight: 2.5,
+          delay: 0.2,
         },
+        {
+          id: 'main-right',
+          d: straight(bx, by, cx, cy),
+          weight: 2.3,
+          delay: 0.28,
+        },
+        // full bent side — exact endpoints on A and C (no scaled transform)
+        {
+          id: 'the-one',
+          d: bentChord(ax, ay, cx, cy, bulge),
+          color: 'bent',
+          weight: 2.8,
+          delay: 0.1,
+          duration: 1.35,
+        },
+        // one quiet square + one quiet circle (less visible)
+        ...openSquare(70, 740, 55, 6, 'ghost-sq', 0.7).map((l) => ({
+          ...l,
+          opacity: 0.28,
+          weight: 1.1,
+        })),
+        ...openCircle(880, 720, 38, 9, 'ghost-cir', 0.75).map((l) => ({
+          ...l,
+          opacity: 0.26,
+          weight: 1,
+        })),
       ]
+
+      return [{ kind: 'lines', lines: ink }]
     }
 
     case 4: {
