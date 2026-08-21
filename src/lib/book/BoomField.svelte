@@ -1,6 +1,6 @@
 <script lang="ts">
   interface Props {
-    /** boom = warp blast; after = cadaver haze (use strength to wean away) */
+    /** boom = explosion rays; after = residual haze (lower strength to fade) */
     mode?: 'boom' | 'after'
     /**
      * 1 = soft dust (page 11). Toward 0 = gone (page 14 should be ~0.03).

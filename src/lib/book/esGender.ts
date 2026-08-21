@@ -1,8 +1,7 @@
 import type { EsGender } from './lang'
 
-/**
- * Spanish story templates use {{tokens}} filled by protagonist gender.
- * Feminine → línea; masculine → trazo (so agreement stays real Spanish).
+/** Spanish story templates use {{tokens}} filled by protagonist gender.
+ * Feminine → línea; masculine → trazo (keeps agreement grammatical).
  */
 const FORMS: Record<
   EsGender,

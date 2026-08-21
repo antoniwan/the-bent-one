@@ -11,8 +11,8 @@ export const SITE_IMAGE = `${SITE_URL}/og.svg`
 export const REPO_URL = 'https://github.com/antoniwan/the-bent-one'
 
 /**
- * Stable titles for crawlers. Reader Spanish may still randomize
- * línea/trazo in the story UI — that must not flip document/OG title.
+ * Stable titles for crawlers. Spanish story UI may still choose
+ * línea/trazo at random; document and Open Graph titles must not follow that.
  */
 export const SEO = {
   defaultTitle: 'The Bent One',

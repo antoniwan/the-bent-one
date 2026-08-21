@@ -9,8 +9,8 @@ function initialLang(): Lang {
 }
 
 /**
- * Language + Spanish story gender.
- * Gender is random each load for the reader; SEO meta stays feminine (see seo.ts).
+ * Active language and Spanish story gender.
+ * Gender is chosen at random each load; SEO meta stays feminine (see seo.ts).
  */
 export const langState = $state({
   current: initialLang() as Lang,

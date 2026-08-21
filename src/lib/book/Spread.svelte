@@ -122,7 +122,7 @@
     --section-pad: clamp(0.5rem, 1.6vh, 1rem);
     --section-gap: clamp(0.65rem, 2vh, 1.15rem);
     display: grid;
-    /* Picture and words share the page — neither eats the other */
+    /* Picture and words share the page; neither dominates */
     grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
     height: 100%;
     min-height: 0;
@@ -428,7 +428,7 @@
     .spread {
       --section-pad: clamp(0.4rem, 1.4vh, 0.75rem);
       --section-gap: clamp(0.5rem, 1.6vh, 0.85rem);
-      /* Slightly more room for art on short phones; copy still a real half */
+      /* Slightly more room for art on short phones; copy still roughly half */
       grid-template-rows: minmax(0, 1.05fr) minmax(0, 0.95fr);
     }
   }

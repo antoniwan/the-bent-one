@@ -1,76 +1,66 @@
 # The Bent One — TODO
 
-Reference reader: [Mia, the Sun, and the Moon](https://mia-the-sun-and-the-moon-web-book.stronghandssoftheart.com/) · [repo](https://github.com/antoniwan/book-sun-and-moon).
+Reference reader: [Mia, the Sun, and the Moon](https://mia-the-sun-and-the-moon-web-book.stronghandssoftheart.com/) · [repository](https://github.com/antoniwan/book-sun-and-moon).
 
-## Locked — do not break lightly
+## Constraints
+
+Do not change these without a deliberate decision:
 
 - SVG line craft: drawn strokes, weight range, visible joints, bent-path identity in the art
-- Story text and tense shift from the storyboard (the book is the copy)
-- Page compositions in `src/lib/book/scenes.ts` (refine art, don’t replace the system)
+- Story text and tense (the book copy is authoritative)
+- Page compositions in `src/lib/book/scenes.ts` (refine art; do not replace the scene system)
 - Paper / ink / crimson visual language
-- Reader-facing framing: **little book about lines**, not a seek-and-find picture book
+- Reader framing: a short book about lines, not a seek-and-find picture book
 
----
+## Feature status (vs Mia)
 
-## Gap vs Mia (release checklist)
-
-| Feature | Mia | Bent One |
-|---------|-----|----------|
-| EN / ES toggle + persisted lang | yes | **done** |
-| Bilingual story + chrome | yes | **done** (ES polish pass still open) |
-| SEO: OG / Twitter / canonical / JSON-LD | yes | **done** (confirm live URL + raster OG) |
-| `document.documentElement.lang` + live meta | yes | **done** |
-| Web app manifest + theme-color | yes | **done** |
+| Feature | Mia | This project |
+|---------|-----|--------------|
+| EN / ES toggle + persisted language | yes | done |
+| Bilingual story + chrome | yes | done (Spanish polish still open) |
+| SEO: OG / Twitter / canonical / JSON-LD | yes | done (confirm live URL + raster OG image) |
+| `document.documentElement.lang` + live meta | yes | done |
+| Web app manifest + theme-color | yes | done |
 | Analytics (gtag) | yes | optional / later |
 | Portfolio / credit link in bar | yes | optional |
-| Version stamp (hidden footer → repo) | yes | **done** (`v0.9.0` until ES ratified) |
-| Cover social image (raster) | yes | need export after first deploy URL |
+| Version stamp (footer → repository) | yes | done (`v0.9.0` until Spanish is ratified) |
+| Cover social image (raster) | yes | needed after production URL is known |
 
-Already matched: page URLs, history, swipe, keyboard, dots, resume, live region, print CSS (basic), Vercel SPA fallback, cover continue, page hotspots.
+Already matched: page URLs, history, swipe, keyboard, dots, resume, live region, basic print CSS, Vercel SPA fallback, cover continue, page hotspots.
 
-**Skipped on purpose:** read aloud / Web Speech (Mia has it; this book won’t).
+Intentionally omitted: read aloud / Web Speech (present in Mia; not planned here).
 
----
+## Release path
 
-## Now (release path)
-
-- [x] **EN / ES toggle** — cover + reader bar; persist; swap all reader copy
-- [x] **Spanish translation** — full book voice (editor pass; polish welcome)
-- [x] **SEO pack** — `index.html` meta, OG/Twitter, JSON-LD Book, canonical, manifest, `applyDocumentMeta(lang)`
-- [ ] Confirm production `VITE_SITE_URL` + raster `/og.jpg` (or PNG) once domain is known
-- [ ] Spanish copy polish pass (kid-ear pass; try both genders on refresh)
+- [x] EN / ES toggle — cover + reader bar; persist; swap reader copy
+- [x] Spanish translation — full book voice (editor pass; further polish welcome)
+- [x] SEO pack — `index.html` meta, OG / Twitter, JSON-LD Book, canonical, manifest, `applyDocumentMeta(lang)`
+- [ ] Confirm production `VITE_SITE_URL` and raster `/og.jpg` (or PNG) once the domain is known
+- [ ] Spanish copy polish (read aloud for children; verify both genders on refresh)
 - [ ] **v1.0.0** only after Spanish is ratified
 
-SEO note: document/OG title stays **La Doblada** (feminine). Story UI may still randomize línea/trazo.
+SEO note: document / OG title stays **La Doblada** (feminine). Story UI may still randomize *línea* / *trazo*.
 
----
-
-## Voice & framing
+## Voice and framing
 
 - [x] Say **page**, not spread, in the UI
 - [x] Say **little book** at most once per screen
-- [x] Cover deck invites without dumping the arc; front matter holds the rule
-- [x] Front matter = possibility + placement + the bent red one (editor voice, not feedback paste)
+- [x] Cover deck invites without summarizing the plot; front matter holds the rule
+- [x] Front matter = possibility + placement + the bent red line (editor voice)
 - [x] CTA flow: cover **Before we begin** → front matter → **Begin** (page 1)
 - [x] Prose styling: geometric terms italic; **red** / **rojo** bold in `--line-bent`
-- [x] **Positive-values pass** on all story copy (curiosity, care, difference-as-character; no hunt commands / no “not good” judgment)
-- [ ] Keep applying this voice on future page art + copy edits before moving on
-- [x] Back matter afterglow (not a second ending); matches page 14 moral without rehashing it
+- [x] Positive-values pass on story copy (curiosity, care, difference as character; no hunt commands; no “not good” judgment)
+- [ ] Keep applying this voice on future art and copy edits
+- [x] Back matter afterglow (not a second ending); matches page 14 without repeating it
 
----
-
-## Layout & stage
+## Layout and stage
 
 - [x] Book shell, page-turn motion, hotspots, mobile stack, ReaderBar
-- [ ] Caption placement — prose under art stays default
+- [ ] Caption placement — prose under art remains the default
 
----
-
-## Navigation & URL
+## Navigation and URL
 
 - [x] Per-page URLs, history, swipe, keyboard, dots, resume, live region
-
----
 
 ## Later / optional
 
@@ -79,13 +69,11 @@ SEO note: document/OG title stays **La Doblada** (feminine). Story UI may still 
 - [x] Print stylesheet (basic)
 - [x] `vercel.json` SPA fallback
 
----
+## Art follow-ups
 
-## Art / craft follow-ups
-
-- [ ] Page 1 — line still “too small”?
+- [ ] Page 1 — line scale still too small?
 - [ ] Pages 6–7 — town density / joints
-- [ ] Pages 11–14 — drift, emptiness on 12, fragmentation, field on 14
-- [ ] Decoy reds from page 10 — drawing craft only; never announce in UI
+- [ ] Pages 11–14 — drift, emptiness on 12, straighten, field on 14
+- [ ] Decoy reds from page 10 — drawing craft only; never announce in the UI
 
-Constraint: **line draw system and scene data stay intact**; copy and chrome wrap them.
+Constraint: keep the line draw system and scene data intact; copy and chrome wrap them.

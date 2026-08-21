@@ -1,62 +1,71 @@
 # The Bent One
 
-A little book for one small line with a bend in it — and everything a line might become.
+A bilingual (English / Spanish) web picture book. The story follows a short line with a bend and the forms a line can take depending on placement and company.
 
-The story lives in the page text. The drawings show what a line is allowed to be, depending on where it sits.
+Live site: production URL is set at build time via `VITE_SITE_URL` (default fallback: `https://the-bent-one.vercel.app`).
 
-## More books
+Related book in the same series: [Mia, the Sun, and the Moon](https://mia-the-sun-and-the-moon-web-book.stronghandssoftheart.com/) ([source](https://github.com/antoniwan/book-sun-and-moon)).
 
-- **[Mia, the Sun, and the Moon](https://mia-the-sun-and-the-moon-web-book.stronghandssoftheart.com/)** — read it live · [source on GitHub](https://github.com/antoniwan/book-sun-and-moon)
+## Stack
 
-## Read it
+- Svelte 5 + TypeScript
+- Vite 8
+- Static SPA deploy (Vercel rewrite to `index.html`)
+
+Current version: `0.9.0` (see `package.json`). Version `1.0.0` is reserved until Spanish copy is finalized.
+
+## Run locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open the local URL Vite prints (usually `http://localhost:5173`).
-
-- Cover CTA **Before we begin** / **Antes de empezar** opens the front matter; **Begin** / **Empezar** starts page 1
-- Switch language any time with **EN / ES** (saved for next visit)
-- Arrow keys, Space, Enter, and PageUp/PageDown turn the page
-- Home goes to the cover; End jumps to the last page
-- Swipe left/right on touch devices
-- Tap the left or right edge of the illustration to go back or forward
-- Use the dots in the reader bar to jump to a page
-- Each page has its own URL, such as `/1/one-line` or `/14/the-field`
-- **Continue reading** appears on the cover if you left mid-book
-
-## Deploy / SEO
-
-Set `VITE_SITE_URL` to the production origin (no trailing slash) before build so Open Graph image URLs match. Default fallback is `https://the-bent-one.vercel.app`.
-
-For best social previews, export a raster `public/og.jpg` later and point meta tags at it (many networks prefer JPG/PNG over SVG).
-
-## Build
+Open the URL Vite prints (typically `http://localhost:5173`).
 
 ```bash
 npm run build
 npm run preview
+npm run check
 ```
 
-For Vercel, `vercel.json` rewrites all routes to `index.html` so deep links work.
+## Reader behavior
 
-## Project shape
+- Cover: **Before we begin** / **Antes de empezar** opens front matter; **Begin** / **Empezar** starts page 1.
+- Language: **EN / ES** toggle; preference is stored for later visits.
+- Spanish story text may use feminine (*línea*) or masculine (*trazo*) agreement, chosen once per visit. Document and Open Graph titles stay fixed (**The Bent One** / **La Doblada**).
+- Keyboard: Arrow keys, Space, Enter, Page Up / Page Down turn pages; Home returns to the cover; End jumps to the last screen.
+- Touch: swipe left / right; tap the left or right edge of the illustration to go back or forward.
+- Reader bar dots jump to a page.
+- Each location has a URL (`/`, `/front`, `/1/one-line`, …, `/back`).
+- **Continue reading** appears on the cover when a mid-book position was saved.
+
+This book does not include read-aloud / Web Speech.
+
+## Deploy and SEO
+
+Set `VITE_SITE_URL` to the production origin (no trailing slash) before build so canonical and Open Graph image URLs match that origin.
+
+Social previews currently use `public/og.svg`. Many networks prefer a raster `public/og.jpg` or `public/og.png`; export one when the production domain is fixed and point the meta tags at it.
+
+`vercel.json` rewrites all routes to `index.html` so deep links work on a static host.
+
+## Project layout
 
 | Path | Role |
 |------|------|
-| `src/lib/book/scenes.ts` | Page compositions (the drawings) |
-| `src/lib/book/spreads.ts` | Bilingual story text, cover/front copy, slugs |
-| `src/lib/book/ui.ts` | Chrome strings (EN/ES) |
-| `src/lib/book/seo.ts` | Document meta when language changes |
-| `src/lib/lines/` | SVG draw-on line primitives |
-| `src/lib/book/Book.svelte` | Shell, cover, routing |
-| `src/lib/book/ReaderBar.svelte` | Footer chrome + language toggle |
-| `TODO.md` | Backlog + craft follow-ups |
+| `src/lib/book/scenes.ts` | Page illustrations (SVG line compositions) |
+| `src/lib/book/spreads.ts` | Story text, cover / front / back copy, page slugs |
+| `src/lib/book/ui.ts` | Chrome strings (EN / ES) |
+| `src/lib/book/seo.ts` | Document meta updates when language changes |
+| `src/lib/book/esGender.ts` | Spanish gender token substitution |
+| `src/lib/lines/` | SVG stroke primitives and geometry helpers |
+| `src/lib/book/Book.svelte` | Shell, cover, routing, navigation |
+| `src/lib/book/ReaderBar.svelte` | Footer chrome and language control |
+| `TODO.md` | Open work and constraints |
 
-## Craft notes (for makers, not readers)
+## Editorial notes
 
-Storyboard “seek the bent line” notes were art direction. Reader copy follows positive human values: curiosity and care, difference as character, noticing beside the child — never duty, hunt commands, or apologizing for the bend.
+Storyboard notes that say “seek the bent line” are art direction only. Reader-facing copy should stay curious and careful: difference as character, noticing with the child, no hunt commands, and no apology for the bend.
 
-See `TODO.md` and the voice guide comment in `spreads.ts`.
+See `TODO.md` and the voice guide comment in `src/lib/book/spreads.ts`.

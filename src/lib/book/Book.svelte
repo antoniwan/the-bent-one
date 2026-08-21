@@ -355,7 +355,7 @@
     overflow: hidden;
   }
 
-  /* Cover: one full stage — no chrome, true vertical center */
+  /* Cover: full stage, no chrome, vertically centered */
   .book.is-cover {
     grid-template-rows: minmax(0, 1fr);
   }
@@ -397,7 +397,7 @@
     transition: border-bottom-color 0.45s ease;
   }
 
-  /* No fill / no rule on escape page — a band would cut through the fleeing shapes */
+  /* No fill or rule on the escape page — a band would cut through fleeing shapes */
   .book.allow-escape .top {
     border-bottom-color: transparent;
     background: none;

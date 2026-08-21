@@ -30,7 +30,7 @@ export const BOOK = {
     es: 'Para {{un}} {{pequeno}} {{linea}} con un doblez — y todo lo que {{un}} {{linea}} puede llegar a ser.',
   } satisfies LocalizedString,
   /**
-   * Front matter. Possibility, not plot. Lap-time voice.
+   * Front matter: possibility and placement, not plot summary.
    * Spanish uses {{tokens}} → línea (f) or trazo (m) each visit.
    */
   rule: {
@@ -50,7 +50,7 @@ export const BOOK = {
     es: 'Un cuentito',
   } satisfies LocalizedString,
   /**
-   * Back matter — outside the story. Parent leaning in after The End.
+   * Back matter outside the story arc (after The End).
    */
   coda: {
     en: [
@@ -65,12 +65,12 @@ export const BOOK = {
 } as const
 
 /**
- * Voice guide (for future edits):
- * - Curiosity and care, never duty or a hunt
- * - Difference is character that suits, not a flaw to apologize for
- * - Notice with the reader; don’t order them around
- * - The ending may be unresolved without being cruel
- * - Spanish: random m/f each load (trazo / línea) — see esGender.ts
+ * Voice guide for future edits:
+ * - Prefer curiosity and care over duty or a hunt
+ * - Treat difference as character, not a flaw that needs apology
+ * - Observe with the reader; do not give orders
+ * - The ending may stay unresolved without becoming cruel
+ * - Spanish: random masculine/feminine each load (trazo / línea); see esGender.ts
  */
 export const pages: PageMeta[] = [
   {
@@ -92,7 +92,7 @@ export const pages: PageMeta[] = [
         '{{Un}} {{pequeno}} {{linea}} {{curioso}}.',
       ],
     },
-    craft: 'Wonder, not a briefing.',
+    craft: 'Tone: wonder, not exposition.',
   },
   {
     id: 2,
@@ -113,7 +113,7 @@ export const pages: PageMeta[] = [
         '{{El}} {{nuestro}} era {{el}} que tenía el doblez.',
       ],
     },
-    craft: 'Identity, not exclusion.',
+    craft: 'Tone: identity, not exclusion.',
   },
   {
     id: 3,
@@ -136,7 +136,7 @@ export const pages: PageMeta[] = [
         'Al triángulo no pareció importarle. El doblez le quedaba bien.',
       ],
     },
-    craft: 'Peculiar = character.',
+    craft: 'Peculiar reads as character.',
   },
   {
     id: 4,
@@ -161,7 +161,7 @@ export const pages: PageMeta[] = [
         'Hasta {{el}} {{linea}} {{delgado}} de arriba se fue con {{ellos}}.',
       ],
     },
-    craft: 'Escapees + missing header rule.',
+    craft: 'Art: escapees and missing header rule.',
   },
   {
     id: 5,
@@ -184,7 +184,7 @@ export const pages: PageMeta[] = [
         'La lluvia se resbalaba un poquito chueca, y eso está súper bien.',
       ],
     },
-    craft: 'Header returns; house as answer to weather, not a lecture on invention.',
+    craft: 'Header returns; house answers weather without lecturing on invention.',
   },
   {
     id: 6,
@@ -228,7 +228,7 @@ export const pages: PageMeta[] = [
         'Fue la mejor parte.',
       ],
     },
-    craft: 'Warmth; same world as 6, color arrives as a wonder.',
+    craft: 'Warmth; same world as page 6; color arrives as wonder.',
   },
   {
     id: 8,
@@ -251,7 +251,7 @@ export const pages: PageMeta[] = [
         '¡{{Nuestro}} {{pequeno}} {{linea}} {{rojo}} {{doblado}} no entendía nada de lo que pasaba!',
       ],
     },
-    craft: 'Zoom house; neighbor slips; autonomy; bent one is as confused as the kids.',
+    craft: 'Close on house; neighbor slips away; bent line shares the confusion.',
   },
   {
     id: 9,
@@ -274,7 +274,7 @@ export const pages: PageMeta[] = [
         '¡¿Qué está pasando?!',
       ],
     },
-    craft: 'Free will prelude to explosion; dashed chaos; same town as 7, jittering.',
+    craft: 'Choice before the explosion; dashed chaos; same town as page 7, unsettled.',
   },
   {
     id: 10,
@@ -295,7 +295,7 @@ export const pages: PageMeta[] = [
         '¡Y mira — {{el}} {{nuestro}} también hizo fiuu!',
       ],
     },
-    craft: 'Culmination; whole town; explosion toward reader; Seuss boom.',
+    craft: 'Culmination; whole town; explosion toward the reader.',
   },
   {
     id: 11,
@@ -320,7 +320,7 @@ export const pages: PageMeta[] = [
         'Ay no. ¿Otro bum?!',
       ],
     },
-    craft: 'Aftermath in toddler-clear beats; wiggle tease.',
+    craft: 'Aftermath in clear beats; brief wiggle tease.',
   },
   {
     id: 12,
@@ -341,7 +341,7 @@ export const pages: PageMeta[] = [
         'Ahora era {{un}} {{linea}}, como {{los}} {{demas}}.',
       ],
     },
-    craft: 'Surprise beat; Seuss open, toddler middle, quiet close.',
+    craft: 'Surprise beat; lively open, plain middle, quiet close.',
   },
   {
     id: 13,
@@ -366,7 +366,7 @@ export const pages: PageMeta[] = [
         '{{Uno}} de {{ellos}} había sido {{nuestro}} {{pequeno}} {{linea}} {{rojo}}. Estábamos casi seguros.',
       ],
     },
-    craft: 'Motion kids can feel: shrink → snap → smaller → dot.',
+    craft: 'Readable motion: shrink → snap → smaller → dot.',
   },
   {
     id: 14,
@@ -389,7 +389,7 @@ export const pages: PageMeta[] = [
         'Y eso basta. Saber quién eres basta.',
       ],
     },
-    craft: 'Last line bold moral; red on the knowing beat.',
+    craft: 'Final line carries the moral; red on the knowing beat.',
   },
 ]
 
