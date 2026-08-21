@@ -1,6 +1,5 @@
 import { readSavedLanguage, saveLanguage } from './languageStorage'
-import type { EsGender, Lang } from './lang'
-import { randomEsGender } from './esGender'
+import type { Lang } from './lang'
 import { applyDocumentMeta } from './seo'
 
 function initialLang(): Lang {
@@ -8,13 +7,9 @@ function initialLang(): Lang {
   return readSavedLanguage()
 }
 
-/**
- * Active language and Spanish story gender.
- * Gender is chosen at random each load; SEO meta stays feminine (see seo.ts).
- */
+/** Active reader language. */
 export const langState = $state({
   current: initialLang() as Lang,
-  esGender: 'f' as EsGender,
 })
 
 export function setLanguage(next: Lang) {
@@ -27,6 +22,5 @@ export function setLanguage(next: Lang) {
 export function initLanguage() {
   const saved = readSavedLanguage()
   langState.current = saved
-  langState.esGender = randomEsGender()
   applyDocumentMeta(saved)
 }

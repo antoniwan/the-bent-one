@@ -10,14 +10,11 @@ export const SITE_IMAGE = `${SITE_URL}/og.svg`
 
 export const REPO_URL = 'https://github.com/antoniwan/the-bent-one'
 
-/**
- * Stable titles for crawlers. Spanish story UI may still choose
- * línea/trazo at random; document and Open Graph titles must not follow that.
- */
+/** Titles and descriptions for document / Open Graph meta. */
 export const SEO = {
   defaultTitle: 'The Bent One',
-  /** Canonical Spanish title (feminine). */
-  titleEs: fillEs('{{El}} {{Doblado}}', 'f'),
+  /** Spanish title (feminine: La Doblada). */
+  titleEs: fillEs('{{El}} {{Doblado}}'),
   description: {
     en: 'A little book in English and Spanish for one small line with a bend in it — and everything a line might become.',
     es: 'Un cuentito en inglés y español para una pequeña línea con un doblez — y todo lo que una línea puede llegar a ser.',

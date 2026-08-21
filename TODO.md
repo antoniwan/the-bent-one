@@ -36,10 +36,10 @@ Intentionally omitted: read aloud / Web Speech (present in Mia; not planned here
 - [x] Spanish translation — full book voice (editor pass; further polish welcome)
 - [x] SEO pack — `index.html` meta, OG / Twitter, JSON-LD Book, canonical, manifest, `applyDocumentMeta(lang)`
 - [ ] Confirm production `VITE_SITE_URL` and raster `/og.jpg` (or PNG) once the domain is known
-- [ ] Spanish copy polish (read aloud for children; verify both genders on refresh)
+- [ ] Spanish copy polish (read aloud for children)
 - [ ] **v1.0.0** only after Spanish is ratified
 
-SEO note: document / OG title stays **La Doblada** (feminine). Story UI may still randomize *línea* / *trazo*.
+SEO note: document / OG title stays **La Doblada**. Story Spanish uses *línea* / *líneas* (feminine).
 
 ## Voice and framing
 

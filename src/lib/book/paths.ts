@@ -1,5 +1,5 @@
 import { pages } from './spreads'
-import type { EsGender, Lang } from './lang'
+import type { Lang } from './lang'
 import { pageOfLabel, ui } from './ui'
 import { resolveString } from './resolve'
 
@@ -46,11 +46,7 @@ export function locationFromPathname(pathname: string): BookLocation | null {
   return { kind: 'page', index }
 }
 
-export function liveLabel(
-  loc: BookLocation,
-  lang: Lang = 'en',
-  gender: EsGender = 'f',
-): string {
+export function liveLabel(loc: BookLocation, lang: Lang = 'en'): string {
   if (loc.kind === 'cover') return ui('cover', lang)
   if (loc.kind === 'front') return ui('beforeWeBegin', lang)
   if (loc.kind === 'back') return ui('theEndLabel', lang)
@@ -59,6 +55,6 @@ export function liveLabel(
     lang,
     s.id,
     pages.length,
-    resolveString(s.title, lang, gender),
+    resolveString(s.title, lang),
   )
 }

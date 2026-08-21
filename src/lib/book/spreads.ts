@@ -13,7 +13,7 @@ export interface PageMeta {
 export const BOOK = {
   title: {
     en: 'The Bent One',
-    /** {{El}} {{Doblado}} → El Doblado / La Doblada (gender each visit) */
+    /** {{El}} {{Doblado}} → La Doblada */
     es: '{{El}} {{Doblado}}',
   } satisfies LocalizedString,
   author: {
@@ -31,7 +31,7 @@ export const BOOK = {
   } satisfies LocalizedString,
   /**
    * Front matter: possibility and placement, not plot summary.
-   * Spanish uses {{tokens}} → línea (f) or trazo (m) each visit.
+   * Spanish uses {{tokens}} for feminine agreement around *línea*.
    */
   rule: {
     en: [
@@ -70,7 +70,7 @@ export const BOOK = {
  * - Treat difference as character, not a flaw that needs apology
  * - Observe with the reader; do not give orders
  * - The ending may stay unresolved without becoming cruel
- * - Spanish: random masculine/feminine each load (trazo / línea); see esGender.ts
+ * - Spanish: feminine agreement around *línea* / *líneas*; see esGender.ts
  */
 export const pages: PageMeta[] = [
   {

@@ -33,7 +33,7 @@ npm run check
 
 - Cover: **Before we begin** / **Antes de empezar** opens front matter; **Begin** / **Empezar** starts page 1.
 - Language: **EN / ES** toggle; preference is stored for later visits.
-- Spanish story text may use feminine (*línea*) or masculine (*trazo*) agreement, chosen once per visit. Document and Open Graph titles stay fixed (**The Bent One** / **La Doblada**).
+- Spanish uses feminine agreement around *línea* / *líneas*. Document and Open Graph titles stay **The Bent One** / **La Doblada**.
 - Keyboard: Arrow keys, Space, Enter, Page Up / Page Down turn pages; Home returns to the cover; End jumps to the last screen.
 - Touch: swipe left / right; tap the left or right edge of the illustration to go back or forward.
 - Reader bar dots jump to a page.
@@ -58,7 +58,7 @@ Social previews currently use `public/og.svg`. Many networks prefer a raster `pu
 | `src/lib/book/spreads.ts` | Story text, cover / front / back copy, page slugs |
 | `src/lib/book/ui.ts` | Chrome strings (EN / ES) |
 | `src/lib/book/seo.ts` | Document meta updates when language changes |
-| `src/lib/book/esGender.ts` | Spanish gender token substitution |
+| `src/lib/book/esGender.ts` | Spanish agreement tokens (*línea*) |
 | `src/lib/lines/` | SVG stroke primitives and geometry helpers |
 | `src/lib/book/Book.svelte` | Shell, cover, routing, navigation |
 | `src/lib/book/ReaderBar.svelte` | Footer chrome and language control |

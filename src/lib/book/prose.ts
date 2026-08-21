@@ -108,8 +108,6 @@ const GEOMETRIC_ES: string[] = [
   'cerca',
   'líneas',
   'línea',
-  'trazos',
-  'trazo',
   'medio',
   'dobleces',
   'doblez',

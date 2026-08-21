@@ -33,13 +33,12 @@
   let resumeStep = $state(0)
 
   const lang = $derived(langState.current)
-  const gender = $derived(langState.esGender)
   const page = $derived(
     location.kind === 'page' ? pages[location.index] : null,
   )
-  const announcement = $derived(liveLabel(location, lang, gender))
+  const announcement = $derived(liveLabel(location, lang))
   const showContinue = $derived(canResume(resumeStep))
-  const bookTitle = $derived(resolveString(BOOK.title, lang, gender))
+  const bookTitle = $derived(resolveString(BOOK.title, lang))
 
   function go(loc: BookLocation, dir?: 1 | -1, replace = false) {
     const result = navigateTo(loc, { direction: dir, replace })
@@ -200,7 +199,7 @@
       <p class="meta">
         {#if location.kind === 'page' && page}
           <span class="num">{String(page.id).padStart(2, '0')}</span>
-          <span class="title">{resolveString(page.title, lang, gender)}</span>
+          <span class="title">{resolveString(page.title, lang)}</span>
         {:else if location.kind === 'front'}
           <span class="quiet">{ui('beforeWeBegin', lang)}</span>
         {:else if location.kind === 'back'}
@@ -238,7 +237,7 @@
           <h1>{bookTitle}</h1>
           <p class="deck">
             <ProseText
-              text={resolveString(BOOK.deck, lang, gender)}
+              text={resolveString(BOOK.deck, lang)}
               {lang}
             />
           </p>
@@ -286,7 +285,7 @@
             </svg>
           </div>
           <div class="rule">
-            {#each resolveLines(BOOK.rule, lang, gender) as para}
+            {#each resolveLines(BOOK.rule, lang) as para}
               <p><ProseText text={para} {lang} /></p>
             {/each}
           </div>
@@ -308,7 +307,7 @@
             <span></span><span></span><span></span>
           </div>
           <div class="coda">
-            {#each resolveLines(BOOK.coda, lang, gender) as para, i}
+            {#each resolveLines(BOOK.coda, lang) as para, i}
               <p class:moral={i > 0}><ProseText text={para} {lang} /></p>
             {/each}
           </div>
