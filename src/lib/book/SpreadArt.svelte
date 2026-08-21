@@ -23,6 +23,7 @@
     class="spread-art"
     class:bleed={spreadId === 10}
     class:peak={spreadId === 7}
+    class:escape={spreadId === 4}
     viewBox="0 0 1000 1000"
     role="img"
     aria-label="Illustration for page {spreadId}"
@@ -77,11 +78,25 @@
     width: 100%;
     height: 100%;
     display: block;
+    overflow: hidden;
+  }
+
+  .spread-art.escape {
     overflow: visible;
   }
 
   .spread-art.bleed {
     overflow: hidden;
+  }
+
+  .spread-art :global(.flee-up) {
+    transform-origin: 500px 0;
+    animation: flee-up 5.5s ease-in-out infinite alternate;
+  }
+
+  .spread-art :global(.flee-up-slow) {
+    transform-origin: 200px 0;
+    animation: flee-up 7s ease-in-out infinite alternate-reverse;
   }
 
   .scene-fill {
@@ -131,8 +146,21 @@
     }
   }
 
+  @keyframes flee-up {
+    from {
+      transform: translate(0, 0);
+    }
+    to {
+      transform: translate(4px, -28px);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .drift-field {
+      animation: none;
+    }
+    .spread-art :global(.flee-up),
+    .spread-art :global(.flee-up-slow) {
       animation: none;
     }
     .dot {

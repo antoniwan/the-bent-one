@@ -586,24 +586,21 @@ export function sceneForSpread(id: number): ScenePart[] {
       const bulge = towardB > 0 ? -0.09 : 0.09
 
       const ink: LineSpec[] = [
-        // closed companions
-        ...closedTriangle(120, 200, 210, 200, 165, 120, 't1', 0.35, 1.3, 0.7),
-        ...closedTriangle(720, 160, 820, 175, 760, 90, 't2', 0.4, 1.25, 0.65),
+        // closed companions (stay on the page)
+        ...closedTriangle(120, 220, 210, 220, 165, 150, 't1', 0.35, 1.3, 0.7),
         ...closedTriangle(780, 520, 900, 560, 820, 430, 't3', 0.45, 1.4, 0.7),
         ...closedTriangle(90, 520, 200, 580, 70, 620, 't4', 0.5, 1.2, 0.6),
         ...closedTriangle(560, 780, 680, 800, 620, 700, 't5', 0.55, 1.35, 0.65),
-        // almost-triangles (watching, not quite)
-        ...almostTriangle(280, 140, 360, 160, 300, 70, 'a1', 0.38, 0, 1.2, 0.55),
+        // almost-triangles still on the paper
         ...almostTriangle(840, 300, 940, 320, 900, 220, 'a2', 0.42, 1, 1.3, 0.5),
         ...almostTriangle(40, 340, 140, 360, 90, 260, 'a3', 0.48, 2, 1.25, 0.55),
         ...almostTriangle(640, 600, 760, 640, 700, 520, 'a4', 0.52, 0, 1.2, 0.5),
         ...almostTriangle(200, 760, 320, 790, 240, 680, 'a5', 0.58, 1, 1.15, 0.45),
-        ...almostTriangle(400, 100, 480, 90, 450, 40, 'a6', 0.62, 2, 1.1, 0.45),
         // leftover company from earlier pages
         ...fieldOfLines(
           31,
-          14,
-          { x: 40, y: 40, w: 920, h: 920 },
+          12,
+          { x: 40, y: 80, w: 920, h: 860 },
           {
             lenMin: 28,
             lenMax: 75,
@@ -627,7 +624,7 @@ export function sceneForSpread(id: number): ScenePart[] {
           weight: 2.3,
           delay: 0.28,
         },
-        // full bent side — exact endpoints on A and C (no scaled transform)
+        // full bent side — exact endpoints on A and C
         {
           id: 'the-one',
           d: bentChord(ax, ay, cx, cy, bulge),
@@ -654,15 +651,15 @@ export function sceneForSpread(id: number): ScenePart[] {
 
     case 4: {
       const parts: ScenePart[] = [
-        { kind: 'lines', lines: openSquare(120, 180, 90, 10, 'sq1', 0.2) },
+        { kind: 'lines', lines: openSquare(120, 200, 90, 10, 'sq1', 0.2) },
         { kind: 'lines', lines: openSquare(700, 520, 110, 12, 'sq2', 0.35) },
         { kind: 'lines', lines: openSquare(280, 620, 70, 8, 'sq3', 0.45) },
-        { kind: 'lines', lines: openCircle(780, 220, 55, 10, 'cir1', 0.25) },
+        { kind: 'lines', lines: openCircle(780, 280, 55, 10, 'cir1', 0.25) },
         { kind: 'lines', lines: openCircle(180, 480, 40, 8, 'cir2', 0.4) },
         { kind: 'lines', lines: openHex(520, 700, 70, 'hex', 0.5) },
         {
           kind: 'lines',
-          lines: openSquare(560, 140, 60, 7, 'sq4', 0.55),
+          lines: openSquare(560, 200, 60, 7, 'sq4', 0.55),
         },
         // bent triangle upper third
         {
@@ -670,13 +667,13 @@ export function sceneForSpread(id: number): ScenePart[] {
           lines: [
             {
               id: 'bt-base',
-              d: straight(340, 280, 460, 280),
+              d: straight(340, 300, 460, 300),
               weight: 1.8,
               delay: 0.3,
             },
             {
               id: 'bt-right',
-              d: straight(460, 280, 410, 180),
+              d: straight(460, 300, 410, 200),
               weight: 1.6,
               delay: 0.35,
             },
@@ -684,7 +681,7 @@ export function sceneForSpread(id: number): ScenePart[] {
         },
         {
           kind: 'bent',
-          transform: bentTransform(348, 275, 1.15, -52),
+          transform: bentTransform(348, 295, 1.15, -52),
           line: {
             id: 'the-one',
             d: BENT_PATH,
@@ -695,7 +692,50 @@ export function sceneForSpread(id: number): ScenePart[] {
           },
         },
       ]
-      return parts
+
+      // Shapes slipping out the top — toward the header, away from the words below
+      const fleeFast: LineSpec[] = [
+        ...openSquare(720, -40, 70, 8, 'flee-sq', 0.35).map((l) => ({
+          ...l,
+          opacity: 0.7,
+        })),
+        ...openCircle(480, -20, 42, 8, 'flee-cir', 0.4).map((l) => ({
+          ...l,
+          opacity: 0.65,
+        })),
+        ...almostTriangle(600, 25, 690, 35, 640, -55, 'flee-tri', 0.45, 1, 1.2, 0.6),
+        {
+          id: 'flee-seg-1',
+          d: straight(560, -5, 605, -80),
+          weight: 1.5,
+          delay: 0.55,
+          opacity: 0.55,
+        },
+      ]
+
+      const fleeSlow: LineSpec[] = [
+        ...openHex(160, -10, 48, 'flee-hex', 0.4).map((l) => ({
+          ...l,
+          opacity: 0.6,
+        })),
+        ...openSquare(40, -35, 55, 6, 'flee-sq2', 0.5).map((l) => ({
+          ...l,
+          opacity: 0.55,
+        })),
+        {
+          id: 'flee-seg-2',
+          d: straight(300, 10, 345, -65),
+          weight: 1.35,
+          delay: 0.6,
+          opacity: 0.5,
+        },
+      ]
+
+      return [
+        ...parts,
+        { kind: 'group', className: 'flee-up', lines: fleeFast },
+        { kind: 'group', className: 'flee-up-slow', lines: fleeSlow },
+      ]
     }
 
     case 5: {

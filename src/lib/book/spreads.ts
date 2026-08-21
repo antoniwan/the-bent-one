@@ -84,8 +84,9 @@ export const pages: PageMeta[] = [
       'Squares. Circles. A hexagon that took six of them and a great deal of arguing.',
       'Shapes everywhere, and every single one of them made of lines,',
       'and one of them bent, the way it always was.',
+      'A few shapes were slipping out the top. Nobody knows why.',
     ],
-    craft: 'Bent as habit of being.',
+    craft: 'Bent as habit of being. Escapees toward the header.',
   },
   {
     id: 5,

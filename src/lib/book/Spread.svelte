@@ -24,10 +24,11 @@
   class="spread"
   class:from-next={direction < 0}
   class:from-prev={direction > 0}
+  class:escape-top={spread.id === 4}
   data-spread={spread.id}
   style="--page-delta: {direction > 0 ? '18px' : '-18px'}"
 >
-  <div class="stage">
+  <div class="stage" class:escape={spread.id === 4}>
     <SpreadArt spreadId={spread.id} {playKey} />
     {#if onPrev}
       <button
@@ -65,6 +66,10 @@
     animation: page-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
+  .spread.escape-top {
+    overflow: visible;
+  }
+
   .stage {
     position: relative;
     min-height: 0;
@@ -77,6 +82,11 @@
       var(--paper);
     border: 1px solid var(--rule);
     overflow: hidden;
+  }
+
+  .stage.escape {
+    overflow: visible;
+    z-index: 1;
   }
 
   .stage :global(.spread-art.bleed) {
@@ -114,6 +124,11 @@
     margin-inline: auto;
     text-align: center;
     padding-inline: 1rem;
+  }
+
+  .escape-top .prose {
+    position: relative;
+    z-index: 2;
   }
 
   .line {

@@ -153,7 +153,10 @@
 
 <svelte:window onkeydown={onKey} />
 
-<div class="book">
+<div
+  class="book"
+  class:allow-escape={location.kind === 'page' && page?.id === 4}
+>
   <header class="top">
     <p class="brand">
       <a href={pathForLocation({ kind: 'cover' })} onclick={(e) => { e.preventDefault(); goFirst() }}>
@@ -285,7 +288,13 @@
     box-sizing: border-box;
   }
 
+  .book.allow-escape {
+    overflow: visible;
+  }
+
   .top {
+    position: relative;
+    z-index: 4;
     display: flex;
     justify-content: space-between;
     align-items: baseline;
@@ -293,6 +302,17 @@
     margin-bottom: 0.5rem;
     border-bottom: 1px solid var(--rule);
     padding-bottom: 0.65rem;
+  }
+
+  /* No fill / no rule on escape page — a band would cut through the fleeing shapes */
+  .book.allow-escape .top {
+    border-bottom-color: transparent;
+    background: none;
+  }
+
+  .book.allow-escape .brand,
+  .book.allow-escape .meta {
+    text-shadow: 0 0 10px var(--page-bg), 0 1px 0 var(--page-bg);
   }
 
   .brand {
@@ -345,9 +365,16 @@
   }
 
   .stage-main {
+    position: relative;
+    z-index: 1;
     min-height: 0;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+  }
+
+  .book.allow-escape .stage-main {
+    overflow: visible;
   }
 
   .screen-in {
