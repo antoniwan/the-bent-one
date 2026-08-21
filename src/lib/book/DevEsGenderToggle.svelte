@@ -6,8 +6,8 @@
   const lang = $derived(langState.current)
 
   const options: { id: EsGender; label: string; hint: string }[] = [
-    { id: 'f', label: 'F', hint: 'línea' },
-    { id: 'm', label: 'M', hint: 'trazo' },
+    { id: 'f', label: 'F', hint: 'La Doblada' },
+    { id: 'm', label: 'M', hint: 'El Doblado' },
   ]
 </script>
 
@@ -16,8 +16,8 @@
     class="dev-es-gender"
     class:dim={lang !== 'es'}
     role="group"
-    aria-label="DEV Spanish gender"
-    title="DEV only: Spanish agreement (F = línea, M = trazo)"
+    aria-label="DEV Spanish epithet gender"
+    title="DEV only: character epithet (story always says línea)"
   >
     <span class="tag">DEV ES</span>
     {#each options as option}
@@ -26,7 +26,7 @@
         class="opt"
         class:active={gender === option.id}
         aria-pressed={gender === option.id}
-        aria-label="Spanish {option.hint}"
+        aria-label={option.hint}
         onclick={() => setEsGender(option.id)}
       >
         {option.label}

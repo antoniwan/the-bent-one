@@ -14,7 +14,7 @@ export const REPO_URL = 'https://github.com/antoniwan/the-bent-one'
 export const SEO = {
   defaultTitle: 'The Bent One',
   /** Spanish title (feminine: La Doblada). */
-  titleEs: fillEs('{{El}} {{Doblado}}', 'f'),
+  titleEs: fillEs('{{TitleArt}} {{Doblado}}', 'f'),
   description: {
     en: 'A little book in English and Spanish for one small line with a bend in it — and everything a line might become.',
     es: 'Un cuentito en inglés y español para una pequeña línea con un doblez — y todo lo que una línea puede llegar a ser.',

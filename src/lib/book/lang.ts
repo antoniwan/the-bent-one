@@ -1,6 +1,6 @@
 export type Lang = 'en' | 'es'
 
-/** Spanish agreement gender. Production uses feminine (*línea*). */
+/** Spanish agreement gender for the character epithet (La Doblada / El Doblado). */
 export type EsGender = 'm' | 'f'
 
 export type Localized<T> = { en: T; es: T }

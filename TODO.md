@@ -39,7 +39,7 @@ Intentionally omitted: read aloud / Web Speech (present in Mia; not planned here
 - [ ] Spanish copy polish (read aloud for children)
 - [ ] **v1.0.0** only after Spanish is ratified
 
-SEO note: document / OG title stays **La Doblada**. Story Spanish uses *línea* / *líneas* (feminine).
+SEO note: document / OG title stays **La Doblada**. Story Spanish always uses *línea* / *líneas*; DEV F/M only flips **La Doblada** / **El Doblado**.
 
 ## Voice and framing
 

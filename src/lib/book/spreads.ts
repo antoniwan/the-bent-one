@@ -13,8 +13,8 @@ export interface PageMeta {
 export const BOOK = {
   title: {
     en: 'The Bent One',
-    /** {{El}} {{Doblado}} → La Doblada */
-    es: '{{El}} {{Doblado}}',
+    /** {{TitleArt}} {{Doblado}} → La Doblada / El Doblado (DEV gender) */
+    es: '{{TitleArt}} {{Doblado}}',
   } satisfies LocalizedString,
   author: {
     en: 'Antonio Rodriguez Martinez',
@@ -70,7 +70,7 @@ export const BOOK = {
  * - Treat difference as character, not a flaw that needs apology
  * - Observe with the reader; do not give orders
  * - The ending may stay unresolved without becoming cruel
- * - Spanish: feminine *línea* in production; DEV can preview masculine (*trazo*)
+ * - Spanish: always *línea* / *líneas*; F/M only flips La Doblada / El Doblado (and doblada / doblado)
  */
 export const pages: PageMeta[] = [
   {

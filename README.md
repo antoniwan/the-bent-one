@@ -33,7 +33,7 @@ npm run check
 
 - Cover: **Before we begin** / **Antes de empezar** opens front matter; **Begin** / **Empezar** starts page 1.
 - Language: **EN / ES** toggle; preference is stored for later visits.
-- Spanish uses feminine agreement around *línea* / *líneas*. Document and Open Graph titles stay **The Bent One** / **La Doblada**. A **DEV ES F/M** control appears in local `npm run dev` only (masculine uses *trazo* for grammar checks).
+- Spanish story copy always uses *línea* / *líneas*. A **DEV ES F/M** control (local `npm run dev` only) switches the character epithet **La Doblada** / **El Doblado** (and *doblada* / *doblado*). Document and Open Graph titles stay **The Bent One** / **La Doblada**.
 - Keyboard: Arrow keys, Space, Enter, Page Up / Page Down turn pages; Home returns to the cover; End jumps to the last screen.
 - Touch: swipe left / right; tap the left or right edge of the illustration to go back or forward.
 - Reader bar dots jump to a page.

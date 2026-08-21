@@ -8,8 +8,8 @@ function initialLang(): Lang {
 }
 
 /**
- * Active language and Spanish agreement gender.
- * Gender defaults to feminine; DEV UI can override for local preview.
+ * Active language and Spanish character-epithet gender (La Doblada / El Doblado).
+ * Story copy always uses *línea*; gender defaults to feminine.
  * Document / OG titles stay feminine (see seo.ts).
  */
 export const langState = $state({
