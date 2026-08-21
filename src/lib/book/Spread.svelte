@@ -81,7 +81,12 @@
       onscroll={updateScrollCue}
     >
       {#each spread.text as line, i}
-        <p class="line" class:lead={i === 0} style="--i: {i}">
+        <p
+          class="line"
+          class:lead={i === 0}
+          class:wiggle={spread.id === 9 && line.startsWith('What is even')}
+          style="--i: {i}"
+        >
           <ProseText text={line} />
         </p>
       {/each}
@@ -305,6 +310,38 @@
 
   .line.lead {
     font-size: clamp(1.05rem, 2.2vw, 1.28rem);
+  }
+
+  .line.wiggle {
+    display: inline-block;
+    width: 100%;
+    color: var(--line-bent);
+    font-family: var(--font-display);
+    font-weight: 600;
+    animation:
+      prose-in 0.7s ease forwards,
+      text-wiggle 0.22s steps(2, end) infinite;
+    animation-delay:
+      calc(0.35s + var(--i) * 0.18s),
+      calc(0.35s + var(--i) * 0.18s + 0.7s);
+  }
+
+  @keyframes text-wiggle {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+    25% {
+      transform: translate(2px, -2px) rotate(1.2deg);
+    }
+    50% {
+      transform: translate(-2px, 1px) rotate(-1deg);
+    }
+    75% {
+      transform: translate(1px, 2px) rotate(0.6deg);
+    }
+    100% {
+      transform: translate(-1px, -1px) rotate(-0.5deg);
+    }
   }
 
   .the-end {
