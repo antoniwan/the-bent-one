@@ -20,7 +20,8 @@ Reference reader UX: [book-sun-and-moon](https://github.com/antoniwan/book-sun-a
 - [x] Front matter = possibility + placement + the bent red one (editor voice, not feedback paste)
 - [x] CTA flow: cover **Before we begin** → front matter → **Begin** (page 1)
 - [x] Prose styling: geometric terms italic; **red** bold in `--line-bent`
-- [ ] Optional: soften in-story “Find it” / “Look fast” lines if they still feel like a game prompt
+- [x] **Positive-values pass** on all story copy (curiosity, care, difference-as-character; no hunt commands / no “not good” judgment)
+- [ ] Keep applying this voice on future page art + copy edits before moving on
 
 ---
 

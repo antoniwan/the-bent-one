@@ -26,7 +26,13 @@ export const BOOK = {
   credit: 'A little book',
 } as const
 
-
+/**
+ * Voice guide (for future edits):
+ * - Curiosity and care, never duty or a hunt
+ * - Difference is character that suits, not a flaw to apologize for
+ * - Notice with the reader; don’t order them around
+ * - The ending may be unresolved without being cruel
+ */
 export const pages: PageMeta[] = [
   {
     id: 1,
@@ -39,7 +45,7 @@ export const pages: PageMeta[] = [
       'Nobody knows how the bend got there.',
       'A curious little line.',
     ],
-    craft: 'Not yet. This is the briefing.',
+    craft: 'Wonder, not a briefing.',
   },
   {
     id: 2,
@@ -50,9 +56,9 @@ export const pages: PageMeta[] = [
       'Soon there were other lines.',
       'Long ones and short ones, lines that lay down flat and lines that stood up very straight.',
       'All of them straight.',
-      'Only ours had the bend.',
+      'Ours was the one with the bend.',
     ],
-    craft: 'Trivial — on purpose.',
+    craft: 'Identity, not exclusion.',
   },
   {
     id: 3,
@@ -66,7 +72,7 @@ export const pages: PageMeta[] = [
       'It was a peculiar triangle. One side had a bend in it.',
       'The triangle did not seem to mind. The bend suited it.',
     ],
-    craft: 'Trivial.',
+    craft: 'Peculiar = character.',
   },
   {
     id: 4,
@@ -77,9 +83,9 @@ export const pages: PageMeta[] = [
       'After that, the lines could not stop.',
       'Squares. Circles. A hexagon that took six of them and a great deal of arguing.',
       'Shapes everywhere, and every single one of them made of lines,',
-      'and one of them still a little bent.',
+      'and one of them bent, the way it always was.',
     ],
-    craft: 'Easy. Red triangle, upper third.',
+    craft: 'Bent as habit of being.',
   },
   {
     id: 5,
@@ -92,7 +98,7 @@ export const pages: PageMeta[] = [
       'Ours was the roof.',
       'Rain slid off it a little crooked, and that was fine.',
     ],
-    craft: 'Obvious. Let it be.',
+    craft: 'Crooked can be fine — model line for the book.',
   },
   {
     id: 6,
@@ -102,10 +108,10 @@ export const pages: PageMeta[] = [
     text: [
       'The trick spread fast.',
       'Circles became wheels. Triangles became sails, and beaks, and mountains. Squares became windows with somebody behind them.',
-      'Look at all of it. Look how much there is.',
-      'Our roof is in here somewhere. Find it.',
+      'All of it. So much of it.',
+      'Our roof was in there somewhere too.',
     ],
-    craft: 'About eight seconds.',
+    craft: 'Shared wonder; no “find it.”',
   },
   {
     id: 7,
@@ -118,7 +124,7 @@ export const pages: PageMeta[] = [
       'It was the best part.',
       'It went on and on, and nobody wrote any of it down.',
     ],
-    craft: 'Moderate. Reward the hunt.',
+    craft: 'Warmth. Let them stay.',
   },
   {
     id: 8,
@@ -130,7 +136,7 @@ export const pages: PageMeta[] = [
       'Only one. From a fence, near the back, where nobody was looking.',
       'It lay down in the grass, and nothing came to put it back.',
     ],
-    craft: 'Our house is up there, tiny, still fine.',
+    craft: 'Quiet, not cruel.',
   },
   {
     id: 9,
@@ -140,9 +146,9 @@ export const pages: PageMeta[] = [
     text: [
       'After that, things fell.',
       'Not all at once. A shutter. A wheel. A whole boat, slowly, over years.',
-      'Everything that goes up is only borrowing.',
+      'Everything that goes up is only borrowing for a while.',
     ],
-    craft: 'Easy — house at far right.',
+    craft: 'Elegy softened with “for a while.”',
   },
   {
     id: 10,
@@ -153,9 +159,9 @@ export const pages: PageMeta[] = [
       'And then the house.',
       'It did not fall so much as let go — all at once, in every direction — and for one second the whole thing was in the air.',
       'Every line it had ever been, flying apart.',
-      'Ours is in there. Look fast.',
+      'Ours was in there too.',
     ],
-    craft: 'Hard, and now unreliable.',
+    craft: 'With them, not “look fast.”',
   },
   {
     id: 11,
@@ -166,9 +172,9 @@ export const pages: PageMeta[] = [
       'When the dust came down, there were no more things.',
       'No houses. No boats. No wheels.',
       'Only lines. Thousands of them, drifting.',
-      'Ours was still bent. We could still find it.',
+      'Ours was still bent. We still knew it by the bend.',
     ],
-    craft: 'Findable. The last time.',
+    craft: 'Recognition as love, not a hunt.',
   },
   {
     id: 12,
@@ -179,9 +185,9 @@ export const pages: PageMeta[] = [
       'And then it wasn’t.',
       'Somewhere in all that drifting, the bend came out.',
       'Nobody saw it happen.',
-      'It was just a line now, like the rest of them.',
+      'It was a line now, like the rest of them.',
     ],
-    craft: 'Impossible. That is the page.',
+    craft: 'Loss without “just” diminishing it.',
   },
   {
     id: 13,
@@ -190,12 +196,12 @@ export const pages: PageMeta[] = [
     pages: 'pp 29–30',
     text: [
       'The lines got shorter.',
-      'They broke where they were weakest, and then the pieces broke, and then those broke,',
+      'They broke where they were thinnest, and then the pieces broke, and then those broke,',
       'until there was nothing left to break.',
       'Just dots. Dots and dots and dots.',
       'One of them used to be ours. We were almost sure.',
     ],
-    craft: 'Failing. Dozens of red dots now.',
+    craft: 'Thinnest, not weakest — no moral failing.',
   },
   {
     id: 14,
@@ -209,7 +215,7 @@ export const pages: PageMeta[] = [
       'We lost it.',
       'We don’t know which one it was.',
     ],
-    craft: 'Gone.',
+    craft: 'Honest loss; care is in the watching.',
   },
 ]
 

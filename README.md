@@ -46,6 +46,6 @@ For Vercel, `vercel.json` rewrites all routes to `index.html` so deep links work
 
 ## Craft notes (for makers, not readers)
 
-Storyboard “seek the bent line” notes were art direction. Readers meet possibility and watching — not a hunt brief on the cover.
+Storyboard “seek the bent line” notes were art direction. Reader copy follows positive human values: curiosity and care, difference as character, noticing beside the child — never duty, hunt commands, or apologizing for the bend.
 
-See `TODO.md` for remaining polish.
+See `TODO.md` and the voice guide comment in `spreads.ts`.
