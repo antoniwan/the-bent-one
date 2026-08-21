@@ -49,8 +49,6 @@
         {ui('back', lang)}
       </button>
 
-      <p class="page-label">{pageLabel}</p>
-
       <button
         type="button"
         class="turn"
@@ -63,7 +61,10 @@
     </div>
 
     <div class="extras">
-      <LanguageToggle language={lang} onChange={setLanguage} />
+      <div class="status">
+        <p class="page-label">{pageLabel}</p>
+        <LanguageToggle language={lang} onChange={setLanguage} />
+      </div>
 
       <div class="dots" role="tablist" aria-label={ui('pagesNav', lang)}>
         {#each pages as page, i}
@@ -118,17 +119,23 @@
     flex-shrink: 0;
   }
 
-  /* [Back] · page · [Next] — equal sides */
   .turn-row {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: 1fr 1fr;
     align-items: center;
     gap: 0.5rem;
   }
 
+  .status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem 0.85rem;
+  }
+
   .page-label {
     margin: 0;
-    text-align: center;
     font-family: var(--font-body);
     font-size: 0.78rem;
     color: var(--ink-soft);
@@ -150,11 +157,6 @@
     transition:
       background 0.2s ease,
       color 0.2s ease;
-  }
-
-  .turn-row .turn:first-child,
-  .turn-row .turn:last-child {
-    justify-self: stretch;
   }
 
   .turn:hover:not(:disabled) {
@@ -242,9 +244,7 @@
     .reader-bar {
       display: grid;
       grid-template-columns: auto minmax(0, 1fr) auto;
-      grid-template-areas:
-        'prev label next'
-        'extras extras extras';
+      grid-template-areas: 'prev extras next';
       align-items: center;
       gap: 0.45rem 0.75rem;
     }
@@ -260,11 +260,6 @@
       min-width: 5.5rem;
     }
 
-    .page-label {
-      grid-area: label;
-      font-size: 0.82rem;
-    }
-
     .turn-row .turn:last-child {
       grid-area: next;
       justify-self: end;
@@ -274,14 +269,14 @@
 
     .extras {
       grid-area: extras;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 0.85rem 1.25rem;
     }
 
     .dots {
       display: flex;
+    }
+
+    .page-label {
+      font-size: 0.82rem;
     }
 
     .turn {
