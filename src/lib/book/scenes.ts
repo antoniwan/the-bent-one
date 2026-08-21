@@ -839,6 +839,36 @@ function stackingWorld(
     )
   }
 
+  // Page 7: crooked little birds — same silhouette as ours, never red
+  if (colored) {
+    const birdColors: LineSpec['color'][] = ['ochre', 'water', 'ink', 'ochre', 'water']
+    const flock: { x: number; y: number; scale: number; rot: number; cls: string }[] = [
+      { x: 70, y: 210, scale: 0.42, rot: -8, cls: 'bird-fly bird-a' },
+      { x: 200, y: 165, scale: 0.32, rot: 6, cls: 'bird-fly bird-b' },
+      { x: 340, y: 195, scale: 0.38, rot: -14, cls: 'bird-fly bird-c' },
+      { x: 720, y: 140, scale: 0.36, rot: 10, cls: 'bird-fly bird-d' },
+      { x: 860, y: 200, scale: 0.3, rot: -4, cls: 'bird-fly bird-e' },
+    ]
+    flock.forEach((b, i) => {
+      parts.push({
+        kind: 'group',
+        className: b.cls,
+        transform: bentTransform(b.x, b.y, b.scale, b.rot),
+        lines: [
+          {
+            id: `bird-${i}`,
+            d: BENT_PATH,
+            color: birdColors[i],
+            weight: 2.1,
+            delay: 0.55 + i * 0.08,
+            duration: 0.9,
+            opacity: 0.9,
+          },
+        ],
+      })
+    })
+  }
+
   return parts
 }
 

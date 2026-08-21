@@ -53,8 +53,10 @@
           transform={part.transform}
         />
       {:else if part.kind === 'group'}
-        <g transform={part.transform} class={part.className}>
-          <LineLayer lines={part.lines} playKey={playKey} />
+        <g class={part.className}>
+          <g transform={part.transform}>
+            <LineLayer lines={part.lines} playKey={playKey} />
+          </g>
         </g>
       {:else if part.kind === 'dots'}
         {#each part.dots as dot (dot.id)}
@@ -105,6 +107,30 @@
     stroke-width: 1px !important;
     vector-effect: non-scaling-stroke;
     opacity: 1 !important;
+  }
+
+  .spread-art :global(.bird-fly) {
+    will-change: transform;
+  }
+
+  .spread-art :global(.bird-a) {
+    animation: bird-path-a 14s ease-in-out infinite;
+  }
+  .spread-art :global(.bird-b) {
+    animation: bird-path-b 11s ease-in-out infinite;
+    animation-delay: -3s;
+  }
+  .spread-art :global(.bird-c) {
+    animation: bird-path-c 16s ease-in-out infinite;
+    animation-delay: -6s;
+  }
+  .spread-art :global(.bird-d) {
+    animation: bird-path-d 13s ease-in-out infinite;
+    animation-delay: -2s;
+  }
+  .spread-art :global(.bird-e) {
+    animation: bird-path-e 15s ease-in-out infinite;
+    animation-delay: -8s;
   }
 
   .spread-art :global(.rain-sheet) {
@@ -186,6 +212,52 @@
     }
   }
 
+  @keyframes bird-path-a {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(120px, -36px);
+    }
+  }
+  @keyframes bird-path-b {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(90px, 28px);
+    }
+  }
+  @keyframes bird-path-c {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(-70px, -44px);
+    }
+  }
+  @keyframes bird-path-d {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(-110px, 22px);
+    }
+  }
+  @keyframes bird-path-e {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(60px, -50px);
+    }
+  }
+
   @keyframes rain-fall {
     from {
       transform: translate(-24px, -70px);
@@ -219,7 +291,8 @@
     .spread-art :global(.flee-up),
     .spread-art :global(.flee-up-slow),
     .spread-art :global(.rain-sheet),
-    .spread-art :global(.rain-deflect) {
+    .spread-art :global(.rain-deflect),
+    .spread-art :global(.bird-fly) {
       animation: none;
     }
     .dot {

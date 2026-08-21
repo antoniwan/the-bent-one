@@ -30,6 +30,8 @@ const GEOMETRIC: string[] = [
   'sail',
   'beaks',
   'beak',
+  'birds',
+  'bird',
   'corners',
   'corner',
   'joins',
