@@ -525,6 +525,369 @@ function townParts(
   return parts
 }
 
+/** Page 6 — everyone stacking: depth of a world made of the same shapes. */
+function stackingWorld(seed: number): ScenePart[] {
+  const rand = mulberry32(seed)
+  const parts: ScenePart[] = []
+  const groundY = 820
+  let delay = 0.06
+
+  const pushLines = (lines: LineSpec[]) => {
+    parts.push({ kind: 'lines', lines })
+  }
+
+  // Soft sun — one calm circle with short rays (not a fireworks burst)
+  {
+    const sx = 118
+    const sy = 128
+    const r = 42
+    const sunLines = openCircle(sx, sy, r, 10, 'sun', delay)
+    for (let i = 0; i < 9; i++) {
+      const a = (-Math.PI * 0.15) + (i / 8) * Math.PI * 1.15
+      const x1 = sx + Math.cos(a) * (r + 10)
+      const y1 = sy + Math.sin(a) * (r + 10)
+      const x2 = sx + Math.cos(a) * (r + 22 + (i % 2) * 6)
+      const y2 = sy + Math.sin(a) * (r + 22 + (i % 2) * 6)
+      sunLines.push({
+        id: `sun-ray-${i}`,
+        d: straight(x1, y1, x2, y2),
+        weight: 1.15,
+        delay: delay + 0.2 + i * 0.02,
+        opacity: 0.7,
+      })
+    }
+    pushLines(sunLines)
+    delay += 0.15
+  }
+
+  // Far ridge — triangles becoming mountains (quiet, light)
+  const farBase = 520
+  const farPeaks: { x: number; y: number; w: number }[] = [
+    { x: -40, y: farBase, w: 280 },
+    { x: 180, y: farBase + 10, w: 340 },
+    { x: 420, y: farBase - 20, w: 300 },
+    { x: 640, y: farBase + 8, w: 320 },
+    { x: 860, y: farBase + 18, w: 220 },
+  ]
+  const mountainLines: LineSpec[] = []
+  farPeaks.forEach((p, i) => {
+    const peakX = p.x + p.w * (0.38 + rand() * 0.2)
+    const peakY = p.y - (110 + rand() * 70)
+    mountainLines.push(
+      ...closedTriangle(
+        p.x,
+        p.y,
+        p.x + p.w,
+        p.y + 8,
+        peakX,
+        peakY,
+        `mtn-far-${i}`,
+        delay + i * 0.04,
+        1.35,
+        0.38,
+      ),
+    )
+    // snow: a few short strokes near the tip — weather, not decoration clutter
+    for (let s = 0; s < 3; s++) {
+      const t = 0.15 + s * 0.12
+      const ax = peakX + (p.x - peakX) * t
+      const ay = peakY + (p.y - peakY) * t
+      mountainLines.push({
+        id: `snow-l-${i}-${s}`,
+        d: straight(ax - 6, ay + 2, ax + 10, ay + 8),
+        weight: 1,
+        delay: delay + 0.25 + i * 0.03 + s * 0.02,
+        opacity: 0.45,
+      })
+    }
+  })
+  pushLines(mountainLines)
+  delay += 0.2
+
+  // Mid hills — houses tucked into the slope (lived-in mountains)
+  const midBase = 610
+  const midPeaks = [
+    { x: 40, w: 260, h: 95 },
+    { x: 260, w: 300, h: 130 },
+    { x: 520, w: 280, h: 110 },
+    { x: 760, w: 240, h: 90 },
+  ]
+  midPeaks.forEach((p, i) => {
+    const peakX = p.x + p.w * 0.45
+    const peakY = midBase - p.h
+    pushLines(
+      closedTriangle(
+        p.x,
+        midBase,
+        p.x + p.w,
+        midBase + 6,
+        peakX,
+        peakY,
+        `mtn-mid-${i}`,
+        delay + i * 0.05,
+        1.7,
+        0.55,
+      ),
+    )
+    // nestled cottage on the left slope
+    const hx = p.x + p.w * 0.22
+    const hy = midBase - 28 - (i % 2) * 8
+    const hw = 28 + (i % 3) * 4
+    const hh = 22
+    parts.push(
+      ...house(hx, hy, hw, hh, `slope-h-${i}`, {
+        lit: i % 2 === 0,
+        delay: delay + 0.2 + i * 0.06,
+      }),
+    )
+  })
+  delay += 0.25
+
+  // Trees as triangle crowns — a small grove left, a few between houses later
+  const tree = (
+    x: number,
+    base: number,
+    scale: number,
+    id: string,
+    d0: number,
+  ): LineSpec[] => {
+    const trunkH = 18 * scale
+    const tw = 22 * scale
+    const th = 34 * scale
+    return [
+      {
+        id: `${id}-trunk`,
+        d: straight(x, base, x, base - trunkH),
+        weight: 1.4 * scale,
+        delay: d0,
+        opacity: 0.85,
+      },
+      ...closedTriangle(
+        x - tw,
+        base - trunkH + 4,
+        x + tw,
+        base - trunkH + 4,
+        x,
+        base - trunkH - th,
+        `${id}-crown`,
+        d0 + 0.04,
+        1.5 * Math.min(scale, 1.2),
+        0.8,
+      ),
+    ]
+  }
+
+  pushLines([
+    ...tree(70, midBase + 4, 0.85, 'tree-a', delay),
+    ...tree(115, midBase + 2, 1.05, 'tree-b', delay + 0.05),
+    ...tree(900, midBase, 0.9, 'tree-c', delay + 0.08),
+  ])
+  delay += 0.15
+
+  // Stacked town — several overlapping bands so it reads as sprawl, not a row
+  const bands: { y: number; count: number; scale: number; startX: number; step: number }[] = [
+    { y: groundY - 210, count: 6, scale: 0.72, startX: 90, step: 130 },
+    { y: groundY - 140, count: 7, scale: 0.88, startX: 40, step: 125 },
+    { y: groundY - 70, count: 8, scale: 1, startX: 20, step: 118 },
+  ]
+
+  const bentBand = 1
+  const bentSlot = 4
+
+  bands.forEach((band, bi) => {
+    for (let i = 0; i < band.count; i++) {
+      const isBent = bi === bentBand && i === bentSlot
+      const hw = (48 + rand() * 28) * band.scale
+      const hh = (40 + rand() * 32) * band.scale
+      const hx = band.startX + i * band.step + rand() * 12
+      const hy = band.y - hh + rand() * 10
+
+      if (isBent) {
+        // inverted-V roof with one bent pitch — ours, tucked in the mid stack
+        const eavesY = hy
+        const left = hx - 4
+        const right = hx + hw + 4
+        const peakX = hx + hw * 0.48
+        const peakY = eavesY - hh * 0.55
+        const wx = hx + hw * 0.36
+        const wy = eavesY + hh * 0.32
+        const ws = hw * 0.26
+        parts.push({
+          kind: 'fill',
+          d: `M ${wx + 2} ${wy + 2} H ${wx + ws - 2} V ${wy + ws - 2} H ${wx + 2} Z`,
+          fill: 'var(--window-glow)',
+          opacity: 0.55,
+        })
+        pushLines([
+          {
+            id: 'bent-house-l',
+            d: straight(hx, hy + hh, hx, eavesY),
+            weight: 2.2,
+            delay: delay + 0.3,
+          },
+          {
+            id: 'bent-house-r',
+            d: straight(hx + hw, hy + hh, hx + hw, eavesY),
+            weight: 2,
+            delay: delay + 0.32,
+          },
+          {
+            id: 'bent-house-b',
+            d: straight(hx, hy + hh, hx + hw, hy + hh),
+            weight: 2.3,
+            delay: delay + 0.34,
+          },
+          ...openSquare(wx, wy, ws, 3, 'bent-house-win', delay + 0.36).map(
+            (l) => ({ ...l, weight: 1.15 }),
+          ),
+          {
+            id: 'bent-roof-l',
+            d: straight(left, eavesY, peakX, peakY),
+            weight: 2.1,
+            delay: delay + 0.38,
+          },
+          {
+            id: 'the-one',
+            d: bentChord(peakX, peakY, right, eavesY, 0.12),
+            color: 'bent',
+            weight: 2.7,
+            delay: delay + 0.42,
+            duration: 1.2,
+          },
+        ])
+        continue
+      }
+
+      parts.push(
+        ...house(hx, hy, hw, hh, `town-${bi}-${i}`, {
+          lit: rand() > 0.45,
+          delay: delay + bi * 0.08 + i * 0.035,
+        }),
+      )
+    }
+  })
+  delay += 0.45
+
+  // Foreground trees breaking the street edge
+  pushLines([
+    ...tree(310, groundY, 1.15, 'tree-d', delay),
+    ...tree(780, groundY - 2, 1.0, 'tree-e', delay + 0.06),
+  ])
+
+  // Wheels near the road — circles that became something useful
+  ;[
+    { cx: 160, cy: groundY - 22, r: 20 },
+    { cx: 205, cy: groundY - 20, r: 16 },
+    { cx: 620, cy: groundY - 24, r: 22 },
+  ].forEach((w, i) => {
+    pushLines([
+      ...openCircle(w.cx, w.cy, w.r, 7, `wheel-${i}`, delay + 0.1 + i * 0.04),
+      {
+        id: `spoke-h-${i}`,
+        d: straight(w.cx - w.r * 0.65, w.cy, w.cx + w.r * 0.65, w.cy),
+        weight: 1.1,
+        delay: delay + 0.15 + i * 0.04,
+      },
+      {
+        id: `spoke-v-${i}`,
+        d: straight(w.cx, w.cy - w.r * 0.65, w.cx, w.cy + w.r * 0.65),
+        weight: 1.1,
+        delay: delay + 0.17 + i * 0.04,
+      },
+    ])
+  })
+
+  // One sail / boat on the left — triangles that went to sea
+  {
+    const bx = 55
+    const by = groundY - 8
+    pushLines([
+      {
+        id: 'hull',
+        d: straight(bx, by, bx + 70, by),
+        weight: 2,
+        delay: delay + 0.2,
+      },
+      {
+        id: 'hull-keel',
+        d: straight(bx + 8, by, bx + 20, by + 14),
+        weight: 1.3,
+        delay: delay + 0.22,
+        opacity: 0.7,
+      },
+      {
+        id: 'mast',
+        d: straight(bx + 32, by, bx + 32, by - 78),
+        weight: 1.5,
+        delay: delay + 0.24,
+      },
+      {
+        id: 'sail-a',
+        d: straight(bx + 32, by - 10, bx + 32, by - 72),
+        weight: 1.2,
+        delay: delay + 0.26,
+        opacity: 0.5,
+      },
+      {
+        id: 'sail-b',
+        d: straight(bx + 32, by - 72, bx + 68, by - 18),
+        weight: 1.7,
+        delay: delay + 0.28,
+      },
+      {
+        id: 'sail-c',
+        d: straight(bx + 32, by - 12, bx + 68, by - 18),
+        weight: 1.4,
+        delay: delay + 0.3,
+      },
+    ])
+  }
+
+  // A tiny beak in the air — same triangle language, lighter joke
+  pushLines(
+    closedTriangle(820, 160, 848, 178, 828, 148, 'beak', delay + 0.35, 1.25, 0.55),
+  )
+
+  // Ground + a hint of road stacking past the page edge
+  pushLines([
+    {
+      id: 'ground',
+      d: straight(10, groundY, 990, groundY),
+      weight: 2.8,
+      delay: 0.04,
+    },
+    {
+      id: 'road',
+      d: straight(10, groundY + 18, 990, groundY + 18),
+      weight: 1.4,
+      delay: 0.08,
+      opacity: 0.35,
+    },
+  ])
+
+  // A few more windows peeking from stacked upper stories (squares with somebody behind)
+  for (let i = 0; i < 5; i++) {
+    const wx = 130 + i * 155 + rand() * 20
+    const wy = groundY - 250 - rand() * 40
+    const ws = 16 + rand() * 8
+    if (rand() > 0.5) {
+      parts.push({
+        kind: 'fill',
+        d: `M ${wx + 2} ${wy + 2} H ${wx + ws - 2} V ${wy + ws - 2} H ${wx + 2} Z`,
+        fill: 'var(--window-glow)',
+        opacity: 0.35,
+      })
+    }
+    pushLines(
+      openSquare(wx, wy, ws, 2, `stack-win-${i}`, delay + 0.4 + i * 0.03).map(
+        (l) => ({ ...l, weight: 1.05, opacity: 0.75 }),
+      ),
+    )
+  }
+
+  return parts
+}
+
 export function sceneForSpread(id: number): ScenePart[] {
   switch (id) {
     case 1:
@@ -891,7 +1254,7 @@ export function sceneForSpread(id: number): ScenePart[] {
     }
 
     case 6:
-      return townParts(99, 'busy', true, { x: 680, y: 680, scale: 1 })
+      return stackingWorld(99)
 
     case 7: {
       const parts = townParts(101, 'peak', true, { x: 620, y: 690, scale: 1 })
