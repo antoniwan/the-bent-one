@@ -2,6 +2,11 @@
   /** Viewport-wide warp streaks — explosion leaking past the paper. */
   const CX = 50
   const CY = 42
+  const colors = [
+    'var(--line-ink)',
+    'var(--line-ochre)',
+    'var(--line-water)',
+  ] as const
   const streaks = Array.from({ length: 96 }, (_, i) => {
     const angle = (i / 96) * Math.PI * 2 + (i % 5) * 0.03
     const inner = 4 + (i % 7) * 0.35
@@ -15,6 +20,7 @@
       delay: (i % 12) * 0.07,
       opacity: 0.1 + (i % 5) * 0.04,
       width: 0.12 + (i % 4) * 0.06,
+      stroke: colors[i % 3],
     }
   })
 </script>
@@ -32,7 +38,7 @@
       y1={s.y1}
       x2={s.x2}
       y2={s.y2}
-      stroke="var(--line-ink)"
+      stroke={s.stroke}
       stroke-width={s.width}
       stroke-linecap="round"
       opacity={s.opacity}

@@ -1608,10 +1608,11 @@ export function sceneForSpread(id: number): ScenePart[] {
       return unravelTown(99)
 
     case 10: {
-      // Culmination: house exploding outward toward the reader
+      // Culmination: house exploding outward toward the reader — every color flying
       const rand = mulberry32(404)
       const cx = 500
       const cy = 470
+      const palette: LineSpec['color'][] = ['ink', 'ochre', 'water']
       const shards: LineSpec[] = []
 
       for (let i = 0; i < 84; i++) {
@@ -1625,10 +1626,11 @@ export function sceneForSpread(id: number): ScenePart[] {
         shards.push({
           id: `boom-${i}`,
           d: straight(x1, y1, x2, y2),
+          color: palette[i % 3],
           weight: 1 + (outer / 700) * 2.6,
           delay: 0.02 + rand() * 0.22,
           duration: 0.4 + rand() * 0.25,
-          opacity: 0.5 + rand() * 0.5,
+          opacity: 0.55 + rand() * 0.45,
           className: 'boom-shard',
         })
       }
@@ -1638,6 +1640,7 @@ export function sceneForSpread(id: number): ScenePart[] {
         {
           id: 'ex-wall',
           d: straight(cx - 55, cy - 40, cx - 70, cy + 90),
+          color: 'ink',
           weight: 2.9,
           delay: 0.08,
           className: 'boom-shard',
@@ -1645,6 +1648,7 @@ export function sceneForSpread(id: number): ScenePart[] {
         {
           id: 'ex-wall2',
           d: straight(cx + 60, cy - 50, cx + 95, cy + 85),
+          color: 'ochre',
           weight: 2.5,
           delay: 0.1,
           className: 'boom-shard',
@@ -1652,6 +1656,7 @@ export function sceneForSpread(id: number): ScenePart[] {
         {
           id: 'ex-floor',
           d: straight(cx - 80, cy + 70, cx + 75, cy + 95),
+          color: 'water',
           weight: 2.6,
           delay: 0.12,
           className: 'boom-shard',
@@ -1659,6 +1664,7 @@ export function sceneForSpread(id: number): ScenePart[] {
         {
           id: 'ex-win',
           d: straight(cx - 20, cy - 10, cx + 25, cy + 5),
+          color: 'ochre',
           weight: 1.6,
           delay: 0.14,
           className: 'boom-shard',
@@ -1666,6 +1672,7 @@ export function sceneForSpread(id: number): ScenePart[] {
         {
           id: 'ex-win2',
           d: straight(cx - 20, cy + 20, cx + 25, cy + 35),
+          color: 'water',
           weight: 1.5,
           delay: 0.15,
           className: 'boom-shard',
@@ -1673,11 +1680,36 @@ export function sceneForSpread(id: number): ScenePart[] {
         {
           id: 'ex-roof-bit',
           d: straight(cx + 10, cy - 90, cx + 110, cy - 40),
+          color: 'ink',
           weight: 2.2,
           delay: 0.11,
           className: 'boom-shard',
         },
       )
+
+      // Extra color bursts so ochre / water / ink all shout
+      for (let i = 0; i < 18; i++) {
+        const angle = rand() * Math.PI * 2
+        const mid = 100 + rand() * 200
+        const len = 40 + rand() * 120
+        const x1 = cx + Math.cos(angle) * mid
+        const y1 = cy + Math.sin(angle) * mid
+        shards.push({
+          id: `boom-color-${i}`,
+          d: straight(
+            x1,
+            y1,
+            x1 + Math.cos(angle) * len,
+            y1 + Math.sin(angle) * len,
+          ),
+          color: palette[i % 3],
+          weight: 1.4 + rand() * 1.4,
+          delay: 0.12 + rand() * 0.2,
+          duration: 0.5,
+          opacity: 0.7,
+          className: 'boom-shard',
+        })
+      }
 
       const decoys: LineSpec[] = [
         {

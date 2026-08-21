@@ -164,9 +164,9 @@ export const pages: PageMeta[] = [
     pages: 'pp 23–24',
     text: [
       'And then the town went BOOM!',
-      'Houses! Boats! Wheels! The whole stack — WHOOSH — out!',
-      'Not down. Out. Straight at us!',
-      'Every line flying free. Ours too!',
+      'Houses and boats and wheels flew apart!',
+      'Over our heads! Under our feet! Everywhere! AAAHHH!',
+      'And look — ours went whoosh too!',
     ],
     craft: 'Culmination; whole town; explosion toward reader; Seuss boom.',
   },
