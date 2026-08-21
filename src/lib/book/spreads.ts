@@ -177,9 +177,9 @@ export const pages: PageMeta[] = [
         "Rain slid off it a little crooked, and that's super okay.",
       ],
       es: [
-        'La línea delgada volvió. Bien.',
-        'Entonces empezó a llover.',
-        'Un cuadrado y un triángulo hicieron una casa — ¡rápido!',
+        'La línea delgada volvió. La de arriba, sí, esa misma. Bien.',
+        'Entonces cayó el aguacero.',
+        'Un cuadrado y un triángulo hicieron una casa — ¡bien rapidito!',
         'Nuestra línea era el techo.',
         'La lluvia se resbalaba un poquito chueca, y eso está súper bien.',
       ],
@@ -193,14 +193,14 @@ export const pages: PageMeta[] = [
     pages: 'pp 15–16',
     text: {
       en: [
-        'Soon, almost every line was stacking!',
+        'Soon, almost every line was stacking! Up, up — one on top of another!',
         'The rain stopped.',
         'Circles became wheels. Triangles became sails, and beaks, and mountains. Squares became windows with somebody behind them.',
         'All of it. So much of it.',
         'Our roof was in there somewhere too.',
       ],
       es: [
-        '¡Pronto, casi todas las líneas estaban apilándose!',
+        '¡Pronto, casi todas las líneas estaban apilándose! Arriba, arriba — una encima de la otra!',
         'La lluvia paró.',
         'Los círculos se volvieron ruedas. Los triángulos se volvieron velas, y picos, y montañas. Los cuadrados se volvieron ventanas con alguien detrás.',
         'Todo eso. Tantísimo.',

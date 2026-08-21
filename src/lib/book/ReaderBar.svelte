@@ -212,5 +212,9 @@
     .cluster.end {
       justify-content: center;
     }
+
+    .dots {
+      display: none;
+    }
   }
 </style>
