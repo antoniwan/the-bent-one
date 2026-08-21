@@ -162,6 +162,7 @@
 
 <div
   class="book"
+  class:is-cover={location.kind === 'cover'}
   class:allow-escape={location.kind === 'page' && page?.id === 4}
   class:allow-boom={location.kind === 'page' && page?.id === 10}
   class:allow-dust={
@@ -179,23 +180,31 @@
   {:else if location.kind === 'page' && page?.id === 14}
     <BoomField mode="after" strength={0.025} />
   {/if}
-  <header class="top">
-    <p class="brand">
-      <a href={pathForLocation({ kind: 'cover' })} onclick={(e) => { e.preventDefault(); goFirst() }}>
-        {pick(BOOK.title, lang)}
-      </a>
-    </p>
-    <p class="meta">
-      {#if location.kind === 'page' && page}
-        <span class="num">{String(page.id).padStart(2, '0')}</span>
-        <span class="title">{pick(page.title, lang)}</span>
-      {:else if location.kind === 'front'}
-        <span class="quiet">{ui('beforeWeBegin', lang)}</span>
-      {:else if location.kind === 'back'}
-        <span class="quiet">{ui('theEndLabel', lang)}</span>
-      {/if}
-    </p>
-  </header>
+  {#if location.kind !== 'cover'}
+    <header class="top">
+      <p class="brand">
+        <a
+          href={pathForLocation({ kind: 'cover' })}
+          onclick={(e) => {
+            e.preventDefault()
+            goFirst()
+          }}
+        >
+          {pick(BOOK.title, lang)}
+        </a>
+      </p>
+      <p class="meta">
+        {#if location.kind === 'page' && page}
+          <span class="num">{String(page.id).padStart(2, '0')}</span>
+          <span class="title">{pick(page.title, lang)}</span>
+        {:else if location.kind === 'front'}
+          <span class="quiet">{ui('beforeWeBegin', lang)}</span>
+        {:else if location.kind === 'back'}
+          <span class="quiet">{ui('theEndLabel', lang)}</span>
+        {/if}
+      </p>
+    </header>
+  {/if}
 
   <p class="sr-only" aria-live="polite">{announcement}</p>
 
@@ -333,6 +342,15 @@
     overflow: hidden;
   }
 
+  /* Cover: one full stage — no chrome, true vertical center */
+  .book.is-cover {
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .book.is-cover .stage-main {
+    grid-row: 1;
+  }
+
   .book.allow-escape {
     overflow: visible;
   }
@@ -458,6 +476,10 @@
     text-align: center;
     gap: 1rem;
     padding: 0.5rem 1rem;
+  }
+
+  .book.is-cover .cover-screen {
+    padding-block: clamp(1.5rem, 6vh, 3rem);
   }
 
   .screen-in {
