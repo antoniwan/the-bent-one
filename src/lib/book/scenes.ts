@@ -1021,13 +1021,15 @@ export function sceneForSpread(id: number): ScenePart[] {
           opacity: 0.65,
         })),
         ...almostTriangle(600, 25, 690, 35, 640, -55, 'flee-tri', 0.45, 1, 1.2, 0.6),
-        // the header rule itself, absconding
+        // the header rule itself, absconding — same hairline as .top border
         {
           id: 'flee-header-rule',
-          d: straight(120, -48, 880, -52),
-          weight: 1.35,
-          delay: 0.35,
-          opacity: 0.7,
+          d: straight(-40, -50, 1040, -50),
+          weight: 1,
+          delay: 0.3,
+          opacity: 1,
+          animate: false,
+          className: 'flee-header-rule',
         },
         {
           id: 'flee-seg-1',

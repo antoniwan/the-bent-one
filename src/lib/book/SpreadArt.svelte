@@ -99,6 +99,14 @@
     animation: flee-up 7s ease-in-out infinite alternate-reverse;
   }
 
+  /* Match the real header border: 1px --rule hairline, very long */
+  .spread-art :global(.flee-header-rule) {
+    stroke: var(--rule) !important;
+    stroke-width: 1px !important;
+    vector-effect: non-scaling-stroke;
+    opacity: 1 !important;
+  }
+
   .spread-art :global(.rain-sheet) {
     animation: rain-fall 1.35s linear infinite;
   }

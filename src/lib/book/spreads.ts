@@ -63,7 +63,7 @@ export const pages: PageMeta[] = [
   {
     id: 3,
     slug: 'the-first-shape',
-    title: 'The first shape',
+    title: 'The first shapes',
     pages: 'pp 9–10',
     text: [
       'Three lines leaned together and made a triangle.',
@@ -92,16 +92,16 @@ export const pages: PageMeta[] = [
   {
     id: 5,
     slug: 'the-trick',
-    title: 'A house',
+    title: 'A house for the rain',
     pages: 'pp 13–14',
     text: [
       'The thin line came back. Good.',
-      'Then the shapes tried stacking.',
-      'A square and a triangle made a house.',
+      'Then it began to rain.',
+      'A square and a triangle made a house — quick!',
       'Ours was the roof.',
       'Rain slid off it a little crooked, and that\'s super okay.',
     ],
-    craft: 'Header rule returns; stacking = blocks, not “composition.”',
+    craft: 'Header returns; house as answer to weather, not a lecture on invention.',
   },
   {
     id: 6,
@@ -109,12 +109,13 @@ export const pages: PageMeta[] = [
     title: 'The world',
     pages: 'pp 15–16',
     text: [
-      'Soon everyone was stacking.',
+      'Soon, almost every line was stacking!',
+      'The rain stopped.',
       'Circles became wheels. Triangles became sails, and beaks, and mountains. Squares became windows with somebody behind them.',
       'All of it. So much of it.',
       'Our roof was in there somewhere too.',
     ],
-    craft: 'Shared wonder; stacking continues.',
+    craft: 'Weather clears; shared wonder; stacking continues.',
   },
   {
     id: 7,
