@@ -278,6 +278,9 @@
 
 <style>
   .book {
+    --page-gutter: clamp(0.5rem, 1.4vw, 1rem);
+    --header-to-content: clamp(0.85rem, 2.4vh, 1.5rem);
+    --content-to-footer: clamp(0.35rem, 1.2vh, 0.65rem);
     position: relative;
     display: grid;
     grid-template-rows: auto minmax(0, 1fr) auto;
@@ -286,7 +289,7 @@
     max-height: 100svh;
     max-width: 960px;
     margin-inline: auto;
-    padding: clamp(0.5rem, 1.5vw, 1rem);
+    padding: var(--page-gutter);
     box-sizing: border-box;
     overflow: hidden;
   }
@@ -302,9 +305,9 @@
     justify-content: space-between;
     align-items: baseline;
     gap: 1rem;
-    margin-bottom: 0.35rem;
+    margin-bottom: var(--header-to-content);
     border-bottom: 1px solid var(--rule);
-    padding-bottom: 0.45rem;
+    padding-bottom: 0.35rem;
     flex-shrink: 0;
     transition: border-bottom-color 0.45s ease;
   }

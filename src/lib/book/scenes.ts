@@ -384,156 +384,115 @@ function house(
   return parts
 }
 
-function townParts(
+/** Page 6–7 shared world. `colored` adds the quiet surprise of ochre / water. */
+function stackingWorld(
   seed: number,
-  density: 'busy' | 'peak',
-  includeBentRoof: boolean,
-  bentPos: { x: number; y: number; scale: number },
+  mood: 'plain' | 'colored' = 'plain',
 ): ScenePart[] {
   const rand = mulberry32(seed)
   const parts: ScenePart[] = []
-  const groundY = 780
-
-  parts.push({
-    kind: 'lines',
-    lines: [
-      {
-        id: 'ground',
-        d: straight(20, groundY, 980, groundY),
-        weight: 2.5,
-        delay: 0.05,
-      },
-    ],
-  })
-
-  // houses — bent roof placed once at bentPos so seek stays intentional
-  const houseCount = density === 'peak' ? 7 : 5
-  for (let i = 0; i < houseCount; i++) {
-    const hx = 60 + i * (density === 'peak' ? 130 : 150) + rand() * 20
-    const hw = 55 + rand() * 35
-    const hh = 45 + rand() * 40
-    const hy = groundY - hh
-    // Skip slot that would overlap the bent house
-    if (includeBentRoof && Math.abs(hx - bentPos.x) < hw) continue
-    parts.push(
-      ...house(hx, hy, hw, hh, `h${i}`, {
-        roofBent: false,
-        lit: rand() > 0.4,
-        delay: 0.15 + i * 0.08,
-      }),
-    )
-  }
-
-  if (includeBentRoof) {
-    const hw = 70
-    const hh = 55
-    parts.push(
-      ...house(bentPos.x, groundY - hh, hw, hh, 'bent-house', {
-        roofBent: true,
-        lit: true,
-        delay: 0.35,
-      }),
-    )
-  }
-
-  // wheels
-  for (let i = 0; i < (density === 'peak' ? 5 : 3); i++) {
-    const cx = 100 + rand() * 800
-    const cy = groundY - 30 - rand() * 20
-    const r = 18 + rand() * 14
-    parts.push({
-      kind: 'lines',
-      lines: [
-        ...openCircle(cx, cy, r, 8, `wheel-${i}`, 0.5 + i * 0.05),
-        {
-          id: `spoke-${i}`,
-          d: straight(cx - r * 0.7, cy, cx + r * 0.7, cy),
-          weight: 1.2,
-          delay: 0.6 + i * 0.05,
-        },
-        {
-          id: `spoke2-${i}`,
-          d: straight(cx, cy - r * 0.7, cx, cy + r * 0.7),
-          weight: 1.2,
-          delay: 0.62 + i * 0.05,
-        },
-      ],
-    })
-  }
-
-  // sails / mountains / beaks
-  for (let i = 0; i < 4; i++) {
-    const bx = 80 + rand() * 850
-    const by = groundY - 100 - rand() * 200
-    const s = 40 + rand() * 50
-    parts.push({
-      kind: 'lines',
-      lines: [
-        {
-          id: `sail-a-${i}`,
-          d: straight(bx, by + s, bx + s * 0.5, by),
-          weight: 1.8,
-          delay: 0.7 + i * 0.04,
-        },
-        {
-          id: `sail-b-${i}`,
-          d: straight(bx + s, by + s, bx + s * 0.5, by),
-          weight: 1.5,
-          delay: 0.72 + i * 0.04,
-        },
-        {
-          id: `sail-c-${i}`,
-          d: straight(bx + 4, by + s, bx + s - 4, by + s),
-          weight: 1.3,
-          delay: 0.74 + i * 0.04,
-        },
-      ],
-    })
-  }
-
-  // windows floating (somebody behind them)
-  for (let i = 0; i < 6; i++) {
-    parts.push({
-      kind: 'lines',
-      lines: openSquare(
-        50 + rand() * 880,
-        80 + rand() * 400,
-        22 + rand() * 18,
-        4,
-        `float-win-${i}`,
-        0.8 + i * 0.03,
-      ),
-    })
-  }
-
-  // fence segments
-  for (let i = 0; i < 8; i++) {
-    const fx = 40 + i * 30
-    parts.push({
-      kind: 'lines',
-      lines: [
-        {
-          id: `fence-${i}`,
-          d: straight(fx, groundY, fx, groundY - 28 - rand() * 10),
-          weight: 1.4,
-          delay: 0.9 + i * 0.02,
-        },
-      ],
-    })
-  }
-
-  return parts
-}
-
-/** Page 6 — everyone stacking: depth of a world made of the same shapes. */
-function stackingWorld(seed: number): ScenePart[] {
-  const rand = mulberry32(seed)
-  const parts: ScenePart[] = []
   const groundY = 820
+  const colored = mood === 'colored'
   let delay = 0.06
 
   const pushLines = (lines: LineSpec[]) => {
     parts.push({ kind: 'lines', lines })
+  }
+
+  const littleBoat = (
+    x: number,
+    waterY: number,
+    scale: number,
+    id: string,
+    d0: number,
+    sailColor: LineSpec['color'] = 'ink',
+  ): LineSpec[] => {
+    const s = scale
+    const deckY = waterY - 2 * s
+    const keelY = waterY + 14 * s
+    const stern = x
+    const bow = x + 88 * s
+    const mastX = x + 34 * s
+    const mastTop = deckY - 68 * s
+    // Cup hull with a lifted bow — reads as a boat at a glance
+    return [
+      {
+        id: `${id}-hull`,
+        d: `M ${stern} ${deckY} L ${stern + 8 * s} ${keelY} L ${bow - 16 * s} ${keelY} L ${bow} ${deckY - 10 * s}`,
+        weight: 2.2 * Math.min(s, 1.15),
+        delay: d0,
+      },
+      {
+        id: `${id}-deck`,
+        d: straight(stern, deckY, bow - 6 * s, deckY),
+        weight: 1.5,
+        delay: d0 + 0.04,
+        opacity: 0.75,
+      },
+      {
+        id: `${id}-mast`,
+        d: straight(mastX, deckY, mastX, mastTop),
+        weight: 1.55,
+        delay: d0 + 0.06,
+      },
+      {
+        id: `${id}-sail-a`,
+        d: straight(mastX, mastTop + 2 * s, mastX, deckY - 10 * s),
+        weight: 1.35,
+        delay: d0 + 0.08,
+        color: sailColor,
+      },
+      {
+        id: `${id}-sail-b`,
+        d: straight(mastX, mastTop + 2 * s, mastX + 40 * s, deckY - 16 * s),
+        weight: 1.7,
+        delay: d0 + 0.1,
+        color: sailColor,
+      },
+      {
+        id: `${id}-sail-c`,
+        d: straight(mastX, deckY - 10 * s, mastX + 40 * s, deckY - 16 * s),
+        weight: 1.4,
+        delay: d0 + 0.12,
+        color: sailColor,
+      },
+    ]
+  }
+
+  // Color arrives behind the line-work (page 7)
+  if (colored) {
+    parts.push(
+      {
+        kind: 'fill',
+        d: `M 20 ${groundY - 8} Q 180 ${groundY - 28} 340 ${groundY - 10} T 700 ${groundY - 16} T 980 ${groundY - 6} L 980 ${groundY + 40} L 20 ${groundY + 40} Z`,
+        fill: 'var(--line-water)',
+        opacity: 0.28,
+      },
+      {
+        kind: 'fill',
+        d: 'M 88 86 H 152 V 150 H 88 Z',
+        fill: 'var(--window-glow)',
+        opacity: 0.22,
+      },
+      {
+        kind: 'fill',
+        d: 'M 210 560 H 300 V 700 H 210 Z',
+        fill: 'var(--line-ochre)',
+        opacity: 0.38,
+      },
+      {
+        kind: 'fill',
+        d: 'M 455 500 H 520 V 640 H 455 Z',
+        fill: 'var(--line-ochre)',
+        opacity: 0.3,
+      },
+      {
+        kind: 'fill',
+        d: 'M 700 545 H 790 V 700 H 700 Z',
+        fill: 'var(--line-ochre)',
+        opacity: 0.34,
+      },
+    )
   }
 
   // Soft sun — one calm circle with short rays (not a fireworks burst)
@@ -541,9 +500,11 @@ function stackingWorld(seed: number): ScenePart[] {
     const sx = 118
     const sy = 128
     const r = 42
-    const sunLines = openCircle(sx, sy, r, 10, 'sun', delay)
+    const sunLines = openCircle(sx, sy, r, 10, 'sun', delay).map((l) =>
+      colored ? { ...l, color: 'ochre' as const, opacity: 0.9 } : l,
+    )
     for (let i = 0; i < 9; i++) {
-      const a = (-Math.PI * 0.15) + (i / 8) * Math.PI * 1.15
+      const a = -Math.PI * 0.15 + (i / 8) * Math.PI * 1.15
       const x1 = sx + Math.cos(a) * (r + 10)
       const y1 = sy + Math.sin(a) * (r + 10)
       const x2 = sx + Math.cos(a) * (r + 22 + (i % 2) * 6)
@@ -554,6 +515,7 @@ function stackingWorld(seed: number): ScenePart[] {
         weight: 1.15,
         delay: delay + 0.2 + i * 0.02,
         opacity: 0.7,
+        color: colored ? 'ochre' : 'ink',
       })
     }
     pushLines(sunLines)
@@ -587,7 +549,6 @@ function stackingWorld(seed: number): ScenePart[] {
         0.38,
       ),
     )
-    // snow: a few short strokes near the tip — weather, not decoration clutter
     for (let s = 0; s < 3; s++) {
       const t = 0.15 + s * 0.12
       const ax = peakX + (p.x - peakX) * t
@@ -604,7 +565,7 @@ function stackingWorld(seed: number): ScenePart[] {
   pushLines(mountainLines)
   delay += 0.2
 
-  // Mid hills — houses tucked into the slope (lived-in mountains)
+  // Mid hills — houses tucked into the slope
   const midBase = 610
   const midPeaks = [
     { x: 40, w: 260, h: 95 },
@@ -629,7 +590,6 @@ function stackingWorld(seed: number): ScenePart[] {
         0.55,
       ),
     )
-    // nestled cottage on the left slope
     const hx = p.x + p.w * 0.22
     const hy = midBase - 28 - (i % 2) * 8
     const hw = 28 + (i % 3) * 4
@@ -643,7 +603,6 @@ function stackingWorld(seed: number): ScenePart[] {
   })
   delay += 0.25
 
-  // Trees as triangle crowns — a small grove left, a few between houses later
   const tree = (
     x: number,
     base: number,
@@ -684,8 +643,13 @@ function stackingWorld(seed: number): ScenePart[] {
   ])
   delay += 0.15
 
-  // Stacked town — several overlapping bands so it reads as sprawl, not a row
-  const bands: { y: number; count: number; scale: number; startX: number; step: number }[] = [
+  const bands: {
+    y: number
+    count: number
+    scale: number
+    startX: number
+    step: number
+  }[] = [
     { y: groundY - 210, count: 6, scale: 0.72, startX: 90, step: 130 },
     { y: groundY - 140, count: 7, scale: 0.88, startX: 40, step: 125 },
     { y: groundY - 70, count: 8, scale: 1, startX: 20, step: 118 },
@@ -703,7 +667,6 @@ function stackingWorld(seed: number): ScenePart[] {
       const hy = band.y - hh + rand() * 10
 
       if (isBent) {
-        // inverted-V roof with one bent pitch — ours, tucked in the mid stack
         const eavesY = hy
         const left = hx - 4
         const right = hx + hw + 4
@@ -768,13 +731,42 @@ function stackingWorld(seed: number): ScenePart[] {
   })
   delay += 0.45
 
-  // Foreground trees breaking the street edge
+  // On the colored page: a few thin joins between nearby corners — trying things out
+  if (colored) {
+    const joins: LineSpec[] = [
+      {
+        id: 'join-a',
+        d: straight(250, groundY - 175, 310, groundY - 160),
+        weight: 1.1,
+        delay: delay,
+        opacity: 0.55,
+        color: 'ochre',
+      },
+      {
+        id: 'join-b',
+        d: straight(480, groundY - 200, 530, groundY - 155),
+        weight: 1.05,
+        delay: delay + 0.04,
+        opacity: 0.5,
+        color: 'water',
+      },
+      {
+        id: 'join-c',
+        d: straight(640, groundY - 120, 700, groundY - 145),
+        weight: 1.15,
+        delay: delay + 0.08,
+        opacity: 0.55,
+        color: 'ochre',
+      },
+    ]
+    pushLines(joins)
+  }
+
   pushLines([
     ...tree(310, groundY, 1.15, 'tree-d', delay),
     ...tree(780, groundY - 2, 1.0, 'tree-e', delay + 0.06),
   ])
 
-  // Wheels near the road — circles that became something useful
   ;[
     { cx: 160, cy: groundY - 22, r: 20 },
     { cx: 205, cy: groundY - 20, r: 16 },
@@ -797,58 +789,16 @@ function stackingWorld(seed: number): ScenePart[] {
     ])
   })
 
-  // One sail / boat on the left — triangles that went to sea
-  {
-    const bx = 55
-    const by = groundY - 8
-    pushLines([
-      {
-        id: 'hull',
-        d: straight(bx, by, bx + 70, by),
-        weight: 2,
-        delay: delay + 0.2,
-      },
-      {
-        id: 'hull-keel',
-        d: straight(bx + 8, by, bx + 20, by + 14),
-        weight: 1.3,
-        delay: delay + 0.22,
-        opacity: 0.7,
-      },
-      {
-        id: 'mast',
-        d: straight(bx + 32, by, bx + 32, by - 78),
-        weight: 1.5,
-        delay: delay + 0.24,
-      },
-      {
-        id: 'sail-a',
-        d: straight(bx + 32, by - 10, bx + 32, by - 72),
-        weight: 1.2,
-        delay: delay + 0.26,
-        opacity: 0.5,
-      },
-      {
-        id: 'sail-b',
-        d: straight(bx + 32, by - 72, bx + 68, by - 18),
-        weight: 1.7,
-        delay: delay + 0.28,
-      },
-      {
-        id: 'sail-c',
-        d: straight(bx + 32, by - 12, bx + 68, by - 18),
-        weight: 1.4,
-        delay: delay + 0.3,
-      },
-    ])
-  }
+  // Boats at the waterline — clear hull + mast + triangle sail
+  pushLines([
+    ...littleBoat(48, groundY - 6, 1, 'boat-a', delay + 0.2, colored ? 'water' : 'ink'),
+    ...littleBoat(155, groundY - 2, 0.72, 'boat-b', delay + 0.28, colored ? 'ochre' : 'ink'),
+  ])
 
-  // A tiny beak in the air — same triangle language, lighter joke
   pushLines(
     closedTriangle(820, 160, 848, 178, 828, 148, 'beak', delay + 0.35, 1.25, 0.55),
   )
 
-  // Ground + a hint of road stacking past the page edge
   pushLines([
     {
       id: 'ground',
@@ -865,7 +815,6 @@ function stackingWorld(seed: number): ScenePart[] {
     },
   ])
 
-  // A few more windows peeking from stacked upper stories (squares with somebody behind)
   for (let i = 0; i < 5; i++) {
     const wx = 130 + i * 155 + rand() * 20
     const wy = groundY - 250 - rand() * 40
@@ -874,13 +823,18 @@ function stackingWorld(seed: number): ScenePart[] {
       parts.push({
         kind: 'fill',
         d: `M ${wx + 2} ${wy + 2} H ${wx + ws - 2} V ${wy + ws - 2} H ${wx + 2} Z`,
-        fill: 'var(--window-glow)',
-        opacity: 0.35,
+        fill: colored ? 'var(--line-ochre)' : 'var(--window-glow)',
+        opacity: colored ? 0.4 : 0.35,
       })
     }
     pushLines(
       openSquare(wx, wy, ws, 2, `stack-win-${i}`, delay + 0.4 + i * 0.03).map(
-        (l) => ({ ...l, weight: 1.05, opacity: 0.75 }),
+        (l) => ({
+          ...l,
+          weight: 1.05,
+          opacity: 0.75,
+          color: colored && i % 2 === 0 ? ('ochre' as const) : l.color,
+        }),
       ),
     )
   }
@@ -1254,63 +1208,10 @@ export function sceneForSpread(id: number): ScenePart[] {
     }
 
     case 6:
-      return stackingWorld(99)
+      return stackingWorld(99, 'plain')
 
-    case 7: {
-      const parts = townParts(101, 'peak', true, { x: 620, y: 690, scale: 1 })
-      // ochre market stall fills + blue water — only this spread
-      parts.unshift(
-        {
-          kind: 'fill',
-          d: 'M 40 760 Q 200 740 380 755 T 700 750 T 980 760 L 980 820 L 40 820 Z',
-          fill: 'var(--line-water)',
-          opacity: 0.22,
-        },
-        {
-          kind: 'fill',
-          d: 'M 200 640 H 320 V 760 H 200 Z',
-          fill: 'var(--line-ochre)',
-          opacity: 0.35,
-        },
-        {
-          kind: 'fill',
-          d: 'M 340 600 H 420 V 760 H 340 Z',
-          fill: 'var(--line-ochre)',
-          opacity: 0.28,
-        },
-      )
-      // boat
-      parts.push({
-        kind: 'lines',
-        lines: [
-          {
-            id: 'boat-hull',
-            d: straight(60, 770, 200, 770),
-            weight: 2.5,
-            delay: 0.3,
-          },
-          {
-            id: 'boat-bow',
-            d: straight(200, 770, 230, 755),
-            weight: 2,
-            delay: 0.35,
-          },
-          {
-            id: 'mast',
-            d: straight(120, 770, 120, 640),
-            weight: 1.8,
-            delay: 0.4,
-          },
-          {
-            id: 'sail',
-            d: straight(120, 650, 180, 720),
-            weight: 1.5,
-            delay: 0.45,
-          },
-        ],
-      })
-      return parts
-    }
+    case 7:
+      return stackingWorld(99, 'colored')
 
     case 8: {
       const groundY = 820

@@ -52,24 +52,26 @@
   data-spread={spread.id}
   style="--page-delta: {direction > 0 ? '18px' : '-18px'}"
 >
-  <div class="stage" class:escape={spread.id === 4}>
-    <SpreadArt spreadId={spread.id} {playKey} />
-    {#if onPrev}
-      <button
-        type="button"
-        class="hotspot left"
-        aria-label="Previous page"
-        onclick={onPrev}
-      ></button>
-    {/if}
-    {#if onNext}
-      <button
-        type="button"
-        class="hotspot right"
-        aria-label="Next page"
-        onclick={onNext}
-      ></button>
-    {/if}
+  <div class="stage-slot">
+    <div class="stage" class:escape={spread.id === 4}>
+      <SpreadArt spreadId={spread.id} {playKey} />
+      {#if onPrev}
+        <button
+          type="button"
+          class="hotspot left"
+          aria-label="Previous page"
+          onclick={onPrev}
+        ></button>
+      {/if}
+      {#if onNext}
+        <button
+          type="button"
+          class="hotspot right"
+          aria-label="Next page"
+          onclick={onNext}
+        ></button>
+      {/if}
+    </div>
   </div>
   <div class="prose-shell" class:has-more={moreBelow}>
     <div
@@ -94,11 +96,14 @@
 
 <style>
   .spread {
+    --section-pad: clamp(0.5rem, 1.6vh, 1rem);
+    --section-gap: clamp(0.65rem, 2vh, 1.15rem);
     display: grid;
-    grid-template-rows: minmax(0, 1fr) minmax(0, auto);
+    /* Picture and words share the page — neither eats the other */
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
     height: 100%;
     min-height: 0;
-    gap: clamp(0.4rem, 1.2vh, 0.85rem);
+    gap: var(--section-gap);
     animation: page-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
@@ -106,13 +111,21 @@
     overflow: visible;
   }
 
+  .stage-slot {
+    min-height: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: var(--section-pad);
+    container-type: size;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+  }
+
   .stage {
     position: relative;
-    min-height: 0;
-    width: min(100%, 52vh, 620px);
-    max-height: 100%;
-    aspect-ratio: 1 / 1;
-    margin-inline: auto;
+    width: min(100cqw, 100cqh);
+    height: min(100cqw, 100cqh);
     background:
       radial-gradient(ellipse at 50% 40%, var(--paper-glow) 0%, transparent 70%),
       var(--paper);
@@ -120,13 +133,20 @@
     overflow: hidden;
   }
 
+  .stage > :global(.spread-art) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
   .stage.escape {
     overflow: visible;
     z-index: 1;
   }
 
-  .stage :global(.spread-art.bleed) {
+  .stage > :global(.spread-art.bleed) {
     transform: scale(1.06);
+    transform-origin: center center;
   }
 
   .hotspot {
@@ -157,10 +177,15 @@
 
   .prose-shell {
     position: relative;
-    max-width: 34rem;
     width: 100%;
-    margin-inline: auto;
+    max-width: none;
+    margin-inline: 0;
     min-height: 0;
+    box-sizing: border-box;
+    padding: var(--section-pad);
+    padding-top: calc(var(--section-pad) * 0.65);
+    display: flex;
+    flex-direction: column;
   }
 
   .escape-top .prose-shell {
@@ -169,16 +194,17 @@
   }
 
   .prose {
+    flex: 1 1 auto;
     width: 100%;
     text-align: center;
-    padding: 0.15rem 1.15rem 0.35rem 1rem;
+    padding: 0.35rem 0.65rem 0.45rem;
     min-height: 0;
-    max-height: min(28vh, 11.5rem);
+    max-height: none;
     overflow-x: hidden;
-    overflow-y: scroll; /* always reserve the gutter */
+    overflow-y: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
-    scrollbar-gutter: stable;
+    scrollbar-gutter: stable both-edges;
     scrollbar-width: auto;
     scrollbar-color: var(--line-bent) #ddd4c8;
   }
@@ -211,7 +237,7 @@
     pointer-events: none;
     position: absolute;
     left: 0;
-    right: 18px;
+    right: 0;
     bottom: 0;
     height: 2.4rem;
     background: linear-gradient(
@@ -259,10 +285,10 @@
   }
 
   .line {
-    margin: 0 0 0.55em;
+    margin: 0 0 0.7em;
     font-family: var(--font-body);
     font-size: clamp(0.98rem, 1.9vw, 1.15rem);
-    line-height: 1.5;
+    line-height: 1.55;
     color: var(--ink);
     letter-spacing: 0.01em;
     opacity: 0;
@@ -322,15 +348,10 @@
 
   @media (max-width: 720px) {
     .spread {
-      grid-template-rows: minmax(0, 1fr) minmax(0, auto);
-    }
-
-    .stage {
-      width: min(100%, 48vh);
-    }
-
-    .prose {
-      max-height: min(32vh, 12rem);
+      --section-pad: clamp(0.4rem, 1.4vh, 0.75rem);
+      --section-gap: clamp(0.5rem, 1.6vh, 0.85rem);
+      /* Slightly more room for art on short phones; copy still a real half */
+      grid-template-rows: minmax(0, 1.05fr) minmax(0, 0.95fr);
     }
   }
 
