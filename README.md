@@ -46,7 +46,11 @@ This book does not include read-aloud / Web Speech.
 
 Set `VITE_SITE_URL` to the production origin (no trailing slash) before build so canonical and Open Graph image URLs match that origin.
 
-Social previews currently use `public/og.svg`. Many networks prefer a raster `public/og.jpg` or `public/og.png`; export one when the production domain is fixed and point the meta tags at it.
+Social card: `public/og.png` (1200×630 bent red line). SVG source: `public/og.svg`.
+
+Icons: `favicon.svg`, `favicon-32.png`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`.
+
+Crawlers: `public/robots.txt`, `public/sitemap.xml`. Meta + JSON-LD live in `index.html`; language switches update them via `src/lib/book/seo.ts`.
 
 `vercel.json` rewrites all routes to `index.html` so deep links work on a static host.
 

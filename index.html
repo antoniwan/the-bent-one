@@ -9,73 +9,107 @@
     <title>The Bent One</title>
     <meta
       name="description"
-      content="A little book in English and Spanish for one small line with a bend in it — and everything a line might become."
+      content="A little book about a red line with a bend. You can read it in English or Spanish."
     />
     <meta name="author" content="Antonio Rodriguez Martinez" />
+    <meta
+      name="keywords"
+      content="children's book, picture book, bilingual, English, Spanish, lines, ebook"
+    />
     <meta name="robots" content="index, follow" />
     <meta name="googlebot" content="index, follow" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#f7f4ef" />
+    <meta name="msapplication-TileColor" content="#f7f4ef" />
+    <meta name="msapplication-TileImage" content="/icon-192.png" />
     <link rel="canonical" href="https://the-bent-one.vercel.app/" />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://the-bent-one.vercel.app/"
+    />
+    <link
+      rel="alternate"
+      hreflang="es"
+      href="https://the-bent-one.vercel.app/"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://the-bent-one.vercel.app/"
+    />
 
+    <!-- Icons -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="application-name" content="The Bent One" />
+    <meta name="apple-mobile-web-app-title" content="The Bent One" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Open Graph -->
     <meta property="og:type" content="book" />
     <meta property="og:site_name" content="The Bent One" />
     <meta property="og:url" content="https://the-bent-one.vercel.app/" />
     <meta property="og:title" content="The Bent One" />
     <meta
       property="og:description"
-      content="A little book in English and Spanish for one small line with a bend in it — and everything a line might become."
+      content="A little book about a red line with a bend. You can read it in English or Spanish."
     />
     <meta property="og:locale" content="en_US" />
     <meta property="og:locale:alternate" content="es_419" />
     <meta
       property="og:image"
-      content="https://the-bent-one.vercel.app/og.svg"
+      content="https://the-bent-one.vercel.app/og.png"
     />
-    <meta property="og:image:type" content="image/svg+xml" />
-    <meta
-      property="og:image:alt"
-      content="A short red line with a bend in the middle on cream paper."
-    />
+    <meta property="og:image:secure_url" content="https://the-bent-one.vercel.app/og.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A red line with a little bend." />
     <meta property="book:author" content="Antonio Rodriguez Martinez" />
+    <meta property="book:tag" content="children" />
+    <meta property="book:tag" content="bilingual" />
+    <meta property="book:tag" content="picture book" />
 
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="The Bent One" />
     <meta
       name="twitter:description"
-      content="A little book in English and Spanish for one small line with a bend in it — and everything a line might become."
+      content="A little book about a red line with a bend. You can read it in English or Spanish."
     />
     <meta
       name="twitter:image"
-      content="https://the-bent-one.vercel.app/og.svg"
+      content="https://the-bent-one.vercel.app/og.png"
     />
-    <meta
-      name="twitter:image:alt"
-      content="A short red line with a bend in the middle on cream paper."
-    />
-
-    <meta name="theme-color" content="#f7f4ef" />
-    <meta name="application-name" content="The Bent One" />
-    <meta name="apple-mobile-web-app-title" content="The Bent One" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="manifest" href="/manifest.json" />
+    <meta name="twitter:image:alt" content="A red line with a little bend." />
 
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@graph": [
           {
+            "@type": "Person",
+            "@id": "https://the-bent-one.vercel.app/#author",
+            "name": "Antonio Rodriguez Martinez",
+            "alternateName": "Antonio Rodríguez Martínez",
+            "url": "https://antonio.builds.software"
+          },
+          {
             "@type": "WebSite",
             "@id": "https://the-bent-one.vercel.app/#website",
             "url": "https://the-bent-one.vercel.app/",
             "name": "The Bent One",
             "alternateName": "La Doblada",
-            "inLanguage": ["en", "es"],
-            "publisher": {
-              "@type": "Person",
-              "name": "Antonio Rodriguez Martinez",
-              "alternateName": "Antonio Rodríguez Martínez",
-              "url": "https://antonio.builds.software"
-            }
+            "description": "A little book about a red line with a bend. You can read it in English or Spanish.",
+            "inLanguage": "en",
+            "publisher": { "@id": "https://the-bent-one.vercel.app/#author" },
+            "author": { "@id": "https://the-bent-one.vercel.app/#author" }
           },
           {
             "@type": "Book",
@@ -83,31 +117,57 @@
             "name": "The Bent One",
             "alternateName": "La Doblada",
             "url": "https://the-bent-one.vercel.app/",
-            "image": "https://the-bent-one.vercel.app/og.svg",
+            "image": [
+              "https://the-bent-one.vercel.app/og.png",
+              "https://the-bent-one.vercel.app/og.svg"
+            ],
+            "thumbnailUrl": "https://the-bent-one.vercel.app/icon-512.png",
+            "description": "A little book about a red line with a bend. You can read it in English or Spanish.",
             "inLanguage": ["en", "es"],
             "bookFormat": "EBook",
+            "numberOfPages": 14,
             "isFamilyFriendly": true,
-            "author": {
-              "@type": "Person",
-              "name": "Antonio Rodriguez Martinez",
-              "alternateName": "Antonio Rodríguez Martínez",
-              "url": "https://antonio.builds.software"
+            "isAccessibleForFree": true,
+            "genre": ["Children's fiction", "Picture book"],
+            "keywords": "children's book, bilingual, English, Spanish, lines, picture book",
+            "author": { "@id": "https://the-bent-one.vercel.app/#author" },
+            "creator": { "@id": "https://the-bent-one.vercel.app/#author" },
+            "publisher": { "@id": "https://the-bent-one.vercel.app/#author" },
+            "audience": {
+              "@type": "PeopleAudience",
+              "suggestedMinAge": 3,
+              "suggestedMaxAge": 8
             },
-            "description": "A little book in English and Spanish for one small line with a bend in it — and everything a line might become."
+            "typicalAgeRange": "3-8",
+            "accessibilityFeature": [
+              "readingOrder",
+              "alternativeText",
+              "displayTransformability"
+            ],
+            "accessibilityHazard": "noFlashingHazard",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD",
+              "availability": "https://schema.org/InStock"
+            }
           },
           {
             "@type": "WebPage",
             "@id": "https://the-bent-one.vercel.app/#webpage",
             "url": "https://the-bent-one.vercel.app/",
             "name": "The Bent One",
-            "isPartOf": {
-              "@id": "https://the-bent-one.vercel.app/#website"
+            "description": "A little book about a red line with a bend. You can read it in English or Spanish.",
+            "isPartOf": { "@id": "https://the-bent-one.vercel.app/#website" },
+            "about": { "@id": "https://the-bent-one.vercel.app/#book" },
+            "primaryImageOfPage": {
+              "@type": "ImageObject",
+              "url": "https://the-bent-one.vercel.app/og.png",
+              "width": 1200,
+              "height": 630
             },
-            "about": {
-              "@id": "https://the-bent-one.vercel.app/#book"
-            },
-            "inLanguage": ["en", "es"],
-            "description": "A little book in English and Spanish for one small line with a bend in it — and everything a line might become."
+            "inLanguage": "en",
+            "isFamilyFriendly": true
           }
         ]
       }
@@ -115,9 +175,9 @@
   </head>
   <body>
     <noscript>
-      The Bent One. A little book in English and Spanish. JavaScript is
-      required. La Doblada. Un cuentito en inglés y español. Se requiere
-      JavaScript.
+      The Bent One. A little book about a red line with a bend. English and
+      Spanish. JavaScript is required. La Doblada. Un cuentito sobre una línea
+      roja con un doblez. Inglés y español. Se requiere JavaScript.
     </noscript>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>

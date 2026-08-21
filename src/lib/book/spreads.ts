@@ -222,9 +222,9 @@ export const pages: PageMeta[] = [
         'It was the best part.',
       ],
       es: [
-        'Por mucho tiempo, las formas siguieron ocupadas.',
-        'Probaron uniones nuevas. Tocaron esquinas distintas. Algunas se alinearon. Algunas hicieron algo que nadie había visto.',
-        '¡Algunas hasta tuvieron color. Nadie sabía por qué ni cómo!',
+        'Por un buen rato, las formas estuvieron bien ocupadas.',
+        'Probaron uniones nuevas. Tocaron esquinas distintas. Algunas se alinearon. Algunas hicieron figuras que nadie había visto.',
+        '¡Algunas hasta tuvieron color. Nadie sabía por qué ni cómo rayos!',
         'Fue la mejor parte.',
       ],
     },

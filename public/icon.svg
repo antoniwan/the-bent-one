@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="The Bent One">
+  <rect width="512" height="512" fill="#f7f4ef"/>
+  <g transform="translate(56 290) scale(4)">
+    <path
+      d="M 0 0 L 32 1.5 L 40 -9 L 48 1 L 100 0"
+      fill="none"
+      stroke="#c0182a"
+      stroke-width="9"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </g>
+</svg>

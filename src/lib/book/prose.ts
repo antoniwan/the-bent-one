@@ -4,6 +4,7 @@ export type ProsePart =
   | { kind: 'text'; value: string }
   | { kind: 'geo'; value: string }
   | { kind: 'red'; value: string }
+  | { kind: 'color'; value: string }
 
 /**
  * Geometric figures, qualities, and book-notions — always italic in prose.
@@ -155,10 +156,14 @@ const GEOMETRIC_ES: string[] = [
   'inquieta',
   'inquietos',
   'inquieto',
+  'figuras',
+  'figura',
 ]
 
 const RED_EN = 'red'
 const RED_ES = 'roja|rojo|rojas|rojos'
+/** Same word in EN/ES — cycles illustration line colors in prose. */
+const COLOR_WORD = 'color'
 
 function escapeRegExp(value: string) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -166,11 +171,11 @@ function escapeRegExp(value: string) {
 
 const patternByLang: Record<Lang, RegExp> = {
   en: new RegExp(
-    `\\b(?:${GEOMETRIC_EN.map(escapeRegExp).join('|')}|${RED_EN})\\b`,
+    `\\b(?:${GEOMETRIC_EN.map(escapeRegExp).join('|')}|${RED_EN}|${COLOR_WORD})\\b`,
     'gi',
   ),
   es: new RegExp(
-    `\\b(?:${GEOMETRIC_ES.map(escapeRegExp).join('|')}|${RED_ES})\\b`,
+    `\\b(?:${GEOMETRIC_ES.map(escapeRegExp).join('|')}|${RED_ES}|${COLOR_WORD})\\b`,
     'gi',
   ),
 }
@@ -180,7 +185,9 @@ const redTestByLang: Record<Lang, RegExp> = {
   es: /^(roja|rojo|rojas|rojos)$/i,
 }
 
-/** Split a prose string into plain / geometric / red parts. */
+const colorTest = /^color$/i
+
+/** Split a prose string into plain / geometric / red / color parts. */
 export function tokenizeProse(input: string, lang: Lang = 'en'): ProsePart[] {
   const parts: ProsePart[] = []
   let last = 0
@@ -195,6 +202,8 @@ export function tokenizeProse(input: string, lang: Lang = 'en'): ProsePart[] {
     }
     if (redTest.test(value)) {
       parts.push({ kind: 'red', value })
+    } else if (colorTest.test(value)) {
+      parts.push({ kind: 'color', value })
     } else {
       parts.push({ kind: 'geo', value })
     }

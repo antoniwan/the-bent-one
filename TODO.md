@@ -24,7 +24,7 @@ Do not change these without a deliberate decision:
 | Analytics (gtag) | yes | optional / later |
 | Portfolio / credit link in bar | yes | optional |
 | Version stamp (footer → repository) | yes | done (`v0.9.0` until Spanish is ratified) |
-| Cover social image (raster) | yes | needed after production URL is known |
+| Cover social image (raster) | yes | done (`og.png`) |
 
 Already matched: page URLs, history, swipe, keyboard, dots, resume, live region, basic print CSS, Vercel SPA fallback, cover continue, page hotspots.
 
@@ -35,7 +35,8 @@ Intentionally omitted: read aloud / Web Speech (present in Mia; not planned here
 - [x] EN / ES toggle — cover + reader bar; persist; swap reader copy
 - [x] Spanish translation — full book voice (editor pass; further polish welcome)
 - [x] SEO pack — `index.html` meta, OG / Twitter, JSON-LD Book, canonical, manifest, `applyDocumentMeta(lang)`
-- [ ] Confirm production `VITE_SITE_URL` and raster `/og.jpg` (or PNG) once the domain is known
+- [ ] Confirm production `VITE_SITE_URL` once the domain is known
+- [x] Raster social card (`og.png`) + icon set
 - [ ] Spanish copy polish (read aloud for children)
 - [ ] **v1.0.0** only after Spanish is ratified
 
