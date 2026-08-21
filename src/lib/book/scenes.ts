@@ -1321,81 +1321,138 @@ export function sceneForSpread(id: number): ScenePart[] {
       return stackingWorld(99, 'colored')
 
     case 8: {
-      const groundY = 820
+      // Close-up on the house: ours still holds the roof; the straight neighbor has slipped away.
+      const groundY = 790
+      const x = 250
+      const w = 460
+      const wallH = 300
+      const eavesY = groundY - wallH
+      const leftEaveX = x - 28
+      const rightEaveX = x + w + 28
+      const peakX = x + w * 0.46
+      const peakY = eavesY - 195
+
+      const wx = x + w * 0.38
+      const wy = eavesY + wallH * 0.28
+      const ws = w * 0.22
+      const doorW = w * 0.18
+      const doorH = wallH * 0.38
+      const doorX = x + w * 0.14
+      const doorY = groundY - doorH
+
+      // Stubs where the straight neighbor used to meet the roof
+      const stubPeak = straight(peakX, peakY, peakX - 18, peakY + 22)
+      const stubEave = straight(leftEaveX, eavesY, leftEaveX + 22, eavesY - 8)
+
+      const grass: LineSpec[] = Array.from({ length: 28 }, (_, i) => {
+        const r = mulberry32(810 + i)
+        const gx = 60 + r() * 880
+        const gh = 10 + r() * 26
+        return {
+          id: `grass-${i}`,
+          d: straight(gx, groundY, gx + (r() - 0.5) * 8, groundY - gh),
+          weight: 0.85 + r() * 0.7,
+          delay: 0.7 + i * 0.012,
+          opacity: 0.35 + r() * 0.35,
+        }
+      })
+
       return [
+        {
+          kind: 'fill',
+          d: `M ${wx + 4} ${wy + 4} H ${wx + ws - 4} V ${wy + ws - 4} H ${wx + 4} Z`,
+          fill: 'var(--window-glow)',
+          opacity: 0.5,
+        },
         {
           kind: 'lines',
           lines: [
-            // distant tiny town silhouette at top
             {
-              id: 'horiz',
-              d: straight(200, 120, 800, 120),
-              weight: 1,
-              delay: 0.2,
-              opacity: 0.5,
+              id: 'ground',
+              d: straight(40, groundY, 960, groundY),
+              weight: 3,
+              delay: 0.06,
             },
-            ...[0, 1, 2, 3, 4, 5].flatMap((i) => {
-              const x = 280 + i * 70
-              return [
-                {
-                  id: `tiny-h-${i}`,
-                  d: straight(x, 120, x, 120 - (20 + (i % 3) * 12)),
-                  weight: 1.2,
-                  delay: 0.25 + i * 0.03,
-                  opacity: 0.55,
-                } satisfies LineSpec,
-              ]
-            }),
-            // tiny bent roof
             {
-              id: 'tiny-roof-l',
-              d: straight(520, 95, 545, 70),
-              weight: 1,
+              id: 'wall-l',
+              d: straight(x, groundY, x, eavesY),
+              weight: 2.6,
+              delay: 0.12,
+            },
+            {
+              id: 'wall-r',
+              d: straight(x + w, groundY, x + w, eavesY),
+              weight: 2.5,
+              delay: 0.16,
+            },
+            {
+              id: 'floor',
+              d: straight(x, groundY, x + w, groundY),
+              weight: 2.2,
+              delay: 0.14,
+              opacity: 0.35,
+            },
+            {
+              id: 'door-l',
+              d: straight(doorX, groundY, doorX, doorY),
+              weight: 1.55,
+              delay: 0.22,
+            },
+            {
+              id: 'door-r',
+              d: straight(doorX + doorW, groundY, doorX + doorW, doorY),
+              weight: 1.5,
+              delay: 0.25,
+            },
+            {
+              id: 'door-t',
+              d: straight(doorX, doorY, doorX + doorW, doorY),
+              weight: 1.45,
+              delay: 0.28,
+            },
+            ...openSquare(wx, wy, ws, 5, 'win', 0.32).map((l) => ({
+              ...l,
+              weight: 1.4,
+            })),
+            // gap markers — the neighbor used to live here
+            {
+              id: 'stub-peak',
+              d: stubPeak,
+              weight: 1.6,
               delay: 0.4,
-              opacity: 0.6,
+              opacity: 0.4,
+              dashed: true,
+              dashPattern: '4 7',
             },
             {
-              id: 'tiny-roof-r',
-              d: straight(570, 95, 545, 70),
-              weight: 1,
+              id: 'stub-eave',
+              d: stubEave,
+              weight: 1.5,
               delay: 0.42,
-              opacity: 0.6,
+              opacity: 0.4,
+              dashed: true,
+              dashPattern: '4 7',
             },
-            // grass suggestions
-            ...Array.from({ length: 40 }, (_, i) => {
-              const rand = mulberry32(200 + i)
-              const x = 40 + rand() * 920
-              const h = 8 + rand() * 22
-              return {
-                id: `grass-${i}`,
-                d: straight(x, groundY, x + (rand() - 0.5) * 6, groundY - h),
-                weight: 0.8 + rand(),
-                delay: 0.5 + i * 0.015,
-                opacity: 0.4 + rand() * 0.3,
-              } satisfies LineSpec
-            }),
-            // the loose fence line lying in grass
+            // ours — still holding its side of the roof
             {
-              id: 'loose',
-              d: straight(280, groundY - 18, 520, groundY - 8),
-              weight: 2.8,
-              delay: 0.15,
-              duration: 1.3,
+              id: 'the-one',
+              d: bentChord(peakX, peakY, rightEaveX, eavesY, 0.12),
+              color: 'bent',
+              weight: 3.2,
+              delay: 0.35,
+              duration: 1.25,
+            },
+            ...grass,
+            // the straight neighbor, done running, flat in the grass
+            {
+              id: 'loose-neighbor',
+              d: straight(200, groundY - 14, 560, groundY - 6),
+              weight: 2.9,
+              delay: 0.55,
+              duration: 1.4,
+              className: 'loose-settle',
             },
           ],
-        },
-        {
-          kind: 'bent',
-          transform: bentTransform(530, 82, 0.35, -8),
-          line: {
-            id: 'the-one',
-            d: BENT_PATH,
-            color: 'bent',
-            weight: 1.4,
-            delay: 0.45,
-            duration: 1,
-            opacity: 0.85,
-          },
         },
       ]
     }

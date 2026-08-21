@@ -136,11 +136,12 @@ export const pages: PageMeta[] = [
     title: 'One line comes loose',
     pages: 'pp 19–20',
     text: [
-      'Then one afternoon a line came loose.',
-      'Only one. From a fence, near the back, where nobody was looking.',
-      'It lay down in the grass, and nothing came to put it back.',
+      'Then one afternoon — just like that — a line came loose.',
+      'Only one. The straight neighbor on our roof.',
+      'It slipped off the back and lay down in the grass.',
+      'It did not want to be a roof anymore.',
     ],
-    craft: 'Quiet, not cruel.',
+    craft: 'Zoom house; straight neighbor slips; autonomy, not rescue.',
   },
   {
     id: 9,

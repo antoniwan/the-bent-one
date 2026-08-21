@@ -133,6 +133,11 @@
     animation-delay: -8s;
   }
 
+  .spread-art :global(.loose-settle) {
+    transform-origin: 380px 780px;
+    animation: loose-settle 3.2s ease-in-out infinite alternate;
+  }
+
   .spread-art :global(.rain-sheet) {
     animation: rain-fall 1.35s linear infinite;
   }
@@ -258,6 +263,15 @@
     }
   }
 
+  @keyframes loose-settle {
+    from {
+      transform: translate(0, 0) rotate(0deg);
+    }
+    to {
+      transform: translate(6px, 2px) rotate(0.8deg);
+    }
+  }
+
   @keyframes rain-fall {
     from {
       transform: translate(-24px, -70px);
@@ -292,7 +306,8 @@
     .spread-art :global(.flee-up-slow),
     .spread-art :global(.rain-sheet),
     .spread-art :global(.rain-deflect),
-    .spread-art :global(.bird-fly) {
+    .spread-art :global(.bird-fly),
+    .spread-art :global(.loose-settle) {
       animation: none;
     }
     .dot {
