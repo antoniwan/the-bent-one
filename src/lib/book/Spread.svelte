@@ -27,7 +27,8 @@
   let moreBelow = $state(false)
 
   const lang = $derived(langState.current)
-  const lines = $derived(resolveLines(spread.text, lang))
+  const gender = $derived(langState.esGender)
+  const lines = $derived(resolveLines(spread.text, lang, gender))
 
   function isWiggleLine(line: string) {
     return (

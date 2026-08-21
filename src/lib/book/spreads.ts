@@ -70,7 +70,7 @@ export const BOOK = {
  * - Treat difference as character, not a flaw that needs apology
  * - Observe with the reader; do not give orders
  * - The ending may stay unresolved without becoming cruel
- * - Spanish: feminine *línea*; short, playful, boricua-leaning beats for kids
+ * - Spanish: feminine *línea* in production; DEV can preview masculine (*trazo*)
  */
 export const pages: PageMeta[] = [
   {

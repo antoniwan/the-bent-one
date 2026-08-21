@@ -1,5 +1,8 @@
 export type Lang = 'en' | 'es'
 
+/** Spanish agreement gender. Production uses feminine (*línea*). */
+export type EsGender = 'm' | 'f'
+
 export type Localized<T> = { en: T; es: T }
 
 export type LocalizedString = Localized<string>
