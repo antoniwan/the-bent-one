@@ -213,6 +213,8 @@
   }
 
   .stage {
+    /* Mild zoom = bigger drawing in the same paper; no scene rewrite */
+    --art-zoom: 1;
     position: relative;
     width: min(100cqw, 100cqh);
     height: min(100cqw, 100cqh);
@@ -227,6 +229,8 @@
     width: 100%;
     height: 100%;
     display: block;
+    transform: scale(var(--art-zoom));
+    transform-origin: center center;
   }
 
   .stage.escape {
@@ -234,9 +238,20 @@
     z-index: 1;
   }
 
+  /* Page 10 already wants to press past the frame */
   .stage > :global(.spread-art.bleed) {
-    transform: scale(1.08);
-    transform-origin: center center;
+    --art-zoom: 1.08;
+  }
+
+  /* Desktop / tall stage: room to enlarge without crowding phones */
+  @media (min-width: 721px) {
+    .stage {
+      --art-zoom: 1.1;
+    }
+
+    .stage > :global(.spread-art.bleed) {
+      --art-zoom: 1.16;
+    }
   }
 
   .stage.boom {
