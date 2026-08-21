@@ -164,6 +164,14 @@
     animation: unravel-j3 0.28s steps(2, end) infinite alternate;
   }
 
+  .spread-art :global(.boom-shard) {
+    transform-origin: 500px 470px;
+  }
+
+  .spread-art.bleed :global(.boom-bent) {
+    animation: boom-fly 2.4s ease-in-out infinite alternate;
+  }
+
   .spread-art :global(.rain-sheet) {
     animation: rain-fall 1.35s linear infinite;
   }
@@ -332,6 +340,15 @@
     }
   }
 
+  @keyframes boom-fly {
+    from {
+      transform: translate(0, 0) scale(1);
+    }
+    to {
+      transform: translate(18px, -22px) scale(1.08);
+    }
+  }
+
   @keyframes rain-fall {
     from {
       transform: translate(-24px, -70px);
@@ -368,7 +385,8 @@
     .spread-art :global(.rain-deflect),
     .spread-art :global(.bird-fly),
     .spread-art :global(.loose-settle),
-    .spread-art :global(.unravel-jitter) {
+    .spread-art :global(.unravel-jitter),
+    .spread-art :global(.boom-bent) {
       animation: none;
     }
     .dot {

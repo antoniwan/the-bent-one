@@ -3,6 +3,7 @@
   import { BOOK, pages } from './spreads'
   import Spread from './Spread.svelte'
   import ReaderBar from './ReaderBar.svelte'
+  import BoomField from './BoomField.svelte'
   import ProseText from './ProseText.svelte'
   import {
     liveLabel,
@@ -156,7 +157,11 @@
 <div
   class="book"
   class:allow-escape={location.kind === 'page' && page?.id === 4}
+  class:allow-boom={location.kind === 'page' && page?.id === 10}
 >
+  {#if location.kind === 'page' && page?.id === 10}
+    <BoomField />
+  {/if}
   <header class="top">
     <p class="brand">
       <a href={pathForLocation({ kind: 'cover' })} onclick={(e) => { e.preventDefault(); goFirst() }}>
@@ -296,6 +301,17 @@
 
   .book.allow-escape {
     overflow: visible;
+  }
+
+  .book.allow-boom {
+    overflow: visible;
+  }
+
+  .book.allow-boom .top,
+  .book.allow-boom .stage-main,
+  .book.allow-boom :global(.reader-bar) {
+    position: relative;
+    z-index: 2;
   }
 
   .top {

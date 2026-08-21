@@ -160,15 +160,15 @@ export const pages: PageMeta[] = [
   {
     id: 10,
     slug: 'the-explosion',
-    title: 'The explosion',
+    title: 'BOOM!',
     pages: 'pp 23–24',
     text: [
-      'And then the house.',
-      'It did not fall so much as let go — all at once, in every direction — and for one second the whole thing was in the air.',
-      'Every line it had ever been, flying apart.',
-      'Ours was in there too.',
+      'And then the town went BOOM!',
+      'Houses! Boats! Wheels! The whole stack — WHOOSH — out!',
+      'Not down. Out. Straight at us!',
+      'Every line flying free. Ours too!',
     ],
-    craft: 'With them, not “look fast.”',
+    craft: 'Culmination; whole town; explosion toward reader; Seuss boom.',
   },
   {
     id: 11,

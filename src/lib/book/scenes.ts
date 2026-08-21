@@ -1608,87 +1608,112 @@ export function sceneForSpread(id: number): ScenePart[] {
       return unravelTown(99)
 
     case 10: {
-      // Frozen explosion — house parts flying, 2–3 decoy reds
+      // Culmination: house exploding outward toward the reader
       const rand = mulberry32(404)
+      const cx = 500
+      const cy = 470
       const shards: LineSpec[] = []
-      for (let i = 0; i < 48; i++) {
-        const angle = rand() * Math.PI * 2
-        const dist = 40 + rand() * 480
-        const cx = 500 + Math.cos(angle) * dist
-        const cy = 480 + Math.sin(angle) * dist
-        const len = 25 + rand() * 90
-        const a2 = angle + (rand() - 0.5) * 0.8
+
+      for (let i = 0; i < 84; i++) {
+        const angle = (i / 84) * Math.PI * 2 + (rand() - 0.5) * 0.12
+        const inner = 18 + rand() * 70
+        const outer = 260 + rand() * 340
+        const x1 = cx + Math.cos(angle) * inner
+        const y1 = cy + Math.sin(angle) * inner
+        const x2 = cx + Math.cos(angle) * outer
+        const y2 = cy + Math.sin(angle) * outer
         shards.push({
-          id: `shard-${i}`,
-          d: straight(
-            cx,
-            cy,
-            cx + Math.cos(a2) * len,
-            cy + Math.sin(a2) * len,
-          ),
-          weight: 1.2 + rand() * 2.5,
-          delay: 0.05 + rand() * 0.25,
-          duration: 0.5,
+          id: `boom-${i}`,
+          d: straight(x1, y1, x2, y2),
+          weight: 1 + (outer / 700) * 2.6,
+          delay: 0.02 + rand() * 0.22,
+          duration: 0.4 + rand() * 0.25,
+          opacity: 0.5 + rand() * 0.5,
+          className: 'boom-shard',
         })
       }
-      // recognizable house-ish cluster near center
+
+      // Mid-flight house bits (still readable as house-stuff)
       shards.push(
         {
           id: 'ex-wall',
-          d: straight(420, 400, 420, 560),
-          weight: 2.8,
-          delay: 0.1,
+          d: straight(cx - 55, cy - 40, cx - 70, cy + 90),
+          weight: 2.9,
+          delay: 0.08,
+          className: 'boom-shard',
         },
         {
           id: 'ex-wall2',
-          d: straight(580, 390, 600, 570),
-          weight: 2.4,
-          delay: 0.12,
+          d: straight(cx + 60, cy - 50, cx + 95, cy + 85),
+          weight: 2.5,
+          delay: 0.1,
+          className: 'boom-shard',
         },
         {
           id: 'ex-floor',
-          d: straight(400, 550, 620, 540),
+          d: straight(cx - 80, cy + 70, cx + 75, cy + 95),
           weight: 2.6,
+          delay: 0.12,
+          className: 'boom-shard',
+        },
+        {
+          id: 'ex-win',
+          d: straight(cx - 20, cy - 10, cx + 25, cy + 5),
+          weight: 1.6,
           delay: 0.14,
+          className: 'boom-shard',
+        },
+        {
+          id: 'ex-win2',
+          d: straight(cx - 20, cy + 20, cx + 25, cy + 35),
+          weight: 1.5,
+          delay: 0.15,
+          className: 'boom-shard',
+        },
+        {
+          id: 'ex-roof-bit',
+          d: straight(cx + 10, cy - 90, cx + 110, cy - 40),
+          weight: 2.2,
+          delay: 0.11,
+          className: 'boom-shard',
         },
       )
-      // decoy reds
+
       const decoys: LineSpec[] = [
         {
           id: 'decoy-1',
-          d: straight(180, 200, 260, 240),
+          d: straight(140, 160, 230, 210),
           color: 'decoy',
-          weight: 2.2,
-          delay: 0.2,
+          weight: 2.1,
+          delay: 0.18,
+          className: 'boom-shard',
         },
         {
           id: 'decoy-2',
-          d: straight(780, 620, 860, 580),
+          d: straight(820, 680, 920, 620),
           color: 'decoy',
           weight: 2,
-          delay: 0.22,
-        },
-        {
-          id: 'decoy-3',
-          d: straight(700, 180, 760, 260),
-          color: 'decoy',
-          weight: 1.8,
-          delay: 0.24,
+          delay: 0.2,
+          className: 'boom-shard',
         },
       ]
+
       return [
         { kind: 'lines', lines: [...shards, ...decoys] },
         {
-          kind: 'bent',
-          transform: bentTransform(470, 440, 1.2, 38),
-          line: {
-            id: 'the-one',
-            d: BENT_PATH,
-            color: 'bent',
-            weight: 2.5,
-            delay: 0.08,
-            duration: 0.7,
-          },
+          kind: 'group',
+          className: 'boom-bent',
+          transform: bentTransform(455, 400, 1.45, 42),
+          lines: [
+            {
+              id: 'the-one',
+              d: BENT_PATH,
+              color: 'bent',
+              weight: 2.8,
+              delay: 0.05,
+              duration: 0.65,
+            },
+          ],
         },
       ]
     }

@@ -53,7 +53,7 @@
   style="--page-delta: {direction > 0 ? '18px' : '-18px'}"
 >
   <div class="stage-slot">
-    <div class="stage" class:escape={spread.id === 4}>
+    <div class="stage" class:escape={spread.id === 4} class:boom={spread.id === 10}>
       <SpreadArt spreadId={spread.id} {playKey} />
       {#if onPrev}
         <button
@@ -145,8 +145,12 @@
   }
 
   .stage > :global(.spread-art.bleed) {
-    transform: scale(1.06);
+    transform: scale(1.08);
     transform-origin: center center;
+  }
+
+  .stage.boom {
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--line-ink) 8%, transparent);
   }
 
   .hotspot {
