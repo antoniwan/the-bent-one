@@ -330,18 +330,18 @@ export const pages: PageMeta[] = [
     text: {
       en: [
         'And then — wait — it wasn’t!',
-        'The bend popped out in the drifting!',
+        'The bend popped out in the drifting! The little belly… gone!',
         'What the… what the what?!',
-        'It was a line now, like the rest of them.',
+        'It was a plain little line now, like the rest of them.',
       ],
       es: [
-        'Y entonces — espera — ¡no era!',
-        '¡El doblez se salió mientras flotaba!',
+        'Y entonces — espera — ¡de momento!',
+        '¡El doblez se salió mientras flotaba! La barriguita… ¡desapareció!',
         '¿Qué… qué qué qué?!',
-        'Ahora era una línea, como las demás líneas.',
+        'Ahora era una línea sencillita, como las demás.',
       ],
     },
-    craft: 'Surprise beat; lively open, plain middle, quiet close.',
+    craft: 'Surprise beat: old EN rhythm + barriguita/gone; matching ES.',
   },
   {
     id: 13,
@@ -359,14 +359,14 @@ export const pages: PageMeta[] = [
       ],
       es: [
         'Entonces las líneas empezaron a encogerse.',
-        '¡¡Crack!! — justo donde estaban más delgadas.',
-        'Más chiquitas. Y más chiquitas. Y todavía más.',
+        '¡Fua! — justo donde estaban más delgadas.',
+        'Más chiquitas. ¡Rakata! Y más chiquitas. Y todavía más.',
         'Hasta que una línea era tan chiquita — que era un punto.',
         'Sólo puntos. Puntos y puntos y puntos y puntos y puntos y puntos y puntos.',
         'Uno de los puntos había sido nuestra pequeña línea roja. Estábamos casi seguros.',
       ],
     },
-    craft: 'Readable motion: shrink → snap → smaller → dot.',
+    craft: 'Readable motion: shrink → Fua snap → Rakata cascade → dot.',
   },
   {
     id: 14,

@@ -164,6 +164,9 @@ const GEOMETRIC_ES: string[] = [
   'caja',
   'cubos',
   'cubo',
+  'barriguita',
+  'sencillita',
+  'sencilla',
 ]
 
 const RED_EN = 'red'
