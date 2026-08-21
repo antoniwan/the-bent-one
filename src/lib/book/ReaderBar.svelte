@@ -1,6 +1,10 @@
 <script lang="ts">
   import { pages } from './spreads'
   import type { BookLocation } from './paths'
+  import { langState, setLanguage } from './language.svelte'
+  import { pick } from './lang'
+  import { pageProgressLabel, ui } from './ui'
+  import LanguageToggle from './LanguageToggle.svelte'
 
   interface Props {
     location: BookLocation
@@ -13,35 +17,34 @@
 
   let { location, onPrev, onNext, onFirst, onLast, onGoPage }: Props = $props()
 
+  const lang = $derived(langState.current)
   const isCover = $derived(location.kind === 'cover')
   const isBack = $derived(location.kind === 'back')
   const storyNumber = $derived(
     location.kind === 'page' ? location.index + 1 : null,
   )
   const pageLabel = $derived.by(() => {
-    if (location.kind === 'cover') return 'Cover'
-    if (location.kind === 'front') return 'Before we begin'
-    if (location.kind === 'back') return 'The end'
-    return `Page ${location.index + 1} of ${pages.length}`
+    if (location.kind === 'cover') return ui('cover', lang)
+    if (location.kind === 'front') return ui('beforeWeBegin', lang)
+    if (location.kind === 'back') return ui('theEndLabel', lang)
+    return pageProgressLabel(lang, location.index, pages.length)
   })
   const nextLabel = $derived.by(() => {
-    if (location.kind === 'cover' || location.kind === 'front') return 'Next'
     if (location.kind === 'page' && location.index === pages.length - 1)
-      return 'Close'
-    if (location.kind === 'back') return 'Next'
-    return 'Next'
+      return ui('close', lang)
+    return ui('next', lang)
   })
 </script>
 
 {#if !isCover}
-  <nav class="reader-bar" aria-label="Book navigation">
+  <nav class="reader-bar" aria-label={ui('bookNav', lang)}>
     <div class="cluster">
       <button
         type="button"
         class="icon-btn"
         onclick={onFirst}
-        aria-label="Go to the beginning"
-        title="Beginning"
+        aria-label={ui('goBeginning', lang)}
+        title={ui('beginning', lang)}
       >
         ⇤
       </button>
@@ -49,15 +52,15 @@
         type="button"
         class="text-btn"
         onclick={onPrev}
-        aria-label="Previous page"
+        aria-label={ui('previousPage', lang)}
       >
-        Back
+        {ui('back', lang)}
       </button>
     </div>
 
     <div class="center">
       <p class="page-label">{pageLabel}</p>
-      <div class="dots" role="tablist" aria-label="Pages">
+      <div class="dots" role="tablist" aria-label={ui('pagesNav', lang)}>
         {#each pages as page, i}
           <button
             type="button"
@@ -68,12 +71,13 @@
               location.kind === 'back' ||
               (location.kind === 'page' && location.index > i)
             }
-            aria-label="Page {page.id}: {page.title}"
+            aria-label="{page.id}: {pick(page.title, lang)}"
             aria-current={storyNumber === i + 1 ? 'page' : undefined}
             onclick={() => onGoPage(i)}
           ></button>
         {/each}
       </div>
+      <LanguageToggle language={lang} onChange={setLanguage} />
     </div>
 
     <div class="cluster end">
@@ -82,7 +86,7 @@
         class="text-btn"
         onclick={onNext}
         disabled={isBack}
-        aria-label="Next page"
+        aria-label={ui('nextPage', lang)}
       >
         {nextLabel}
       </button>
@@ -91,8 +95,8 @@
         class="icon-btn"
         onclick={onLast}
         disabled={isBack}
-        aria-label="Go to the end"
-        title="End"
+        aria-label={ui('goEnd', lang)}
+        title={ui('end', lang)}
       >
         ⇥
       </button>
@@ -178,44 +182,34 @@
     color: var(--ink);
     cursor: pointer;
     padding: 0.4rem 0.35rem;
+    border-radius: 0.35rem;
   }
 
-  .icon-btn {
-    font-size: 1rem;
-    line-height: 1;
-    opacity: 0.7;
+  .text-btn:hover,
+  .icon-btn:hover {
+    background: color-mix(in srgb, var(--ink) 6%, transparent);
   }
 
   .text-btn:disabled,
   .icon-btn:disabled {
-    opacity: 0.3;
+    opacity: 0.35;
     cursor: default;
   }
 
-  .text-btn:not(:disabled):hover,
-  .icon-btn:not(:disabled):hover {
-    color: var(--line-bent);
-    opacity: 1;
+  .text-btn:disabled:hover,
+  .icon-btn:disabled:hover {
+    background: none;
   }
 
   @media (max-width: 520px) {
     .reader-bar {
-      grid-template-columns: 1fr 1fr;
-      grid-template-areas:
-        'center center'
-        'prev next';
+      grid-template-columns: 1fr;
+      gap: 0.55rem;
     }
 
-    .center {
-      grid-area: center;
-    }
-
-    .cluster:first-child {
-      grid-area: prev;
-    }
-
+    .cluster,
     .cluster.end {
-      grid-area: next;
+      justify-content: center;
     }
   }
 </style>

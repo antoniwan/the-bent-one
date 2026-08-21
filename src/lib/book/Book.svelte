@@ -5,6 +5,10 @@
   import ReaderBar from './ReaderBar.svelte'
   import BoomField from './BoomField.svelte'
   import ProseText from './ProseText.svelte'
+  import LanguageToggle from './LanguageToggle.svelte'
+  import { pick } from './lang'
+  import { ui } from './ui'
+  import { initLanguage, langState, setLanguage } from './language.svelte'
   import {
     liveLabel,
     locationToStep,
@@ -26,10 +30,11 @@
   let playKey = $state(0)
   let resumeStep = $state(0)
 
+  const lang = $derived(langState.current)
   const page = $derived(
     location.kind === 'page' ? pages[location.index] : null,
   )
-  const announcement = $derived(liveLabel(location))
+  const announcement = $derived(liveLabel(location, lang))
   const showContinue = $derived(canResume(resumeStep))
 
   function go(loc: BookLocation, dir?: 1 | -1, replace = false) {
@@ -107,6 +112,7 @@
   }
 
   onMount(() => {
+    initLanguage()
     resumeStep = readResumeStep()
     const fromUrl = syncLocationFromUrl()
     location = fromUrl
@@ -176,17 +182,17 @@
   <header class="top">
     <p class="brand">
       <a href={pathForLocation({ kind: 'cover' })} onclick={(e) => { e.preventDefault(); goFirst() }}>
-        {BOOK.title}
+        {pick(BOOK.title, lang)}
       </a>
     </p>
     <p class="meta">
       {#if location.kind === 'page' && page}
         <span class="num">{String(page.id).padStart(2, '0')}</span>
-        <span class="title">{page.title}</span>
+        <span class="title">{pick(page.title, lang)}</span>
       {:else if location.kind === 'front'}
-        <span class="quiet">Before we begin</span>
+        <span class="quiet">{ui('beforeWeBegin', lang)}</span>
       {:else if location.kind === 'back'}
-        <span class="quiet">The end</span>
+        <span class="quiet">{ui('theEndLabel', lang)}</span>
       {/if}
     </p>
   </header>
@@ -200,30 +206,37 @@
     {#key playKey}
       {#if location.kind === 'cover'}
         <section class="cover-screen screen-in">
-          <div class="cover-stage">
-            <svg viewBox="0 0 1000 1000" class="cover-art" aria-hidden="true">
-              <path
-                class="cover-line"
-                d="M 420 470 L 452 472 L 460 461 L 468 471 L 540 470"
-                fill="none"
-                stroke="var(--line-bent)"
-                stroke-width="2.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </div>
-          <p class="eyebrow">{BOOK.kind}</p>
-          <h1>{BOOK.title}</h1>
-          <p class="deck"><ProseText text={BOOK.deck} /></p>
-          <p class="byline">by {BOOK.author}</p>
+          <svg
+            viewBox="0 0 200 48"
+            class="cover-mark"
+            aria-hidden="true"
+          >
+            <path
+              class="cover-line"
+              d="M 28 28 L 72 30 L 84 14 L 96 29 L 172 28"
+              fill="none"
+              stroke="var(--line-bent)"
+              stroke-width="2.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <p class="eyebrow">{pick(BOOK.kind, lang)}</p>
+          <h1>{pick(BOOK.title, lang)}</h1>
+          <p class="deck"><ProseText text={pick(BOOK.deck, lang)} {lang} /></p>
+          <p class="byline">{ui('by', lang)} {pick(BOOK.author, lang)}</p>
           <div class="cta-row">
-            <button type="button" class="cta" onclick={openBook}>Before we begin</button>
+            <button type="button" class="cta" onclick={openBook}
+              >{ui('beforeWeBegin', lang)}</button
+            >
             {#if showContinue}
               <button type="button" class="cta ghost" onclick={continueReading}>
-                Continue reading
+                {ui('continueReading', lang)}
               </button>
             {/if}
+          </div>
+          <div class="cover-lang">
+            <LanguageToggle language={lang} onChange={setLanguage} />
           </div>
         </section>
       {:else if location.kind === 'front'}
@@ -255,11 +268,13 @@
             </svg>
           </div>
           <div class="rule">
-            {#each BOOK.rule as para}
-              <p><ProseText text={para} /></p>
+            {#each pick(BOOK.rule, lang) as para}
+              <p><ProseText text={para} {lang} /></p>
             {/each}
           </div>
-          <button type="button" class="cta" onclick={startReading}>Begin</button>
+          <button type="button" class="cta" onclick={startReading}
+            >{ui('begin', lang)}</button
+          >
         </section>
       {:else if location.kind === 'page' && page}
         <Spread
@@ -275,12 +290,16 @@
             <span></span><span></span><span></span>
           </div>
           <div class="coda">
-            {#each BOOK.coda as para, i}
-              <p class:moral={i > 0}><ProseText text={para} /></p>
+            {#each pick(BOOK.coda, lang) as para, i}
+              <p class:moral={i > 0}><ProseText text={para} {lang} /></p>
             {/each}
           </div>
-          <p class="credit">{BOOK.credit} · {BOOK.author}</p>
-          <button type="button" class="cta ghost" onclick={goFirst}>Start again</button>
+          <p class="credit">
+            {pick(BOOK.credit, lang)} · {pick(BOOK.author, lang)}
+          </p>
+          <button type="button" class="cta ghost" onclick={goFirst}
+            >{ui('startAgain', lang)}</button
+          >
         </section>
       {/if}
     {/key}
@@ -445,25 +464,17 @@
     animation: page-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
-  .cover-stage {
-    width: min(280px, 55vw);
-    aspect-ratio: 1;
-    background: var(--paper);
-    border: 1px solid var(--rule);
-    margin-bottom: 0.5rem;
-    display: grid;
-    place-items: center;
-  }
-
-  .cover-art {
-    width: 100%;
-    height: 100%;
+  .cover-mark {
+    width: min(11rem, 42vw);
+    height: auto;
+    margin-bottom: 0.15rem;
+    overflow: visible;
   }
 
   .cover-line {
-    stroke-dasharray: 160;
-    stroke-dashoffset: 160;
-    animation: draw-cover 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    animation: draw-cover 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.25s forwards;
   }
 
   @keyframes draw-cover {
@@ -524,6 +535,10 @@
     gap: 0.75rem;
     justify-content: center;
     margin-top: 0.5rem;
+  }
+
+  .cover-lang {
+    margin-top: 0.35rem;
   }
 
   .cta {
@@ -639,6 +654,7 @@
     .top,
     :global(.reader-bar),
     .cta-row,
+    .cover-lang,
     .cta {
       display: none !important;
     }

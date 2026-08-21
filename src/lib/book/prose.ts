@@ -1,3 +1,5 @@
+import type { Lang } from './lang'
+
 export type ProsePart =
   | { kind: 'text'; value: string }
   | { kind: 'geo'; value: string }
@@ -5,9 +7,9 @@ export type ProsePart =
 
 /**
  * Geometric figures, qualities, and book-notions — always italic in prose.
- * Longer phrases first so “the bent one” wins over “bent”.
+ * Longer phrases first so “the bent one” / “el torcido” win over shorter tokens.
  */
-const GEOMETRIC: string[] = [
+const GEOMETRIC_EN: string[] = [
   'the bent one',
   'hexagon',
   'triangles',
@@ -66,24 +68,116 @@ const GEOMETRIC: string[] = [
   'flat',
 ]
 
-const geoPattern = GEOMETRIC.map(escapeRegExp).join('|')
-const tokenPattern = new RegExp(`\\b(?:${geoPattern}|red)\\b`, 'gi')
+const GEOMETRIC_ES: string[] = [
+  'el torcido',
+  'hexágono',
+  'triángulos',
+  'triángulo',
+  'montañas',
+  'montaña',
+  'ventanas',
+  'ventana',
+  'persianas',
+  'persiana',
+  'cuadrados',
+  'cuadrado',
+  'círculos',
+  'círculo',
+  'formas',
+  'forma',
+  'ruedas',
+  'rueda',
+  'velas',
+  'vela',
+  'picos',
+  'pico',
+  'pájaros',
+  'pájaro',
+  'esquinas',
+  'esquina',
+  'uniones',
+  'unión',
+  'casas',
+  'casa',
+  'barcos',
+  'barco',
+  'techos',
+  'techo',
+  'cercas',
+  'cerca',
+  'líneas',
+  'línea',
+  'medio',
+  'dobleces',
+  'doblez',
+  'torcidas',
+  'torcidos',
+  'torcida',
+  'torcido',
+  'puntos',
+  'punto',
+  'pedacitos',
+  'pedazos',
+  'pedazo',
+  'delgadas',
+  'delgada',
+  'delgado',
+  'fina',
+  'fino',
+  'cortas',
+  'corta',
+  'corto',
+  'explosión',
+  'rectas',
+  'recta',
+  'rectos',
+  'recto',
+  'chueca',
+  'chueco',
+  'rayitas',
+  'aparte',
+  'planas',
+  'plana',
+  'plano',
+]
+
+const RED_EN = 'red'
+const RED_ES = 'roja|rojo|rojas|rojos'
 
 function escapeRegExp(value: string) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
+const patternByLang: Record<Lang, RegExp> = {
+  en: new RegExp(
+    `\\b(?:${GEOMETRIC_EN.map(escapeRegExp).join('|')}|${RED_EN})\\b`,
+    'gi',
+  ),
+  es: new RegExp(
+    `\\b(?:${GEOMETRIC_ES.map(escapeRegExp).join('|')}|${RED_ES})\\b`,
+    'gi',
+  ),
+}
+
+const redTestByLang: Record<Lang, RegExp> = {
+  en: /^red$/i,
+  es: /^(roja|rojo|rojas|rojos)$/i,
+}
+
 /** Split a prose string into plain / geometric / red parts. */
-export function tokenizeProse(input: string): ProsePart[] {
+export function tokenizeProse(input: string, lang: Lang = 'en'): ProsePart[] {
   const parts: ProsePart[] = []
   let last = 0
+  const tokenPattern = patternByLang[lang]
+  const redTest = redTestByLang[lang]
+
   for (const match of input.matchAll(tokenPattern)) {
     const value = match[0]
     const index = match.index ?? 0
     if (index > last) {
       parts.push({ kind: 'text', value: input.slice(last, index) })
     }
-    if (value.toLowerCase() === 'red') {
+    if (redTest.test(value)) {
       parts.push({ kind: 'red', value })
     } else {
       parts.push({ kind: 'geo', value })

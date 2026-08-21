@@ -1,12 +1,14 @@
 <script lang="ts">
   import { tokenizeProse } from './prose'
+  import type { Lang } from './lang'
 
   interface Props {
     text: string
+    lang?: Lang
   }
 
-  let { text }: Props = $props()
-  const parts = $derived(tokenizeProse(text))
+  let { text, lang = 'en' }: Props = $props()
+  const parts = $derived(tokenizeProse(text, lang))
 </script>
 
 {#each parts as part}

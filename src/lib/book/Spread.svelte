@@ -3,6 +3,9 @@
   import SpreadArt from './SpreadArt.svelte'
   import ProseText from './ProseText.svelte'
   import type { SpreadMeta } from './spreads'
+  import { langState } from './language.svelte'
+  import { pick } from './lang'
+  import { ui } from './ui'
 
   interface Props {
     spread: SpreadMeta
@@ -23,6 +26,15 @@
   let proseEl: HTMLDivElement | undefined = $state()
   let moreBelow = $state(false)
 
+  const lang = $derived(langState.current)
+  const lines = $derived(pick(spread.text, lang))
+
+  function isWiggleLine(line: string) {
+    return (
+      line.startsWith('What is even') || line.startsWith('¡¿Qué está pasando')
+    )
+  }
+
   function updateScrollCue() {
     const el = proseEl
     if (!el) {
@@ -34,9 +46,10 @@
   }
 
   $effect(() => {
-    // Re-measure when page or draw cycle changes
+    // Re-measure when page, language, or draw cycle changes
     void spread.id
     void playKey
+    void lang
     void tick().then(() => {
       updateScrollCue()
       requestAnimationFrame(updateScrollCue)
@@ -59,7 +72,7 @@
         <button
           type="button"
           class="hotspot left"
-          aria-label="Previous page"
+          aria-label={ui('previousPage', lang)}
           onclick={onPrev}
         ></button>
       {/if}
@@ -67,7 +80,7 @@
         <button
           type="button"
           class="hotspot right"
-          aria-label="Next page"
+          aria-label={ui('nextPage', lang)}
           onclick={onNext}
         ></button>
       {/if}
@@ -80,25 +93,25 @@
       bind:this={proseEl}
       onscroll={updateScrollCue}
     >
-      {#each spread.text as line, i}
+      {#each lines as line, i}
         <p
           class="line"
           class:lead={i === 0}
-          class:wiggle={spread.id === 9 && line.startsWith('What is even')}
-          class:moral={spread.id === 14 && i === spread.text.length - 1}
+          class:wiggle={spread.id === 9 && isWiggleLine(line)}
+          class:moral={spread.id === 14 && i === lines.length - 1}
           style="--i: {i}"
         >
-          <ProseText text={line} />
+          <ProseText text={line} {lang} />
         </p>
       {/each}
     </div>
     {#if moreBelow}
       <div class="scroll-cue" aria-hidden="true">
-        <span class="scroll-cue-label">More ↓</span>
+        <span class="scroll-cue-label">{ui('more', lang)}</span>
       </div>
     {/if}
     {#if spread.id === 14}
-      <p class="the-end">The End</p>
+      <p class="the-end">{ui('theEnd', lang)}</p>
     {/if}
   </div>
 </article>

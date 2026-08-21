@@ -1,6 +1,6 @@
 # The Bent One — TODO
 
-Reference reader UX: [book-sun-and-moon](https://github.com/antoniwan/book-sun-and-moon).
+Reference reader: [Mia, the Sun, and the Moon](https://mia-the-sun-and-the-moon-web-book.stronghandssoftheart.com/) · [repo](https://github.com/antoniwan/book-sun-and-moon).
 
 ## Locked — do not break lightly
 
@@ -12,6 +12,36 @@ Reference reader UX: [book-sun-and-moon](https://github.com/antoniwan/book-sun-a
 
 ---
 
+## Gap vs Mia (release checklist)
+
+| Feature | Mia | Bent One |
+|---------|-----|----------|
+| EN / ES toggle + persisted lang | yes | **done** |
+| Bilingual story + chrome | yes | **done** (ES polish pass still open) |
+| SEO: OG / Twitter / canonical / JSON-LD | yes | **done** (confirm live URL + raster OG) |
+| `document.documentElement.lang` + live meta | yes | **done** |
+| Web app manifest + theme-color | yes | **done** |
+| Analytics (gtag) | yes | optional / later |
+| Portfolio / credit link in bar | yes | optional |
+| Version stamp | yes | skip unless needed |
+| Cover social image (raster) | yes | need export after first deploy URL |
+
+Already matched: page URLs, history, swipe, keyboard, dots, resume, live region, print CSS (basic), Vercel SPA fallback, cover continue, page hotspots.
+
+**Skipped on purpose:** read aloud / Web Speech (Mia has it; this book won’t).
+
+---
+
+## Now (release path)
+
+- [x] **EN / ES toggle** — cover + reader bar; persist; swap all reader copy
+- [x] **Spanish translation** — full book voice (editor pass; polish welcome)
+- [x] **SEO pack** — `index.html` meta, OG/Twitter, JSON-LD Book, canonical, manifest, `applyDocumentMeta(lang)`
+- [ ] Confirm production `VITE_SITE_URL` + raster `/og.jpg` (or PNG) once domain is known
+- [ ] Spanish copy polish pass (kid-ear pass)
+
+---
+
 ## Voice & framing
 
 - [x] Say **page**, not spread, in the UI
@@ -19,9 +49,10 @@ Reference reader UX: [book-sun-and-moon](https://github.com/antoniwan/book-sun-a
 - [x] Cover deck invites without dumping the arc; front matter holds the rule
 - [x] Front matter = possibility + placement + the bent red one (editor voice, not feedback paste)
 - [x] CTA flow: cover **Before we begin** → front matter → **Begin** (page 1)
-- [x] Prose styling: geometric terms italic; **red** bold in `--line-bent`
+- [x] Prose styling: geometric terms italic; **red** / **rojo** bold in `--line-bent`
 - [x] **Positive-values pass** on all story copy (curiosity, care, difference-as-character; no hunt commands / no “not good” judgment)
 - [ ] Keep applying this voice on future page art + copy edits before moving on
+- [x] Back matter afterglow (not a second ending); matches page 14 moral without rehashing it
 
 ---
 
@@ -38,10 +69,10 @@ Reference reader UX: [book-sun-and-moon](https://github.com/antoniwan/book-sun-a
 
 ---
 
-## Optional (later)
+## Later / optional
 
-- [ ] Read aloud — Web Speech; longer pause after page 12’s first line
-- [ ] Bilingual EN/ES — only after translation exists
+- [ ] Analytics (only with a real measurement ID)
+- [ ] Portfolio link in reader chrome
 - [x] Print stylesheet (basic)
 - [x] `vercel.json` SPA fallback
 

@@ -1,4 +1,7 @@
 import { pages } from './spreads'
+import type { Lang } from './lang'
+import { pageOfLabel, ui } from './ui'
+import { pick } from './lang'
 
 export type BookLocation =
   | { kind: 'cover' }
@@ -43,10 +46,10 @@ export function locationFromPathname(pathname: string): BookLocation | null {
   return { kind: 'page', index }
 }
 
-export function liveLabel(loc: BookLocation): string {
-  if (loc.kind === 'cover') return 'Cover'
-  if (loc.kind === 'front') return 'Before we begin'
-  if (loc.kind === 'back') return 'The end'
+export function liveLabel(loc: BookLocation, lang: Lang = 'en'): string {
+  if (loc.kind === 'cover') return ui('cover', lang)
+  if (loc.kind === 'front') return ui('beforeWeBegin', lang)
+  if (loc.kind === 'back') return ui('theEndLabel', lang)
   const s = pages[loc.index]
-  return `Page ${s.id} of ${pages.length}: ${s.title}`
+  return pageOfLabel(lang, s.id, pages.length, pick(s.title, lang))
 }
