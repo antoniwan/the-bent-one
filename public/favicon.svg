@@ -1,13 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" role="img" aria-label="The Bent One">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="The Bent One">
+  <!-- Tab favicon: thick bent line, readable at 16–32px -->
   <rect width="32" height="32" fill="#f7f4ef"/>
-  <g transform="translate(3.5 18.5) scale(0.25)">
-    <path
-      d="M 0 0 L 32 1.5 L 40 -9 L 48 1 L 100 0"
-      fill="none"
-      stroke="#c0182a"
-      stroke-width="10"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
-  </g>
+  <path
+    d="M 3.5 18.5 L 11.5 19 L 14.5 11.5 L 17.5 18.8 L 28.5 18.2"
+    fill="none"
+    stroke="#c0182a"
+    stroke-width="3.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
 </svg>

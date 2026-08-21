@@ -317,7 +317,7 @@ export const pages: PageMeta[] = [
         'Ni casas. Ni barcos. Ni ruedas.',
         'Sólo líneas. Unos pedacitos, flotando.',
         'Nuestra línea seguía doblada — pero empezó a menearse.',
-        'Ay no. ¿Otro bum?!',
+        '¡Anda! ¿Otro bum?!',
       ],
     },
     craft: 'Aftermath in clear beats; brief wiggle tease.',

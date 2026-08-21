@@ -48,7 +48,7 @@ Set `VITE_SITE_URL` to the production origin (no trailing slash) before build so
 
 Social card: `public/og.png` (1200×630 bent red line). SVG source: `public/og.svg`.
 
-Icons: `favicon.svg`, `favicon-32.png`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`.
+Icons: `favicon.svg`, `favicon.ico`, `favicon-16/32/48.png`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png`, `safari-pinned-tab.svg`.
 
 Crawlers: `public/robots.txt`, `public/sitemap.xml`. Meta + JSON-LD live in `index.html`; language switches update them via `src/lib/book/seo.ts`.
 

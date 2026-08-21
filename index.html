@@ -22,6 +22,7 @@
     <meta name="theme-color" content="#f7f4ef" />
     <meta name="msapplication-TileColor" content="#f7f4ef" />
     <meta name="msapplication-TileImage" content="/icon-192.png" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
     <link rel="canonical" href="https://the-bent-one.vercel.app/" />
     <link
       rel="alternate"
@@ -39,10 +40,18 @@
       href="https://the-bent-one.vercel.app/"
     />
 
-    <!-- Icons -->
+    <!-- Icons: SVG first, then PNG / ICO fallbacks -->
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon-16.png" type="image/png" sizes="16x16" />
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link
+      rel="mask-icon"
+      href="/safari-pinned-tab.svg"
+      color="#c0182a"
+    />
     <link rel="manifest" href="/manifest.json" />
     <meta name="application-name" content="The Bent One" />
     <meta name="apple-mobile-web-app-title" content="The Bent One" />

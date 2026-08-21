@@ -25,6 +25,8 @@
 
   let proseEl: HTMLDivElement | undefined = $state()
   let moreBelow = $state(false)
+  /** Page 11: bent line stays still until the “started wiggling” cue. */
+  let bentWiggleActive = $state(false)
 
   const lang = $derived(langState.current)
   const gender = $derived(langState.esGender)
@@ -34,6 +36,12 @@
     return (
       line.startsWith('But… what is even') ||
       line.startsWith('Pero… ¡¿qué está pasando')
+    )
+  }
+
+  function isBentWiggleCue(line: string) {
+    return (
+      line.includes('started wiggling') || line.includes('empezó a menearse')
     )
   }
 
@@ -57,6 +65,57 @@
       requestAnimationFrame(updateScrollCue)
     })
   })
+
+  $effect(() => {
+    bentWiggleActive = false
+    if (spread.id !== 11) return
+
+    void playKey
+    void lang
+    let cancelled = false
+    let observer: IntersectionObserver | undefined
+    /** Let the bent stroke finish drawing (~1.2s) before it may wiggle. */
+    const minDelayMs = 1400
+    const readyAt = Date.now() + minDelayMs
+
+    void tick().then(() => {
+      if (cancelled || !proseEl) return
+      const cue = proseEl.querySelector('[data-bent-wiggle-cue]')
+      if (!cue) return
+
+      const tryStart = () => {
+        if (cancelled || bentWiggleActive) return
+        const wait = Math.max(0, readyAt - Date.now())
+        window.setTimeout(() => {
+          if (!cancelled) bentWiggleActive = true
+        }, wait)
+      }
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting && e.intersectionRatio >= 0.45)) {
+            tryStart()
+            observer?.disconnect()
+          }
+        },
+        { root: proseEl, threshold: [0.45, 0.75, 1] },
+      )
+      observer.observe(cue)
+
+      // If the cue is already on screen (short pages / large type), start after delay.
+      const rootBox = proseEl.getBoundingClientRect()
+      const cueBox = cue.getBoundingClientRect()
+      if (cueBox.top < rootBox.bottom && cueBox.bottom > rootBox.top) {
+        tryStart()
+        observer.disconnect()
+      }
+    })
+
+    return () => {
+      cancelled = true
+      observer?.disconnect()
+    }
+  })
 </script>
 
 <article
@@ -69,7 +128,11 @@
 >
   <div class="stage-slot">
     <div class="stage" class:escape={spread.id === 4} class:boom={spread.id === 10}>
-      <SpreadArt spreadId={spread.id} {playKey} />
+      <SpreadArt
+        spreadId={spread.id}
+        {playKey}
+        bentWiggleActive={spread.id === 11 && bentWiggleActive}
+      />
       {#if onPrev}
         <button
           type="button"
@@ -101,6 +164,9 @@
           class:lead={i === 0}
           class:wiggle={spread.id === 9 && isWiggleLine(line)}
           class:moral={spread.id === 14 && i === lines.length - 1}
+          data-bent-wiggle-cue={spread.id === 11 && isBentWiggleCue(line)
+            ? ''
+            : undefined}
           style="--i: {i}"
         >
           <ProseText text={line} {lang} />

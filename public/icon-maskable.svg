@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="The Bent One">
-  <!-- App icon (any): cream field + canonical bent path -->
+  <!-- Maskable: ~20% safe padding so Android masks dont clip the bend -->
   <rect width="512" height="512" fill="#f7f4ef"/>
   <path
-    d="M 64 300 L 198 308 L 240 214 L 284 304 L 448 296"
+    d="M 110 300 L 210 306 L 244 236 L 278 304 L 402 296"
     fill="none"
     stroke="#c0182a"
-    stroke-width="36"
+    stroke-width="32"
     stroke-linecap="round"
     stroke-linejoin="round"
   />

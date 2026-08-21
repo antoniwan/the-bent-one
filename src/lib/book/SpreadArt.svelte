@@ -6,9 +6,11 @@
   interface Props {
     spreadId: number
     playKey: number
+    /** Page 11: start bent wiggle when the prose cue is reached */
+    bentWiggleActive?: boolean
   }
 
-  let { spreadId, playKey }: Props = $props()
+  let { spreadId, playKey, bentWiggleActive = false }: Props = $props()
 
   const parts = $derived(sceneForSpread(spreadId))
 
@@ -26,6 +28,7 @@
     class:bleed={spreadId === 10}
     class:peak={spreadId === 7}
     class:escape={spreadId === 4}
+    class:bent-live={bentWiggleActive}
     viewBox="0 0 1000 1000"
     role="img"
     aria-label="Illustration for page {spreadId}"
@@ -171,8 +174,12 @@
   }
 
   .spread-art :global(.bent-wiggle) {
-    animation: bent-wiggle 0.2s steps(2, end) infinite;
     will-change: transform;
+  }
+
+  /* Idle until prose cue — then wiggle */
+  .spread-art.bent-live :global(.bent-wiggle) {
+    animation: bent-wiggle 0.2s steps(2, end) infinite;
   }
 
   .spread-art.bleed :global(.boom-bent) {
@@ -406,7 +413,8 @@
     .spread-art :global(.loose-settle),
     .spread-art :global(.unravel-jitter),
     .spread-art :global(.boom-bent),
-    .spread-art :global(.bent-wiggle) {
+    .spread-art :global(.bent-wiggle),
+    .spread-art.bent-live :global(.bent-wiggle) {
       animation: none;
     }
     .dot {
