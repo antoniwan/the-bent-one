@@ -313,6 +313,12 @@
               <p class:moral={i > 0}><ProseText text={para} {lang} /></p>
             {/each}
           </div>
+          <p class="credit">
+            {pick(BOOK.credit, lang)} · {pick(BOOK.author, lang)}
+          </p>
+          <button type="button" class="cta ghost" onclick={goFirst}
+            >{ui('startAgain', lang)}</button
+          >
           <details class="dedication">
             <summary>{ui('dedication', lang)}</summary>
             <div class="dedication-body">
@@ -321,12 +327,6 @@
               {/each}
             </div>
           </details>
-          <p class="credit">
-            {pick(BOOK.credit, lang)} · {pick(BOOK.author, lang)}
-          </p>
-          <button type="button" class="cta ghost" onclick={goFirst}
-            >{ui('startAgain', lang)}</button
-          >
         </section>
       {/if}
     {/key}
@@ -688,6 +688,7 @@
     max-width: 22rem;
     margin: 0;
     font-family: var(--font-body);
+    interpolate-size: allow-keywords;
   }
 
   .dedication summary {
@@ -698,6 +699,9 @@
     text-transform: none;
     color: color-mix(in srgb, var(--line-bent) 72%, var(--ink));
     user-select: none;
+    transition:
+      color 0.28s ease,
+      transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .dedication summary::-webkit-details-marker {
@@ -708,18 +712,44 @@
     content: none;
   }
 
-  .dedication summary:hover,
+  .dedication summary:hover {
+    color: var(--ink-soft);
+    transform: translateX(2px);
+  }
+
   .dedication[open] summary {
     color: var(--ink-soft);
+  }
+
+  /* Smooth expand/collapse where supported (Chrome 131+, etc.) */
+  .dedication::details-content {
+    block-size: 0;
+    opacity: 0;
+    overflow: clip;
+    transition:
+      block-size 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.35s ease,
+      content-visibility 0.45s allow-discrete;
+  }
+
+  .dedication[open]::details-content {
+    block-size: auto;
+    opacity: 1;
   }
 
   .dedication-body {
     margin-top: 0.55rem;
     padding-top: 0.45rem;
-    border-top: 1px solid color-mix(in srgb, var(--rule) 70%, transparent);
+    border-top: 1px solid transparent;
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
+    transition: border-top-color 0.35s ease;
+  }
+
+  .dedication[open] .dedication-body {
+    border-top-color: color-mix(in srgb, var(--rule) 70%, transparent);
+    animation: dedication-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .dedication-body p {
@@ -727,6 +757,17 @@
     font-size: 0.82rem;
     line-height: 1.45;
     color: var(--ink-soft);
+  }
+
+  @keyframes dedication-in {
+    from {
+      opacity: 0;
+      transform: translateY(-0.4rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .credit {
@@ -749,6 +790,16 @@
 
   @media (prefers-reduced-motion: reduce) {
     .screen-in {
+      animation: none;
+    }
+
+    .dedication summary,
+    .dedication::details-content,
+    .dedication-body {
+      transition: none;
+    }
+
+    .dedication[open] .dedication-body {
       animation: none;
     }
   }

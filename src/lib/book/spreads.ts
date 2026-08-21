@@ -54,11 +54,11 @@ export const BOOK = {
    */
   coda: {
     en: [
-      'Between us? I never wanted that little red one to straighten out.',
+      'Between us? I never wanted that little red line to straighten out.',
       'A bend is just a bend. You’re allowed to have one.',
     ],
     es: [
-      'Entre tú y yo: yo nunca quise que esa rojita se enderezara.',
+      'Entre tú y yo: yo nunca quise que esa pequeña línea roja se enderezara.',
       'Un doblez es sólo un doblez. Tú también puedes tener uno.',
     ],
   } satisfies LocalizedLines,
@@ -68,14 +68,14 @@ export const BOOK = {
    */
   dedication: {
     en: [
-      'For my children — Andre, Mia, Catalina, Dario-kun, and Gino.',
+      'For my children — Andre, Mia, Catalina, and Gino — and for my nephew, Dario-kun.',
       'Thank you for teaching me so much.',
       'I love you.',
     ],
     es: [
-      'Para mis hijos — Andre, Mia, Catalina, Dario-kun y Gino.',
+      'Para mis hijos — Andre, Mia, Catalina y Gino — y para mi sobrino, Dario-kun.',
       'Gracias por enseñarme tanto.',
-      'Los quiero.',
+      'Los amo.',
     ],
   } satisfies LocalizedLines,
 } as const
