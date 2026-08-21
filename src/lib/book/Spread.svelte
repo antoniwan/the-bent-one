@@ -32,7 +32,8 @@
 
   function isWiggleLine(line: string) {
     return (
-      line.startsWith('What is even') || line.startsWith('¡¿Qué está pasando')
+      line.startsWith('But… what is even') ||
+      line.startsWith('Pero… ¡¿qué está pasando')
     )
   }
 

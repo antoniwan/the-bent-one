@@ -23,6 +23,10 @@ const GEOMETRIC_EN: string[] = [
   'shutter',
   'squares',
   'square',
+  'boxes',
+  'box',
+  'cubes',
+  'cube',
   'circles',
   'circle',
   'shapes',
@@ -79,8 +83,6 @@ const GEOMETRIC_ES: string[] = [
   'montaña',
   'ventanas',
   'ventana',
-  'persianas',
-  'persiana',
   'cuadrados',
   'cuadrado',
   'círculos',
@@ -158,6 +160,10 @@ const GEOMETRIC_ES: string[] = [
   'inquieto',
   'figuras',
   'figura',
+  'cajas',
+  'caja',
+  'cubos',
+  'cubo',
 ]
 
 const RED_EN = 'red'
