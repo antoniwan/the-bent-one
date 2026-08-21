@@ -19,6 +19,7 @@ Reference reader UX: [book-sun-and-moon](https://github.com/antoniwan/book-sun-a
 - [x] Cover deck invites without dumping the arc; front matter holds the rule
 - [x] Front matter = possibility + placement + the bent red one (editor voice, not feedback paste)
 - [x] CTA flow: cover **Before we begin** → front matter → **Begin** (page 1)
+- [x] Prose styling: geometric terms italic; **red** bold in `--line-bent`
 - [ ] Optional: soften in-story “Find it” / “Look fast” lines if they still feel like a game prompt
 
 ---

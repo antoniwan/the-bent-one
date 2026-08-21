@@ -21,7 +21,7 @@ export const BOOK = {
   rule: [
     'A line is what it is by where it sits.',
     'Lean it with others and it can be a roof. Leave it alone and it is only itself. Throw it outward and it can look like an explosion. Break it small enough and it looks like a dot.',
-    'One of them is bent, and red. Keep your eye on it.',
+    'One of them is bent, and red.',
   ],
   credit: 'A little book',
 } as const
@@ -37,7 +37,7 @@ export const pages: PageMeta[] = [
       'This is a line.',
       'It is not very long, and it has a bend in the middle, about here.',
       'Nobody knows how the bend got there.',
-      'Keep your eye on it. You are going to need to.',
+      'A curious little line.',
     ],
     craft: 'Not yet. This is the briefing.',
   },

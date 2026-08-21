@@ -1,5 +1,6 @@
 <script lang="ts">
   import SpreadArt from './SpreadArt.svelte'
+  import ProseText from './ProseText.svelte'
   import type { SpreadMeta } from './spreads'
 
   interface Props {
@@ -48,7 +49,7 @@
   <div class="prose" class:pause-first={spread.id === 12}>
     {#each spread.text as line, i}
       <p class="line" class:lead={i === 0} style="--i: {i}">
-        {line}
+        <ProseText text={line} />
       </p>
     {/each}
   </div>

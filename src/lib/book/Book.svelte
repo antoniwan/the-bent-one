@@ -3,6 +3,7 @@
   import { BOOK, pages } from './spreads'
   import Spread from './Spread.svelte'
   import ReaderBar from './ReaderBar.svelte'
+  import ProseText from './ProseText.svelte'
   import {
     liveLabel,
     locationToStep,
@@ -195,7 +196,7 @@
           </div>
           <p class="eyebrow">{BOOK.kind}</p>
           <h1>{BOOK.title}</h1>
-          <p class="deck">{BOOK.deck}</p>
+          <p class="deck"><ProseText text={BOOK.deck} /></p>
           <p class="byline">by {BOOK.author}</p>
           <div class="cta-row">
             <button type="button" class="cta" onclick={openBook}>Before we begin</button>
@@ -236,7 +237,7 @@
           </div>
           <div class="rule">
             {#each BOOK.rule as para}
-              <p>{para}</p>
+              <p><ProseText text={para} /></p>
             {/each}
           </div>
           <button type="button" class="cta" onclick={startReading}>Begin</button>
