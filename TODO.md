@@ -41,6 +41,8 @@ Already matched: page URLs, history, swipe, keyboard, dots, resume, live region,
 - [ ] Spanish copy polish pass (kid-ear pass; try both genders on refresh)
 - [ ] **v1.0.0** only after Spanish is ratified
 
+SEO note: document/OG title stays **La Doblada** (feminine). Story UI may still randomize línea/trazo.
+
 ---
 
 ## Voice & framing

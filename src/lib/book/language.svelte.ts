@@ -8,7 +8,10 @@ function initialLang(): Lang {
   return readSavedLanguage()
 }
 
-/** Shared language + Spanish gender (new gender each full load). */
+/**
+ * Language + Spanish story gender.
+ * Gender is random each load for the reader; SEO meta stays feminine (see seo.ts).
+ */
 export const langState = $state({
   current: initialLang() as Lang,
   esGender: 'f' as EsGender,
@@ -18,12 +21,12 @@ export function setLanguage(next: Lang) {
   if (langState.current === next) return
   langState.current = next
   saveLanguage(next)
-  applyDocumentMeta(next, langState.esGender)
+  applyDocumentMeta(next)
 }
 
 export function initLanguage() {
   const saved = readSavedLanguage()
   langState.current = saved
   langState.esGender = randomEsGender()
-  applyDocumentMeta(saved, langState.esGender)
+  applyDocumentMeta(saved)
 }
