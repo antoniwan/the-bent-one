@@ -388,11 +388,13 @@ function house(
 function stackingWorld(
   seed: number,
   mood: 'plain' | 'colored' = 'plain',
+  opts: { roofNeighborGone?: boolean } = {},
 ): ScenePart[] {
   const rand = mulberry32(seed)
   const parts: ScenePart[] = []
   const groundY = 820
   const colored = mood === 'colored'
+  const roofNeighborGone = opts.roofNeighborGone === true
   let delay = 0.06
 
   const pushLines = (lines: LineSpec[]) => {
@@ -697,12 +699,36 @@ function stackingWorld(
           ...openSquare(wx, wy, ws, 3, 'bent-house-win', delay + 0.36).map(
             (l) => ({ ...l, weight: 1.15 }),
           ),
-          {
-            id: 'bent-roof-l',
-            d: straight(left, eavesY, peakX, peakY),
-            weight: 2.1,
-            delay: delay + 0.38,
-          },
+          // Continuity: after page 8 the straight neighbor is gone
+          ...(roofNeighborGone
+            ? [
+                {
+                  id: 'roof-gap-peak',
+                  d: straight(peakX, peakY, peakX - 14, peakY + 16),
+                  weight: 1.4,
+                  delay: delay + 0.38,
+                  opacity: 0.4,
+                  dashed: true,
+                  dashPattern: '3 6',
+                },
+                {
+                  id: 'roof-gap-eave',
+                  d: straight(left, eavesY, left + 16, eavesY - 6),
+                  weight: 1.35,
+                  delay: delay + 0.4,
+                  opacity: 0.4,
+                  dashed: true,
+                  dashPattern: '3 6',
+                },
+              ]
+            : [
+                {
+                  id: 'bent-roof-l',
+                  d: straight(left, eavesY, peakX, peakY),
+                  weight: 2.1,
+                  delay: delay + 0.38,
+                },
+              ]),
           {
             id: 'the-one',
             d: bentChord(peakX, peakY, right, eavesY, 0.12),
@@ -945,6 +971,127 @@ function stackingWorld(
   }
 
   return parts
+}
+
+/**
+ * Page 9 — the colored town, but lines remember they can choose.
+ * Dashed ghosts + jitter: free will before the explosion.
+ */
+function unravelTown(seed: number): ScenePart[] {
+  const rand = mulberry32(seed + 77)
+  const base = stackingWorld(seed, 'colored', { roofNeighborGone: true })
+  let jitterSlot = 0
+
+  const soften = (line: LineSpec): LineSpec => {
+    // Ours holds; roof-gap stubs stay readable as “missing neighbor”
+    if (
+      line.id === 'the-one' ||
+      line.color === 'bent' ||
+      line.id.startsWith('roof-gap-')
+    ) {
+      return line
+    }
+    if (rand() > 0.48) {
+      return {
+        ...line,
+        dashed: true,
+        dashPattern: rand() > 0.5 ? '3 7' : '2 5',
+        opacity: Math.min(0.55, (line.opacity ?? 1) * (0.22 + rand() * 0.35)),
+        weight: Math.max(0.8, (line.weight ?? 2) * 0.85),
+      }
+    }
+    if (rand() > 0.7) {
+      return {
+        ...line,
+        opacity: (line.opacity ?? 1) * (0.45 + rand() * 0.3),
+      }
+    }
+    return line
+  }
+
+  const out: ScenePart[] = base.map((part) => {
+    if (part.kind === 'fill') {
+      return { ...part, opacity: (part.opacity ?? 1) * 0.82 }
+    }
+    if (part.kind === 'lines') {
+      const slot = jitterSlot++ % 5
+      return {
+        kind: 'group' as const,
+        className: `unravel-jitter unravel-${slot}`,
+        lines: part.lines.map(soften),
+      }
+    }
+    if (part.kind === 'group') {
+      const slot = jitterSlot++ % 5
+      const keepBird = part.className?.includes('bird-fly')
+      return {
+        ...part,
+        className: keepBird
+          ? part.className
+          : `${part.className ?? ''} unravel-jitter unravel-${slot}`.trim(),
+        lines: part.lines.map(soften),
+      }
+    }
+    return part
+  })
+
+  const ghosts: LineSpec[] = []
+  for (let i = 0; i < 14; i++) {
+    const x = 40 + rand() * 900
+    const y = 80 + rand() * 700
+    const len = 30 + rand() * 90
+    const a = rand() * Math.PI * 2
+    ghosts.push({
+      id: `ghost-${i}`,
+      d: straight(x, y, x + Math.cos(a) * len, y + Math.sin(a) * len),
+      weight: 1 + rand() * 1.2,
+      delay: 0.2 + i * 0.03,
+      dashed: true,
+      dashPattern: '3 8',
+      opacity: 0.2 + rand() * 0.25,
+      animate: false,
+    })
+  }
+  ghosts.push(
+    {
+      id: 'ghost-arc-a',
+      d: 'M 100 300 Q 200 380 160 500',
+      weight: 1.1,
+      delay: 0.3,
+      dashed: true,
+      dashPattern: '3 7',
+      opacity: 0.32,
+      animate: false,
+    },
+    {
+      id: 'ghost-arc-b',
+      d: 'M 700 200 Q 820 280 880 420',
+      weight: 1,
+      delay: 0.35,
+      dashed: true,
+      dashPattern: '2 6',
+      opacity: 0.28,
+      animate: false,
+    },
+    {
+      id: 'ghost-arc-c',
+      d: 'M 350 650 Q 480 720 620 680',
+      weight: 1.2,
+      delay: 0.4,
+      dashed: true,
+      dashPattern: '4 6',
+      opacity: 0.3,
+      animate: false,
+    },
+  )
+
+  out.push({
+    kind: 'group',
+    className: 'unravel-jitter unravel-ghost',
+    lines: ghosts,
+  })
+
+  return out
 }
 
 export function sceneForSpread(id: number): ScenePart[] {
@@ -1457,89 +1604,8 @@ export function sceneForSpread(id: number): ScenePart[] {
       ]
     }
 
-    case 9: {
-      const parts: ScenePart[] = [
-        {
-          kind: 'lines',
-          lines: [
-            {
-              id: 'ground',
-              d: straight(40, 780, 960, 780),
-              weight: 2,
-              delay: 0.1,
-            },
-            // shutter falling
-            {
-              id: 'shutter',
-              d: straight(120, 280, 180, 340),
-              weight: 2.4,
-              delay: 0.2,
-            },
-            {
-              id: 'shutter2',
-              d: straight(180, 340, 160, 400),
-              weight: 2,
-              delay: 0.25,
-            },
-            {
-              id: 'arc1',
-              d: 'M 140 240 Q 200 300 170 420',
-              weight: 1,
-              delay: 0.3,
-              dashed: true,
-              dashPattern: '3 7',
-              opacity: 0.35,
-            },
-            // wheel rolling
-            ...openCircle(400, 520, 45, 8, 'fall-wheel', 0.35),
-            {
-              id: 'arc2',
-              d: 'M 320 400 Q 380 480 460 560',
-              weight: 1,
-              delay: 0.4,
-              dashed: true,
-              dashPattern: '3 7',
-              opacity: 0.35,
-            },
-            // boat sagging
-            {
-              id: 'boat1',
-              d: straight(560, 600, 720, 640),
-              weight: 2.5,
-              delay: 0.45,
-            },
-            {
-              id: 'boat2',
-              d: straight(720, 640, 760, 620),
-              weight: 2,
-              delay: 0.5,
-            },
-            {
-              id: 'mast-fall',
-              d: straight(620, 610, 680, 520),
-              weight: 1.6,
-              delay: 0.52,
-            },
-            {
-              id: 'arc3',
-              d: 'M 600 520 Q 680 580 740 660',
-              weight: 1,
-              delay: 0.55,
-              dashed: true,
-              dashPattern: '3 7',
-              opacity: 0.35,
-            },
-          ],
-        },
-        // house at far right, intact
-        ...house(820, 680, 90, 70, 'still', {
-          roofBent: true,
-          lit: false,
-          delay: 0.6,
-        }),
-      ]
-      return parts
-    }
+    case 9:
+      return unravelTown(99)
 
     case 10: {
       // Frozen explosion — house parts flying, 2–3 decoy reds

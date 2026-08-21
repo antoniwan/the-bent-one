@@ -138,6 +138,32 @@
     animation: loose-settle 3.2s ease-in-out infinite alternate;
   }
 
+  .spread-art :global(.unravel-jitter) {
+    will-change: transform;
+  }
+  .spread-art :global(.unravel-0) {
+    animation: unravel-j 0.18s steps(2, end) infinite;
+  }
+  .spread-art :global(.unravel-1) {
+    animation: unravel-j2 0.22s steps(2, end) infinite;
+    animation-delay: -0.05s;
+  }
+  .spread-art :global(.unravel-2) {
+    animation: unravel-j3 0.16s steps(2, end) infinite;
+    animation-delay: -0.1s;
+  }
+  .spread-art :global(.unravel-3) {
+    animation: unravel-j 0.2s steps(2, end) infinite reverse;
+    animation-delay: -0.07s;
+  }
+  .spread-art :global(.unravel-4) {
+    animation: unravel-j2 0.14s steps(2, end) infinite;
+    animation-delay: -0.12s;
+  }
+  .spread-art :global(.unravel-ghost) {
+    animation: unravel-j3 0.28s steps(2, end) infinite alternate;
+  }
+
   .spread-art :global(.rain-sheet) {
     animation: rain-fall 1.35s linear infinite;
   }
@@ -272,6 +298,40 @@
     }
   }
 
+  @keyframes unravel-j {
+    0% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(2px, -2px);
+    }
+    100% {
+      transform: translate(-1px, 1px);
+    }
+  }
+  @keyframes unravel-j2 {
+    0% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(-2px, 1px);
+    }
+    100% {
+      transform: translate(2px, -1px);
+    }
+  }
+  @keyframes unravel-j3 {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+    50% {
+      transform: translate(1px, 2px) rotate(0.4deg);
+    }
+    100% {
+      transform: translate(-2px, -1px) rotate(-0.3deg);
+    }
+  }
+
   @keyframes rain-fall {
     from {
       transform: translate(-24px, -70px);
@@ -307,7 +367,8 @@
     .spread-art :global(.rain-sheet),
     .spread-art :global(.rain-deflect),
     .spread-art :global(.bird-fly),
-    .spread-art :global(.loose-settle) {
+    .spread-art :global(.loose-settle),
+    .spread-art :global(.unravel-jitter) {
       animation: none;
     }
     .dot {

@@ -146,14 +146,16 @@ export const pages: PageMeta[] = [
   {
     id: 9,
     slug: 'falling',
-    title: 'Falling',
+    title: 'They could choose',
     pages: 'pp 21–22',
     text: [
-      'After that, things fell.',
-      'Not all at once. A shutter. A wheel. A whole boat, slowly, over years.',
-      'Everything that goes up is only borrowing for a while.',
+      'After that, the town began to wiggle.',
+      'Wiggle, wiggle — a shutter, a wheel, a boat!',
+      'Some lines went soft and dashed. Some held tight.',
+      'Nothing has to stay what it is forever.',
+      'What is even happening?!',
     ],
-    craft: 'Elegy softened with “for a while.”',
+    craft: 'Free will prelude to explosion; dashed chaos; same town as 7, jittering.',
   },
   {
     id: 10,
