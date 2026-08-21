@@ -38,7 +38,32 @@
 </script>
 
 {#if !isCover}
+  <!--
+    DOM + book order (also keyboard tab order):
+    start → previous page → where you are → next page → end
+  -->
   <nav class="reader-bar" aria-label={ui('bookNav', lang)}>
+    <button
+      type="button"
+      class="jump start"
+      onclick={onFirst}
+      aria-label={ui('goBeginning', lang)}
+      title={ui('beginning', lang)}
+    >
+      <span class="jump-mark" aria-hidden="true">«</span>
+      <span class="jump-text">{ui('beginning', lang)}</span>
+    </button>
+
+    <button
+      type="button"
+      class="turn prev"
+      onclick={onPrev}
+      aria-label={ui('previousPage', lang)}
+    >
+      <span class="chev" aria-hidden="true">‹</span>
+      <span class="turn-label">{ui('back', lang)}</span>
+    </button>
+
     <div class="meta">
       <p class="page-label">{pageLabel}</p>
       <div class="dots" role="tablist" aria-label={ui('pagesNav', lang)}>
@@ -61,55 +86,43 @@
       <LanguageToggle language={lang} onChange={setLanguage} />
     </div>
 
-    <div class="turn">
-      <button
-        type="button"
-        class="turn-btn prev"
-        onclick={onPrev}
-        aria-label={ui('previousPage', lang)}
-      >
-        <span class="chev" aria-hidden="true">‹</span>
-        <span class="turn-label">{ui('back', lang)}</span>
-      </button>
-      <button
-        type="button"
-        class="turn-btn next"
-        onclick={onNext}
-        disabled={isBack}
-        aria-label={ui('nextPage', lang)}
-      >
-        <span class="turn-label">{nextLabel}</span>
-        <span class="chev" aria-hidden="true">›</span>
-      </button>
-    </div>
+    <button
+      type="button"
+      class="turn next"
+      onclick={onNext}
+      disabled={isBack}
+      aria-label={ui('nextPage', lang)}
+    >
+      <span class="turn-label">{nextLabel}</span>
+      <span class="chev" aria-hidden="true">›</span>
+    </button>
 
-    <div class="jumps">
-      <button
-        type="button"
-        class="jump-btn"
-        onclick={onFirst}
-        aria-label={ui('goBeginning', lang)}
-      >
-        {ui('beginning', lang)}
-      </button>
-      <button
-        type="button"
-        class="jump-btn"
-        onclick={onLast}
-        disabled={isBack}
-        aria-label={ui('goEnd', lang)}
-      >
-        {ui('end', lang)}
-      </button>
-    </div>
+    <button
+      type="button"
+      class="jump end"
+      onclick={onLast}
+      disabled={isBack}
+      aria-label={ui('goEnd', lang)}
+      title={ui('end', lang)}
+    >
+      <span class="jump-text">{ui('end', lang)}</span>
+      <span class="jump-mark" aria-hidden="true">»</span>
+    </button>
   </nav>
 {/if}
 
 <style>
   .reader-bar {
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.55rem;
+    /*
+      Mobile default: status strip with jumps as bookends,
+      then equal Back | Next — the only chunky CTAs.
+    */
+    grid-template-columns: auto 1fr 1fr auto;
+    grid-template-areas:
+      'start meta meta end'
+      'prev  prev  next next';
+    gap: 0.5rem 0.4rem;
     align-items: center;
     width: 100%;
     margin-top: var(--content-to-footer, 0.25rem);
@@ -118,11 +131,30 @@
     flex-shrink: 0;
   }
 
+  .jump.start {
+    grid-area: start;
+    justify-self: start;
+  }
+
+  .jump.end {
+    grid-area: end;
+    justify-self: end;
+  }
+
+  .turn.prev {
+    grid-area: prev;
+  }
+
+  .turn.next {
+    grid-area: next;
+  }
+
   .meta {
+    grid-area: meta;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.35rem;
     min-width: 0;
   }
 
@@ -167,19 +199,13 @@
   }
 
   .turn {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.55rem;
-    width: 100%;
-  }
-
-  .turn-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.35rem;
+    gap: 0.3rem;
+    width: 100%;
     min-height: 3rem;
-    padding: 0.65rem 0.85rem;
+    padding: 0.65rem 0.75rem;
     border: 1.5px solid color-mix(in srgb, var(--ink) 18%, transparent);
     border-radius: 0.65rem;
     background: color-mix(in srgb, var(--paper) 88%, white);
@@ -197,24 +223,24 @@
       transform 0.18s ease;
   }
 
-  .turn-btn.next {
+  .turn.next {
     border-color: color-mix(in srgb, var(--line-bent) 45%, var(--rule));
     background: color-mix(in srgb, var(--line-bent) 10%, var(--paper));
   }
 
-  .turn-btn:hover:not(:disabled) {
+  .turn:hover:not(:disabled) {
     background: color-mix(in srgb, var(--ink) 6%, var(--paper));
   }
 
-  .turn-btn.next:hover:not(:disabled) {
+  .turn.next:hover:not(:disabled) {
     background: color-mix(in srgb, var(--line-bent) 16%, var(--paper));
   }
 
-  .turn-btn:active:not(:disabled) {
+  .turn:active:not(:disabled) {
     transform: translateY(1px);
   }
 
-  .turn-btn:disabled {
+  .turn:disabled {
     opacity: 0.35;
     cursor: default;
   }
@@ -225,50 +251,78 @@
     font-weight: 500;
   }
 
-  .jumps {
-    display: flex;
-    justify-content: space-between;
-    gap: 0.75rem;
-    padding-inline: 0.15rem;
-  }
-
-  .jump-btn {
-    min-height: 2rem;
-    padding: 0.25rem 0.4rem;
+  .jump {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    min-width: 2.25rem;
+    min-height: 2.25rem;
+    padding: 0.35rem;
     border: none;
     border-radius: 0.35rem;
     background: none;
     color: var(--ink-soft);
     font-family: var(--font-body);
-    font-size: 0.72rem;
-    letter-spacing: 0.02em;
-    text-decoration: underline;
-    text-underline-offset: 0.18em;
-    text-decoration-color: color-mix(in srgb, var(--ink) 22%, transparent);
+    font-size: 0.7rem;
+    letter-spacing: 0.01em;
     cursor: pointer;
     touch-action: manipulation;
   }
 
-  .jump-btn:hover:not(:disabled) {
+  .jump-mark {
+    font-size: 1.15rem;
+    line-height: 1;
+    opacity: 0.8;
+  }
+
+  .jump:hover:not(:disabled) {
     color: var(--ink);
   }
 
-  .jump-btn:disabled {
+  .jump:disabled {
     opacity: 0.35;
     cursor: default;
-    text-decoration: none;
   }
 
-  @media (min-width: 521px) {
-    .reader-bar {
-      grid-template-columns: auto minmax(0, 1fr) auto;
-      grid-template-areas: 'prev meta next' 'jump jump jump';
-      gap: 0.65rem 0.75rem;
-      align-items: center;
+  @media (max-width: 520px) {
+    /*
+      Phones: Back/Next only as real CTAs. Keep a single quiet jump (End)
+      — Beginning is redundant with stepping back / “Start again”.
+    */
+    .jump.start {
+      display: none;
     }
 
-    .meta {
-      grid-area: meta;
+    .reader-bar {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas:
+        'meta end'
+        'prev next';
+    }
+
+    .jump-text {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  }
+
+  /*
+    Desktop: one rail in book order
+    [« Beginning] [‹ Back] | status | [Next ›] [End »]
+  */
+  @media (min-width: 521px) {
+    .reader-bar {
+      grid-template-columns: auto auto minmax(0, 1fr) auto auto;
+      grid-template-areas: 'start prev meta next end';
+      gap: 0.45rem 0.4rem;
     }
 
     .dots {
@@ -276,28 +330,27 @@
     }
 
     .turn {
-      display: contents;
-    }
-
-    .turn-btn.prev {
-      grid-area: prev;
-      min-width: 7.5rem;
-    }
-
-    .turn-btn.next {
-      grid-area: next;
-      min-width: 7.5rem;
-    }
-
-    .jumps {
-      grid-area: jump;
-      justify-content: center;
-      gap: 1.25rem;
-    }
-
-    .turn-btn {
+      width: auto;
+      min-width: 6.75rem;
       min-height: 2.65rem;
       font-size: 0.98rem;
+    }
+
+    .jump {
+      min-width: 0;
+      min-height: 2.4rem;
+      padding: 0.35rem 0.45rem;
+      font-size: 0.72rem;
+    }
+
+    .jump-mark {
+      font-size: 0.95rem;
+    }
+
+    .jump-text {
+      text-decoration: underline;
+      text-underline-offset: 0.16em;
+      text-decoration-color: color-mix(in srgb, var(--ink) 20%, transparent);
     }
   }
 </style>
