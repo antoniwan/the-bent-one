@@ -1,21 +1,33 @@
-export interface SpreadMeta {
+export interface PageMeta {
   id: number
   slug: string
   title: string
   pages: string
   text: string[]
-  /** Seek difficulty hint — never shown as spoilers in UI */
-  seek: string
+  /** Craft note from the storyboard — not shown to readers */
+  craft?: string
 }
 
 export const BOOK = {
   title: 'The Bent One',
   author: 'Antonio Rodriguez Martinez',
-  deck: 'Find the line with the bend in it. It is red. Everything else is black.',
-  credit: 'A web picture book',
+  /** Use once on the cover — nowhere else on that screen */
+  kind: 'A little book',
+  deck: 'For one small line with a bend in it — and everything a line might become.',
+  /**
+   * Front matter. Possibility, not plot. Read-aloud voice.
+   * The bent red one gets a place; placement decides what a line is allowed to be.
+   */
+  rule: [
+    'A line is what it is by where it sits.',
+    'Lean it with others and it can be a roof. Leave it alone and it is only itself. Throw it outward and it can look like an explosion. Break it small enough and it looks like a dot.',
+    'One of them is bent, and red. Keep your eye on it.',
+  ],
+  credit: 'A little book',
 } as const
 
-export const spreads: SpreadMeta[] = [
+
+export const pages: PageMeta[] = [
   {
     id: 1,
     slug: 'one-line',
@@ -27,7 +39,7 @@ export const spreads: SpreadMeta[] = [
       'Nobody knows how the bend got there.',
       'Keep your eye on it. You are going to need to.',
     ],
-    seek: 'Not yet. This is the briefing.',
+    craft: 'Not yet. This is the briefing.',
   },
   {
     id: 2,
@@ -40,7 +52,7 @@ export const spreads: SpreadMeta[] = [
       'All of them straight.',
       'Only ours had the bend.',
     ],
-    seek: 'Trivial — on purpose.',
+    craft: 'Trivial — on purpose.',
   },
   {
     id: 3,
@@ -53,7 +65,7 @@ export const spreads: SpreadMeta[] = [
       'It was not a very good triangle. One side had a bend in it.',
       'The triangle did not seem to mind.',
     ],
-    seek: 'Trivial.',
+    craft: 'Trivial.',
   },
   {
     id: 4,
@@ -66,7 +78,7 @@ export const spreads: SpreadMeta[] = [
       'Shapes everywhere, and every single one of them made of lines,',
       'and one of them still a little bent.',
     ],
-    seek: 'Easy. Red triangle, upper third.',
+    craft: 'Easy. Red triangle, upper third.',
   },
   {
     id: 5,
@@ -79,7 +91,7 @@ export const spreads: SpreadMeta[] = [
       'Ours was the roof.',
       'Rain slid off it a little crooked, and that was fine.',
     ],
-    seek: 'Obvious. Let it be.',
+    craft: 'Obvious. Let it be.',
   },
   {
     id: 6,
@@ -92,7 +104,7 @@ export const spreads: SpreadMeta[] = [
       'Look at all of it. Look how much there is.',
       'Our roof is in here somewhere. Find it.',
     ],
-    seek: 'About eight seconds.',
+    craft: 'About eight seconds.',
   },
   {
     id: 7,
@@ -105,7 +117,7 @@ export const spreads: SpreadMeta[] = [
       'It was the best part.',
       'It went on and on, and nobody wrote any of it down.',
     ],
-    seek: 'Moderate. Reward the hunt.',
+    craft: 'Moderate. Reward the hunt.',
   },
   {
     id: 8,
@@ -117,7 +129,7 @@ export const spreads: SpreadMeta[] = [
       'Only one. From a fence, near the back, where nobody was looking.',
       'It lay down in the grass, and nothing came to put it back.',
     ],
-    seek: 'Our house is up there, tiny, still fine.',
+    craft: 'Our house is up there, tiny, still fine.',
   },
   {
     id: 9,
@@ -129,7 +141,7 @@ export const spreads: SpreadMeta[] = [
       'Not all at once. A shutter. A wheel. A whole boat, slowly, over years.',
       'Everything that goes up is only borrowing.',
     ],
-    seek: 'Easy — house at far right.',
+    craft: 'Easy — house at far right.',
   },
   {
     id: 10,
@@ -142,7 +154,7 @@ export const spreads: SpreadMeta[] = [
       'Every line it had ever been, flying apart.',
       'Ours is in there. Look fast.',
     ],
-    seek: 'Hard, and now unreliable.',
+    craft: 'Hard, and now unreliable.',
   },
   {
     id: 11,
@@ -155,7 +167,7 @@ export const spreads: SpreadMeta[] = [
       'Only lines. Thousands of them, drifting.',
       'Ours was still bent. We could still find it.',
     ],
-    seek: 'Findable. The last time.',
+    craft: 'Findable. The last time.',
   },
   {
     id: 12,
@@ -168,7 +180,7 @@ export const spreads: SpreadMeta[] = [
       'Nobody saw it happen.',
       'It was just a line now, like the rest of them.',
     ],
-    seek: 'Impossible. That is the page.',
+    craft: 'Impossible. That is the page.',
   },
   {
     id: 13,
@@ -182,7 +194,7 @@ export const spreads: SpreadMeta[] = [
       'Just dots. Dots and dots and dots.',
       'One of them used to be ours. We were almost sure.',
     ],
-    seek: 'Failing. Dozens of red dots now.',
+    craft: 'Failing. Dozens of red dots now.',
   },
   {
     id: 14,
@@ -196,6 +208,10 @@ export const spreads: SpreadMeta[] = [
       'We lost it.',
       'We don’t know which one it was.',
     ],
-    seek: 'Gone.',
+    craft: 'Gone.',
   },
 ]
+
+/** @deprecated use `pages` */
+export const spreads = pages
+export type SpreadMeta = PageMeta

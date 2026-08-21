@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { BOOK, spreads } from './spreads'
+  import { BOOK, pages } from './spreads'
   import Spread from './Spread.svelte'
   import ReaderBar from './ReaderBar.svelte'
   import {
@@ -24,8 +24,8 @@
   let playKey = $state(0)
   let resumeStep = $state(0)
 
-  const spread = $derived(
-    location.kind === 'spread' ? spreads[location.index] : null,
+  const page = $derived(
+    location.kind === 'page' ? pages[location.index] : null,
   )
   const announcement = $derived(liveLabel(location))
   const showContinue = $derived(canResume(resumeStep))
@@ -56,10 +56,10 @@
     go({ kind: 'back' }, 1)
   }
 
-  function goSpread(index: number) {
+  function goPage(index: number) {
     const current = locationToStep(location)
-    const nextStep = locationToStep({ kind: 'spread', index })
-    go({ kind: 'spread', index }, nextStep >= current ? 1 : -1)
+    const nextStep = locationToStep({ kind: 'page', index })
+    go({ kind: 'page', index }, nextStep >= current ? 1 : -1)
   }
 
   function openBook() {
@@ -71,7 +71,7 @@
   }
 
   function startReading() {
-    go({ kind: 'spread', index: 0 }, 1)
+    go({ kind: 'page', index: 0 }, 1)
   }
 
   function onKey(e: KeyboardEvent) {
@@ -160,14 +160,12 @@
       </a>
     </p>
     <p class="meta">
-      {#if location.kind === 'spread' && spread}
-        <span class="num">{String(spread.id).padStart(2, '0')}</span>
-        <span class="title">{spread.title}</span>
-      {:else if location.kind === 'cover'}
-        <span class="quiet">A picture book</span>
+      {#if location.kind === 'page' && page}
+        <span class="num">{String(page.id).padStart(2, '0')}</span>
+        <span class="title">{page.title}</span>
       {:else if location.kind === 'front'}
-        <span class="quiet">Keep in view</span>
-      {:else}
+        <span class="quiet">Before we begin</span>
+      {:else if location.kind === 'back'}
         <span class="quiet">The end</span>
       {/if}
     </p>
@@ -176,7 +174,7 @@
   <p class="sr-only" aria-live="polite">{announcement}</p>
 
   <main
-    class="page"
+    class="stage-main"
     style="--page-delta: {direction > 0 ? '18px' : '-18px'}"
   >
     {#key playKey}
@@ -195,12 +193,12 @@
               />
             </svg>
           </div>
-          <p class="eyebrow">A picture book</p>
+          <p class="eyebrow">{BOOK.kind}</p>
           <h1>{BOOK.title}</h1>
           <p class="deck">{BOOK.deck}</p>
           <p class="byline">by {BOOK.author}</p>
           <div class="cta-row">
-            <button type="button" class="cta" onclick={openBook}>Open the book</button>
+            <button type="button" class="cta" onclick={openBook}>Before we begin</button>
             {#if showContinue}
               <button type="button" class="cta ghost" onclick={continueReading}>
                 Continue reading
@@ -236,16 +234,16 @@
               />
             </svg>
           </div>
-          <p class="rule-label">The rule of the world</p>
-          <p class="rule">
-            Everything is made of visible, separable line segments, and you can always
-            see the joints.
-          </p>
+          <div class="rule">
+            {#each BOOK.rule as para}
+              <p>{para}</p>
+            {/each}
+          </div>
           <button type="button" class="cta" onclick={startReading}>Begin</button>
         </section>
-      {:else if location.kind === 'spread' && spread}
+      {:else if location.kind === 'page' && page}
         <Spread
-          {spread}
+          spread={page}
           {playKey}
           {direction}
           onPrev={prev}
@@ -270,7 +268,7 @@
     onNext={next}
     onFirst={goFirst}
     onLast={goLast}
-    onGoSpread={goSpread}
+    onGoPage={goPage}
   />
 </div>
 
@@ -345,7 +343,7 @@
     border: 0;
   }
 
-  .page {
+  .stage-main {
     min-height: 0;
     display: flex;
     flex-direction: column;
@@ -487,22 +485,22 @@
     height: auto;
   }
 
-  .rule-label {
-    margin: 0;
-    font-family: var(--font-display);
-    font-size: 0.8rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--line-bent);
-  }
-
   .rule {
     margin: 0;
-    max-width: 28rem;
+    max-width: 30rem;
     font-family: var(--font-body);
-    font-size: 1.15rem;
+    font-size: clamp(1.05rem, 2.2vw, 1.2rem);
     line-height: 1.55;
     color: var(--ink);
+    text-align: center;
+  }
+
+  .rule p {
+    margin: 0 0 0.85em;
+  }
+
+  .rule p:last-child {
+    margin-bottom: 0;
   }
 
   .back-dots {

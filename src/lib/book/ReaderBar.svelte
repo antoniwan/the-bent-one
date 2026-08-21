@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { spreads } from './spreads'
+  import { pages } from './spreads'
   import type { BookLocation } from './paths'
 
   interface Props {
@@ -8,26 +8,25 @@
     onNext: () => void
     onFirst: () => void
     onLast: () => void
-    onGoSpread: (index: number) => void
+    onGoPage: (index: number) => void
   }
 
-  let { location, onPrev, onNext, onFirst, onLast, onGoSpread }: Props =
-    $props()
+  let { location, onPrev, onNext, onFirst, onLast, onGoPage }: Props = $props()
 
   const isCover = $derived(location.kind === 'cover')
   const isBack = $derived(location.kind === 'back')
   const storyNumber = $derived(
-    location.kind === 'spread' ? location.index + 1 : null,
+    location.kind === 'page' ? location.index + 1 : null,
   )
   const pageLabel = $derived.by(() => {
     if (location.kind === 'cover') return 'Cover'
-    if (location.kind === 'front') return 'Keep in view'
+    if (location.kind === 'front') return 'Before we begin'
     if (location.kind === 'back') return 'The end'
-    return `Spread ${location.index + 1} of ${spreads.length}`
+    return `Page ${location.index + 1} of ${pages.length}`
   })
   const nextLabel = $derived.by(() => {
     if (location.kind === 'cover' || location.kind === 'front') return 'Next'
-    if (location.kind === 'spread' && location.index === spreads.length - 1)
+    if (location.kind === 'page' && location.index === pages.length - 1)
       return 'Close'
     if (location.kind === 'back') return 'Next'
     return 'Next'
@@ -58,8 +57,8 @@
 
     <div class="center">
       <p class="page-label">{pageLabel}</p>
-      <div class="dots" role="tablist" aria-label="Spreads">
-        {#each spreads as spread, i}
+      <div class="dots" role="tablist" aria-label="Pages">
+        {#each pages as page, i}
           <button
             type="button"
             role="tab"
@@ -67,11 +66,11 @@
             class:active={storyNumber === i + 1}
             class:passed={
               location.kind === 'back' ||
-              (location.kind === 'spread' && location.index > i)
+              (location.kind === 'page' && location.index > i)
             }
-            aria-label="Spread {spread.id}: {spread.title}"
+            aria-label="Page {page.id}: {page.title}"
             aria-current={storyNumber === i + 1 ? 'page' : undefined}
-            onclick={() => onGoSpread(i)}
+            onclick={() => onGoPage(i)}
           ></button>
         {/each}
       </div>

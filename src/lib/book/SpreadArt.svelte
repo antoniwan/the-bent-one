@@ -25,7 +25,7 @@
     class:peak={spreadId === 7}
     viewBox="0 0 1000 1000"
     role="img"
-    aria-label="Illustration for spread {spreadId}"
+    aria-label="Illustration for page {spreadId}"
   >
     {#each parts as part, pi (pi)}
       {#if part.kind === 'fill'}

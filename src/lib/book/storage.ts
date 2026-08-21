@@ -5,7 +5,7 @@ import {
   stepToLocation,
   type BookLocation,
 } from './paths'
-import { spreads } from './spreads'
+import { pages } from './spreads'
 
 const STORAGE_KEY = 'the-bent-one:step'
 
@@ -23,7 +23,7 @@ export function readResumeStep(): number {
     if (raw == null) return 0
     const step = Number(raw)
     if (!Number.isFinite(step) || step < 0) return 0
-    return Math.min(step, 2 + spreads.length)
+    return Math.min(step, 2 + pages.length)
   } catch {
     return 0
   }

@@ -1,10 +1,10 @@
 # The Bent One
 
-A web picture book: a child (and the reader) keeps track of one bent red line through everything it becomes — then loses it.
+A little book for one small line with a bend in it — and everything a line might become.
 
-SVG lines are drawn on the page. Finding the bent one is the job.
+The story lives in the page text. The drawings show what a line is allowed to be, depending on where it sits.
 
-Reader UX is inspired by [Mia, the Sun, and the Moon](https://github.com/antoniwan/book-sun-and-moon).
+Reader chrome is inspired by [Mia, the Sun, and the Moon](https://github.com/antoniwan/book-sun-and-moon).
 
 ## Read it
 
@@ -15,11 +15,12 @@ npm run dev
 
 Open the local URL Vite prints (usually `http://localhost:5173`).
 
+- Cover CTA **Before we begin** opens the front matter; **Begin** starts page 1
 - Arrow keys, Space, Enter, and PageUp/PageDown turn the page
 - Home goes to the cover; End jumps to the last page
 - Swipe left/right on touch devices
-- Tap the left or right edge of the illustration to go back or forward (center stays free for seeking)
-- Use the dots in the reader bar to jump to a spread
+- Tap the left or right edge of the illustration to go back or forward
+- Use the dots in the reader bar to jump to a page
 - Each page has its own URL, such as `/1/one-line` or `/14/the-field`
 - **Continue reading** appears on the cover if you left mid-book
 
@@ -36,18 +37,15 @@ For Vercel, `vercel.json` rewrites all routes to `index.html` so deep links work
 
 | Path | Role |
 |------|------|
-| `src/lib/book/scenes.ts` | Spread compositions (the drawings) |
-| `src/lib/book/spreads.ts` | Story text + slugs |
+| `src/lib/book/scenes.ts` | Page compositions (the drawings) |
+| `src/lib/book/spreads.ts` | Story text, cover/front copy, slugs |
 | `src/lib/lines/` | SVG draw-on line primitives |
 | `src/lib/book/Book.svelte` | Shell, cover, routing |
 | `src/lib/book/ReaderBar.svelte` | Footer chrome |
-| `TODO.md` | Layout backlog + craft follow-ups |
+| `TODO.md` | Backlog + craft follow-ups |
 
-## Craft rules (don’t break lightly)
+## Craft notes (for makers, not readers)
 
-- One bent red line; everything else black (ochre + blue only on spread 7)
-- From spread 10, decoy reds appear — never announce the trap
-- Everything is separable line segments; joints stay visible
-- Prose stays under the square art so seeking isn’t covered
+Storyboard “seek the bent line” notes were art direction. Readers meet possibility and watching — not a hunt brief on the cover.
 
 See `TODO.md` for remaining polish.
