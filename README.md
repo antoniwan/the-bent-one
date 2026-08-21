@@ -12,7 +12,7 @@ Related book in the same series: [Mia, the Sun, and the Moon](https://mia-the-su
 - Vite 8
 - Static SPA deploy (Vercel rewrite to `index.html`)
 
-Current version: `0.9.0` (see `package.json`). Version `1.0.0` is reserved until Spanish copy is finalized.
+App version lives in `package.json` and is stamped in the footer at build time (`__APP_VERSION__`).
 
 ## Run locally
 
@@ -72,4 +72,4 @@ Crawlers: `public/robots.txt`, `public/sitemap.xml`. Meta + JSON-LD live in `ind
 
 Storyboard notes that say “seek the bent line” are art direction only. Reader-facing copy should stay curious and careful: difference as character, noticing with the child, no hunt commands, and no apology for the bend.
 
-See `TODO.md` and the voice guide comment in `src/lib/book/spreads.ts`.
+See `TODO.md`, the voice guide comment in `src/lib/book/spreads.ts`, and `docs/MAKING-OF-PROMPTING.md` (how the book was directed with agents).

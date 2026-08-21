@@ -17,13 +17,13 @@ Do not change these without a deliberate decision:
 | Feature | Mia | This project |
 |---------|-----|--------------|
 | EN / ES toggle + persisted language | yes | done |
-| Bilingual story + chrome | yes | done (Spanish polish still open) |
-| SEO: OG / Twitter / canonical / JSON-LD | yes | done (confirm live URL + raster OG image) |
+| Bilingual story + chrome | yes | done |
+| SEO: OG / Twitter / canonical / JSON-LD | yes | done |
 | `document.documentElement.lang` + live meta | yes | done |
 | Web app manifest + theme-color | yes | done |
 | Analytics (gtag) | yes | optional / later |
 | Portfolio / credit link in bar | yes | optional |
-| Version stamp (footer → repository) | yes | done (`v0.9.0` until Spanish is ratified) |
+| Version stamp (footer → repository) | yes | done |
 | Cover social image (raster) | yes | done (`og.png`) |
 
 Already matched: page URLs, history, swipe, keyboard, dots, resume, live region, basic print CSS, Vercel SPA fallback, cover continue, page hotspots.
@@ -33,12 +33,11 @@ Intentionally omitted: read aloud / Web Speech (present in Mia; not planned here
 ## Release path
 
 - [x] EN / ES toggle — cover + reader bar; persist; swap reader copy
-- [x] Spanish translation — full book voice (editor pass; further polish welcome)
+- [x] Spanish translation — full book voice (ongoing page-by-page polish welcome)
 - [x] SEO pack — `index.html` meta, OG / Twitter, JSON-LD Book, canonical, manifest, `applyDocumentMeta(lang)`
 - [ ] Confirm production `VITE_SITE_URL` once the domain is known
 - [x] Raster social card (`og.png`) + icon set
-- [ ] Spanish copy polish (read aloud for children)
-- [ ] **v1.0.0** only after Spanish is ratified
+- [x] **v1.0.0** — first public voice of the bilingual book
 
 SEO note: document / OG title stays **La Doblada**. Story Spanish always uses *línea* / *líneas*; DEV F/M only flips **La Doblada** / **El Doblado**.
 
@@ -52,7 +51,8 @@ SEO note: document / OG title stays **La Doblada**. Story Spanish always uses *l
 - [x] Prose styling: geometric terms italic; **red** / **rojo** bold in `--line-bent`
 - [x] Positive-values pass on story copy (curiosity, care, difference as character; no hunt commands; no “not good” judgment)
 - [ ] Keep applying this voice on future art and copy edits
-- [x] Back matter afterglow (not a second ending); matches page 14 without repeating it
+- [x] Back matter afterglow + collapsible dedication
+- [x] Back matter matches page 14 without repeating it as a second ending
 
 ## Layout and stage
 
