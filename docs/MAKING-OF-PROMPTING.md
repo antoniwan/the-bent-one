@@ -246,7 +246,7 @@ Numbers are scaffolding for writing — not a productivity score. The real metri
 
 Still honest:
 
-- Confirm production `VITE_SITE_URL` when the final domain is fixed
+- Confirm production `VITE_SITE_URL` is `https://the-bent-one-book.stronghandssoftheart.com` on Vercel
 - Optional art density passes (pages 1, 6–7, 11–14)
 - Optional analytics / portfolio link
 - Ongoing Spanish ear passes as kids react out loud

@@ -4,7 +4,7 @@ import { fillEs } from './esGender'
 /** Set at build/deploy time; falls back for local preview. */
 export const SITE_URL =
   (import.meta.env.VITE_SITE_URL as string | undefined)?.replace(/\/+$/, '') ||
-  'https://the-bent-one.vercel.app'
+  'https://the-bent-one-book.stronghandssoftheart.com'
 
 /** Raster social card (PNG). SVG also ships at /og.svg. */
 export const SITE_IMAGE = `${SITE_URL}/og.png`

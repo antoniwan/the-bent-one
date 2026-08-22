@@ -2,7 +2,7 @@
 
 A bilingual (English / Spanish) web picture book. The story follows a short line with a bend and the forms a line can take depending on placement and company.
 
-Live site: production URL is set at build time via `VITE_SITE_URL` (default fallback: `https://the-bent-one.vercel.app`).
+Live site: [the-bent-one-book.stronghandssoftheart.com](https://the-bent-one-book.stronghandssoftheart.com). Production origin is set at build time via `VITE_SITE_URL` (default fallback matches that domain).
 
 Related book in the same series: [Mia, the Sun, and the Moon](https://mia-the-sun-and-the-moon-web-book.stronghandssoftheart.com/) ([source](https://github.com/antoniwan/book-sun-and-moon)).
 

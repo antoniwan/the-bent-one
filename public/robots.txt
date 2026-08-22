@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://the-bent-one.vercel.app/sitemap.xml
+Sitemap: https://the-bent-one-book.stronghandssoftheart.com/sitemap.xml

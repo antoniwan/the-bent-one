@@ -35,7 +35,7 @@ Intentionally omitted: read aloud / Web Speech (present in Mia; not planned here
 - [x] EN / ES toggle — cover + reader bar; persist; swap reader copy
 - [x] Spanish translation — full book voice (ongoing page-by-page polish welcome)
 - [x] SEO pack — `index.html` meta, OG / Twitter, JSON-LD Book, canonical, manifest, `applyDocumentMeta(lang)`
-- [ ] Confirm production `VITE_SITE_URL` once the domain is known
+- [x] Confirm production `VITE_SITE_URL` — `https://the-bent-one-book.stronghandssoftheart.com`
 - [x] Raster social card (`og.png`) + icon set
 - [x] **v1.0.0** — first public voice of the bilingual book
 
